@@ -1,0 +1,28 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Body -->
+  <path d="M20 64 C20 30, 80 30, 100 60 C110 90, 80 98, 20 64" fill="#00BFFF"/>
+  
+  <!-- Orange stripes -->
+  <path d="M40 50 C45 35, 60 35, 65 50 L60 55 C55 40, 40 40, 35 55 Z" fill="#FFA500"/>
+  <path d="M60 60 C65 45, 80 45, 85 60 L80 65 C75 50, 60 50, 55 65 Z" fill="#FFA500"/>
+  <path d="M80 70 C85 55, 100 55, 105 70 L100 75 C95 60, 80 60, 75 75 Z" fill="#FFA500"/>
+
+  <!-- Fins -->
+  <!-- Dorsal Fin -->
+  <path d="M45 35 Q55 20, 70 30 L65 38 Q50 25, 45 35 Z" fill="#FFA500"/>
+  <!-- Anal Fin -->
+  <path d="M45 93 Q55 108, 70 98 L65 90 Q50 103, 45 93 Z" fill="#FFA500"/>
+  <!-- Pectoral Fin -->
+  <path d="M30 70 Q25 80, 40 78 L38 68 Q28 72, 30 70 Z" fill="#00BFFF"/>
+
+  <!-- Tail Fin -->
+  <path d="M100 60 Q115 50, 120 60 Q115 70, 100 68 C100 68, 100 60, 100 60 Z" fill="#FFA500"/>
+  <path d="M100 64 L120 64 L100 64 Z" fill="#00BFFF"/>
+
+
+  <!-- Eye -->
+  <circle cx="55" cy="60" r="10" fill="white"/>
+  <circle cx="58" cy="62" r="6" fill="black"/>
+  <!-- Eye Highlight -->
+  <circle cx="60" cy="58" r="2" fill="white"/>
+</svg>

@@ -1,0 +1,28 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Body - dark -->
+  <path d="M15 55 C15 40 35 32 60 32 C85 32 105 40 110 55 C112 62 112 72 110 78 C105 90 85 95 60 95 C35 95 15 82 15 55Z" fill="#37474F"/>
+  <!-- White belly band -->
+  <path d="M18 68 C18 62 38 58 60 58 C85 58 108 62 108 68 C108 80 88 88 60 88 C38 88 18 80 18 68Z" fill="#ECEFF1"/>
+  <!-- Bright red tail -->
+  <path d="M108 55 L124 42 L122 66 L124 90 L108 78 Z" fill="#D32F2F"/>
+  <!-- Dorsal fin -->
+  <path d="M55 34 L60 22 L68 32 Z" fill="#263238"/>
+  <!-- Adipose fin (catfish feature) -->
+  <path d="M85 38 C88 34 92 34 92 38" fill="#263238"/>
+  <!-- Pectoral fin -->
+  <path d="M30 82 L22 96 L38 90 Z" fill="#455A64" opacity="0.7"/>
+  <!-- Long whiskers -->
+  <path d="M16 52 C6 44 0 36 -4 30" stroke="#546E7A" stroke-width="2" fill="none"/>
+  <path d="M16 58 C6 54 -2 52 -6 48" stroke="#546E7A" stroke-width="2" fill="none"/>
+  <path d="M16 64 C8 66 2 72 -2 78" stroke="#546E7A" stroke-width="1.5" fill="none"/>
+  <path d="M16 68 C8 72 2 80 -2 88" stroke="#546E7A" stroke-width="1.5" fill="none"/>
+  <!-- Flat wide head -->
+  <path d="M15 50 C12 48 10 52 10 58 C10 64 12 68 15 66 Z" fill="#37474F"/>
+  <!-- Eye -->
+  <circle cx="24" cy="50" r="8" fill="white"/>
+  <circle cx="27" cy="52" r="5" fill="black"/>
+  <circle cx="25" cy="49" r="2" fill="white"/>
+  <circle cx="28" cy="51" r="1" fill="white"/>
+  <!-- Mouth -->
+  <path d="M12 60 C14 62 14 62 12 64" stroke="#263238" stroke-width="1.5" fill="none"/>
+</svg>

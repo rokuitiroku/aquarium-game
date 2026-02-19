@@ -1,0 +1,23 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Long dorsal filament -->
+  <path d="M58 38 C55 20 60 8 68 4 C70 3 72 5 70 8 C65 18 62 30 60 38" fill="none" stroke="white" stroke-width="2"/>
+  <!-- Tall body - diamond shape -->
+  <path d="M55 30 C65 25 80 30 85 50 C90 70 80 95 65 100 C50 95 35 70 38 50 C40 35 48 30 55 30Z" fill="#FFD600"/>
+  <!-- Black bands -->
+  <path d="M48 35 C50 30 55 30 57 35 L54 95 C52 100 48 100 46 95 Z" fill="#1A1A1A"/>
+  <path d="M68 35 C72 30 78 32 80 40 L78 90 C76 96 70 98 68 92 Z" fill="#1A1A1A"/>
+  <!-- White section between bands -->
+  <path d="M57 35 L54 95 C58 98 64 98 68 92 L68 35 C64 30 60 30 57 35Z" fill="white"/>
+  <!-- Snout - elongated -->
+  <path d="M42 55 C35 52 28 54 25 58 C28 62 35 64 42 62 Z" fill="#FFD600"/>
+  <!-- Tail fin -->
+  <path d="M82 75 L95 70 L92 82 L95 92 L82 88 Z" fill="#1A1A1A"/>
+  <!-- Anal fin -->
+  <path d="M58 98 L55 112 L65 108 L68 98 Z" fill="#1A1A1A"/>
+  <!-- Eye -->
+  <circle cx="44" cy="55" r="7" fill="white"/>
+  <circle cx="46" cy="56" r="4" fill="black"/>
+  <circle cx="44" cy="54" r="2" fill="white"/>
+  <!-- Mouth -->
+  <path d="M25 58 C27 59 27 59 25 60" stroke="#333" stroke-width="1" fill="none"/>
+</svg>

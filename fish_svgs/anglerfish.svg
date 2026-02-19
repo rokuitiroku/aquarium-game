@@ -1,0 +1,32 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="afLure" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#00E5FF" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#00E5FF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <!-- Lure stalk -->
+  <path d="M38 42 C35 30 30 22 28 18" stroke="#2D2D3D" stroke-width="2" fill="none"/>
+  <!-- Lure glow -->
+  <circle cx="28" cy="16" r="10" fill="url(#afLure)"/>
+  <circle cx="28" cy="16" r="4" fill="#00E5FF"/>
+  <!-- Body - dark round -->
+  <ellipse cx="55" cy="68" rx="38" ry="30" fill="#1A1A2E"/>
+  <!-- Belly slightly lighter -->
+  <ellipse cx="52" cy="76" rx="28" ry="16" fill="#2D2D44"/>
+  <!-- Big mouth with teeth -->
+  <path d="M18 62 L18 82 C22 86 30 86 35 82 L35 62 Z" fill="#0D0D1A"/>
+  <!-- Teeth top -->
+  <path d="M18 62 L21 68 L24 62 L27 68 L30 62 L33 68 L35 62" fill="white"/>
+  <!-- Teeth bottom -->
+  <path d="M18 82 L21 76 L24 82 L27 76 L30 82 L33 76 L35 82" fill="white"/>
+  <!-- Small fins -->
+  <path d="M90 60 L102 52 L100 68 L102 82 L90 76 Z" fill="#1A1A2E"/>
+  <path d="M55 40 L60 32 L68 40 Z" fill="#2D2D44"/>
+  <path d="M50 96 L55 104 L60 96 Z" fill="#2D2D44"/>
+  <!-- Eye - huge and menacing but cute -->
+  <circle cx="40" cy="58" r="10" fill="white"/>
+  <circle cx="43" cy="60" r="6" fill="#1A1A2E"/>
+  <circle cx="44" cy="59" r="2" fill="#00E5FF"/>
+  <circle cx="41" cy="56" r="2.5" fill="white"/>
+</svg>

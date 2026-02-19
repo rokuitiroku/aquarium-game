@@ -1,0 +1,43 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Body of the Arowana -->
+  <path d="M20 55 C10 65 10 75 20 85 L100 85 C115 85 120 75 115 65 C120 55 115 45 100 45 L20 45 Z" fill="#C0C0C0" stroke="#808080" stroke-width="2"/>
+
+  <!-- Scales - simplified ovals -->
+  <ellipse cx="40" cy="65" rx="7" ry="5" fill="#E0E0E0" stroke="#A0A0A0" stroke-width="1"/>
+  <ellipse cx="55" cy="65" rx="7" ry="5" fill="#E0E0E0" stroke="#A0A0A0" stroke-width="1"/>
+  <ellipse cx="70" cy="65" rx="7" ry="5" fill="#E0E0E0" stroke="#A0A0A0" stroke-width="1"/>
+  <ellipse cx="85" cy="65" rx="7" ry="5" fill="#E0E0E0" stroke="#A0A0A0" stroke-width="1"/>
+
+  <ellipse cx="47" cy="55" rx="7" ry="5" fill="#E0E0E0" stroke="#A0A0A0" stroke-width="1"/>
+  <ellipse cx="62" cy="55" rx="7" ry="5" fill="#E0E0E0" stroke="#A0A0A0" stroke-width="1"/>
+  <ellipse cx="77" cy="55" rx="7" ry="5" fill="#E0E0E0" stroke="#A0A0A0" stroke-width="1"/>
+
+  <ellipse cx="47" cy="75" rx="7" ry="5" fill="#E0E0E0" stroke="#A0A0A0" stroke-width="1"/>
+  <ellipse cx="62" cy="75" rx="7" ry="5" fill="#E0E0E0" stroke="#A0A0A0" stroke-width="1"/>
+  <ellipse cx="77" cy="75" rx="7" ry="5" fill="#E0E0E0" stroke="#A0A0A0" stroke-width="1"/>
+
+  <!-- Dorsal Fin -->
+  <path d="M70 45 L90 35 L85 45 Z" fill="#D3D3D3" stroke="#A0A0A0" stroke-width="1"/>
+  <!-- Anal Fin -->
+  <path d="M70 85 L90 95 L85 85 Z" fill="#D3D3D3" stroke="#A0A0A0" stroke-width="1"/>
+
+  <!-- Tail Fin (caudal fin) -->
+  <path d="M100 45 C110 35 120 40 115 65 C120 90 110 95 100 85 Z" fill="#D3D3D3" stroke="#A0A0A0" stroke-width="2"/>
+
+  <!-- Pectoral Fin -->
+  <ellipse cx="35" cy="75" rx="8" ry="5" transform="rotate(-20 35 75)" fill="#D3D3D3" stroke="#A0A0A0" stroke-width="1"/>
+
+  <!-- Head shape for a bit more definition -->
+  <path d="M20 55 C25 50 35 50 40 55 C40 80 25 80 20 85 Z" fill="#C0C0C0" stroke="#808080" stroke-width="2"/>
+
+  <!-- Cute Big Eye -->
+  <circle cx="35" cy="60" r="10" fill="white" stroke="black" stroke-width="2"/>
+  <circle cx="38" cy="63" r="4" fill="black"/>
+  <!-- Eye Highlights -->
+  <circle cx="32" cy="58" r="2" fill="white"/>
+  <circle cx="36" cy="60" r="1" fill="white"/>
+
+  <!-- Mouth -->
+  <path d="M25 70 C30 70 30 73 25 73" stroke="black" stroke-width="1" fill="none"/>
+
+</svg>

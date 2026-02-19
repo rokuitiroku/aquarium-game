@@ -1,0 +1,19 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Enormous mouth (pelican-like) -->
+  <path d="M10 40 C10 35 18 30 30 30 L50 35 L50 55 L30 50 C18 48 10 45 10 40Z" fill="#1A1A2E"/>
+  <path d="M10 80 C10 85 18 92 30 92 L50 85 L50 65 L30 70 C18 72 10 75 10 80Z" fill="#2D2D44"/>
+  <!-- Mouth interior -->
+  <path d="M12 45 L48 40 L48 80 L12 75 Z" fill="#0A0A15"/>
+  <!-- Long thin body tapering to tail -->
+  <path d="M50 42 C60 38 80 40 95 48 C105 54 115 60 120 62 C115 66 105 70 95 72 C80 76 60 78 50 78 Z" fill="#1A1A2E"/>
+  <!-- Body lighter stripe -->
+  <path d="M50 55 C65 52 85 54 100 58 C105 60 110 62 120 62 C110 64 105 66 100 68 C85 72 65 74 50 65 Z" fill="#2D2D44" opacity="0.5"/>
+  <!-- Bioluminescent tail tip -->
+  <circle cx="122" cy="62" r="4" fill="#FF1744" opacity="0.8"/>
+  <circle cx="122" cy="62" r="7" fill="#FF1744" opacity="0.2"/>
+  <!-- Tiny eye (comically small for the huge mouth) -->
+  <circle cx="46" cy="42" r="6" fill="white"/>
+  <circle cx="48" cy="43" r="4" fill="black"/>
+  <circle cx="46" cy="41" r="1.5" fill="white"/>
+  <circle cx="49" cy="42" r="0.8" fill="white"/>
+</svg>

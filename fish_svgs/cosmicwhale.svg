@@ -1,0 +1,47 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="cwBody" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1A237E"/>
+      <stop offset="40%" stop-color="#4A148C"/>
+      <stop offset="100%" stop-color="#311B92"/>
+    </linearGradient>
+    <radialGradient id="cwNebula" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#E040FB" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#E040FB" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <!-- Massive whale body -->
+  <path d="M8 58 C8 36 28 24 55 24 C80 24 100 34 108 50 C112 58 112 72 108 80 C100 96 80 102 55 102 C28 102 8 88 8 58Z" fill="url(#cwBody)"/>
+  <!-- Nebula overlay -->
+  <ellipse cx="60" cy="60" rx="35" ry="25" fill="url(#cwNebula)"/>
+  <!-- Stars on body -->
+  <circle cx="35" cy="45" r="1" fill="white" opacity="0.9"/>
+  <circle cx="50" cy="38" r="1.5" fill="white" opacity="0.8"/>
+  <circle cx="68" cy="42" r="1" fill="white" opacity="0.9"/>
+  <circle cx="82" cy="50" r="1.5" fill="white" opacity="0.7"/>
+  <circle cx="45" cy="60" r="1" fill="white" opacity="0.8"/>
+  <circle cx="72" cy="55" r="1" fill="white" opacity="0.9"/>
+  <circle cx="58" cy="48" r="1.5" fill="#B388FF" opacity="0.8"/>
+  <circle cx="90" cy="62" r="1" fill="white" opacity="0.7"/>
+  <circle cx="38" cy="72" r="1" fill="white" opacity="0.8"/>
+  <circle cx="55" cy="78" r="1" fill="white" opacity="0.7"/>
+  <circle cx="75" cy="74" r="1.5" fill="#B388FF" opacity="0.6"/>
+  <circle cx="65" cy="65" r="1" fill="#FF80AB" opacity="0.5"/>
+  <!-- Galaxy swirl -->
+  <path d="M50 50 C55 45 65 45 70 50 C75 55 75 65 70 70 C65 75 55 72 52 68" stroke="#7C4DFF" stroke-width="1" fill="none" opacity="0.4"/>
+  <!-- Belly lighter -->
+  <path d="M12 68 C12 62 32 56 55 56 C80 56 105 62 105 68 C102 84 82 92 55 92 C32 92 12 82 12 68Z" fill="#3949AB" opacity="0.4"/>
+  <!-- Tail flukes -->
+  <path d="M105 55 C112 42 122 32 126 28 C124 40 120 50 115 58" fill="#1A237E"/>
+  <path d="M105 78 C112 90 122 100 126 104 C124 92 120 82 115 74" fill="#1A237E"/>
+  <!-- Pectoral fin -->
+  <path d="M32 82 C24 92 20 100 22 104 C28 100 34 92 38 84" fill="#311B92"/>
+  <!-- Eye -->
+  <circle cx="22" cy="54" r="9" fill="white"/>
+  <circle cx="25" cy="56" r="5" fill="#7C4DFF"/>
+  <circle cx="25" cy="56" r="3" fill="black"/>
+  <circle cx="23" cy="53" r="2.5" fill="white"/>
+  <circle cx="26" cy="55" r="1" fill="#E1BEE7"/>
+  <!-- Mouth -->
+  <path d="M10 64 C12 66 12 66 10 68" stroke="#0D47A1" stroke-width="1.5" fill="none"/>
+</svg>

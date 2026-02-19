@@ -1,0 +1,25 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Body of the fish -->
+  <path d="M 30 64 C 30 40 70 30 90 40 C 110 50 110 70 90 80 C 70 90 30 88 30 64 Z" fill="#8DA6AD"/>
+
+  <!-- Tail fin -->
+  <path d="M 90 60 C 95 50 105 45 115 50 C 120 55 120 75 115 80 C 105 85 95 80 90 70 Z" fill="#8DA6AD"/>
+
+  <!-- Dorsal fin -->
+  <path d="M 50 40 C 55 30 65 25 70 30 C 65 35 55 38 50 40 Z" fill="#8DA6AD"/>
+
+  <!-- Ventral fin -->
+  <path d="M 50 88 C 55 98 65 103 70 98 C 65 93 55 90 50 88 Z" fill="#8DA6AD"/>
+
+  <!-- Eye -->
+  <circle cx="65" cy="55" r="12" fill="white"/>
+  <circle cx="67" cy="57" r="8" fill="black"/>
+  <!-- Eye highlight -->
+  <circle cx="70" cy="52" r="3" fill="white"/>
+
+  <!-- Mouth (simple line) -->
+  <path d="M 40 68 Q 45 72 50 68" stroke="black" stroke-width="2" fill="none"/>
+
+  <!-- Gill (simple curve) -->
+  <path d="M 50 50 Q 55 58 50 65" stroke="black" stroke-width="1.5" fill="none"/>
+</svg>

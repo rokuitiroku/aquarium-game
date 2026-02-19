@@ -1,0 +1,27 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Body -->
+  <ellipse cx="58" cy="64" rx="35" ry="18" fill="#4CAF50"/>
+  <!-- Red patches -->
+  <ellipse cx="65" cy="60" rx="15" ry="10" fill="#E53935" opacity="0.6"/>
+  <ellipse cx="48" cy="68" rx="10" ry="7" fill="#FF7043" opacity="0.5"/>
+  <!-- Spots -->
+  <circle cx="40" cy="58" r="2.5" fill="#FFD600" opacity="0.7"/>
+  <circle cx="55" cy="55" r="2" fill="#FFD600" opacity="0.7"/>
+  <circle cx="70" cy="58" r="2.5" fill="#FFD600" opacity="0.7"/>
+  <circle cx="50" cy="70" r="2" fill="#FFD600" opacity="0.7"/>
+  <!-- Dorsal fin -->
+  <path d="M55 47 L60 38 L68 46 Z" fill="#66BB6A" opacity="0.8"/>
+  <!-- Tail fin -->
+  <path d="M90 58 L108 48 L105 64 L108 80 L90 70 Z" fill="#E53935" opacity="0.8"/>
+  <!-- Pectoral fin -->
+  <path d="M42 72 L38 82 L48 78 Z" fill="#66BB6A" opacity="0.7"/>
+  <!-- Anal fin -->
+  <path d="M62 80 L65 88 L70 80 Z" fill="#66BB6A" opacity="0.7"/>
+  <!-- Eye -->
+  <circle cx="35" cy="60" r="8" fill="white"/>
+  <circle cx="38" cy="62" r="5" fill="black"/>
+  <circle cx="36" cy="59" r="2" fill="white"/>
+  <circle cx="39" cy="61" r="1" fill="white"/>
+  <!-- Mouth -->
+  <path d="M23 65 C26 67 26 67 24 69" stroke="#2E7D32" stroke-width="1" fill="none"/>
+</svg>

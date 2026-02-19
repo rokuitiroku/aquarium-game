@@ -1,0 +1,44 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+<defs>
+    <linearGradient id="stripes" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#FFDD00"/>
+        <stop offset="15%" stop-color="#FFDD00"/>
+        <stop offset="15%" stop-color="#FFFFFF"/>
+        <stop offset="30%" stop-color="#FFFFFF"/>
+        <stop offset="30%" stop-color="#FFDD00"/>
+        <stop offset="45%" stop-color="#FFDD00"/>
+        <stop offset="45%" stop-color="#FFFFFF"/>
+        <stop offset="60%" stop-color="#FFFFFF"/>
+        <stop offset="60%" stop-color="#FFDD00"/>
+        <stop offset="75%" stop-color="#FFDD00"/>
+        <stop offset="75%" stop-color="#FFFFFF"/>
+        <stop offset="90%" stop-color="#FFFFFF"/>
+        <stop offset="90%" stop-color="#FFDD00"/>
+        <stop offset="100%" stop-color="#FFDD00"/>
+    </linearGradient>
+</defs>
+
+<!-- Body -->
+<path d="M64 16L96 64L64 112L32 64L64 16Z" fill="url(#stripes)" stroke="#000000" stroke-width="2"/>
+
+<!-- Top Fin -->
+<path d="M64 16C70 10 75 10 75 10C85 15 90 20 90 20L96 64C90 50 75 30 64 16Z" fill="#FFAAAA" stroke="#000000" stroke-width="2"/>
+<path d="M64 16C58 10 53 10 53 10C43 15 38 20 38 20L32 64C38 50 53 30 64 16Z" fill="#FFAAAA" stroke="#000000" stroke-width="2"/>
+
+
+<!-- Bottom Fin -->
+<path d="M64 112C70 118 75 118 75 118C85 113 90 108 90 108L96 64C90 78 75 98 64 112Z" fill="#FFAAAA" stroke="#000000" stroke-width="2"/>
+<path d="M64 112C58 118 53 118 53 118C43 113 38 108 38 108L32 64C38 78 53 98 64 112Z" fill="#FFAAAA" stroke="#000000" stroke-width="2"/>
+
+
+<!-- Tail Fin -->
+<path d="M96 64C105 60 115 55 120 50C125 55 125 73 120 78C115 73 105 68 96 64Z" fill="#FFAAAA" stroke="#000000" stroke-width="2"/>
+
+<!-- Mouth -->
+<path d="M78 58C80 59 80 62 78 63" stroke="#000000" stroke-width="2" stroke-linecap="round"/>
+
+<!-- Eye -->
+<circle cx="70" cy="50" r="10" fill="#FFFFFF" stroke="#000000" stroke-width="2"/>
+<circle cx="73" cy="53" r="4" fill="#000000"/>
+<circle cx="74" cy="52" r="1.5" fill="#FFFFFF"/>
+</svg>

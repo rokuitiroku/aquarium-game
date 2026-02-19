@@ -1,0 +1,27 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Body -->
+  <ellipse cx="55" cy="64" rx="38" ry="28" fill="#1A237E"/>
+  <!-- Yellow/green patches -->
+  <path d="M30 50 C40 42 50 44 50 55 C50 68 38 70 30 65 Z" fill="#00BCD4"/>
+  <path d="M50 55 C60 48 75 48 80 58 C80 72 68 78 55 74 C48 70 48 62 50 55Z" fill="#FDD835"/>
+  <!-- Pattern lines -->
+  <path d="M60 50 C65 48 72 52 70 58" stroke="#1A237E" stroke-width="1.5" fill="none"/>
+  <path d="M58 60 C63 58 72 60 70 68" stroke="#1A237E" stroke-width="1.5" fill="none"/>
+  <!-- Trigger dorsal fin (distinctive) -->
+  <path d="M45 38 L48 24 L52 38 Z" fill="#1A237E"/>
+  <!-- Second dorsal -->
+  <path d="M60 38 C65 30 72 30 75 38" fill="#1565C0"/>
+  <!-- Anal fin -->
+  <path d="M60 90 C65 98 72 98 75 90" fill="#1565C0"/>
+  <!-- Tail fin -->
+  <path d="M90 55 L108 48 L106 64 L108 80 L90 73 Z" fill="#FDD835"/>
+  <!-- Pectoral fin -->
+  <path d="M38 72 L34 82 L44 78 Z" fill="#00BCD4" opacity="0.7"/>
+  <!-- Eye -->
+  <circle cx="32" cy="56" r="8" fill="white"/>
+  <circle cx="35" cy="58" r="5" fill="black"/>
+  <circle cx="33" cy="55" r="2" fill="white"/>
+  <circle cx="36" cy="57" r="1" fill="white"/>
+  <!-- Mouth with buck teeth look -->
+  <path d="M18 64 C20 66 20 66 18 68" stroke="#0D47A1" stroke-width="1.5" fill="none"/>
+</svg>

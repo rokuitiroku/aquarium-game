@@ -1,0 +1,38 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="fhBody" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#E53935"/>
+      <stop offset="50%" stop-color="#FF6F00"/>
+      <stop offset="100%" stop-color="#1565C0"/>
+    </linearGradient>
+  </defs>
+  <!-- Body -->
+  <ellipse cx="60" cy="68" rx="38" ry="26" fill="url(#fhBody)"/>
+  <!-- Big nuchal hump (kok) -->
+  <path d="M28 52 C24 38 28 24 38 20 C48 16 52 24 50 36 C48 44 42 50 34 52 Z" fill="#FF5252"/>
+  <!-- Scale pattern (black spots) -->
+  <circle cx="50" cy="60" r="3" fill="black" opacity="0.3"/>
+  <circle cx="62" cy="58" r="3.5" fill="black" opacity="0.3"/>
+  <circle cx="74" cy="62" r="3" fill="black" opacity="0.3"/>
+  <circle cx="56" cy="72" r="3" fill="black" opacity="0.3"/>
+  <circle cx="68" cy="74" r="2.5" fill="black" opacity="0.3"/>
+  <circle cx="82" cy="68" r="2.5" fill="black" opacity="0.3"/>
+  <!-- Black horizontal line -->
+  <path d="M30 68 C50 66 70 66 92 68" stroke="black" stroke-width="2" opacity="0.4"/>
+  <!-- Dorsal fin -->
+  <path d="M42 44 C50 34 65 30 78 36 C82 38 85 42 85 44" fill="#1565C0" opacity="0.8"/>
+  <!-- Anal fin -->
+  <path d="M50 92 C58 100 68 100 76 94" fill="#1565C0" opacity="0.8"/>
+  <!-- Tail fin -->
+  <path d="M94 60 L112 52 L110 68 L112 84 L94 76 Z" fill="#1565C0"/>
+  <!-- Pectoral fin -->
+  <path d="M38 80 L32 92 L46 86 Z" fill="#E53935" opacity="0.7"/>
+  <!-- Eye -->
+  <circle cx="34" cy="56" r="8" fill="white"/>
+  <circle cx="37" cy="58" r="5" fill="#D32F2F"/>
+  <circle cx="37" cy="58" r="3" fill="black"/>
+  <circle cx="35" cy="55" r="2" fill="white"/>
+  <circle cx="38" cy="57" r="1" fill="white"/>
+  <!-- Thick lips -->
+  <path d="M22 66 C20 64 18 66 18 70 C18 74 20 76 22 74 Z" fill="#FFAB91"/>
+</svg>

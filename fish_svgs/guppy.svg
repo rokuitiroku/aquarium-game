@@ -1,0 +1,33 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Body -->
+  <path d="M 30 55 C 20 65, 20 75, 30 85 L 50 85 C 60 85, 70 75, 70 65 C 70 55, 60 45, 50 45 L 30 55 Z" fill="#FFC0CB"/>
+
+  <!-- Head (slightly overlapping body) -->
+  <path d="M 25 65 C 25 55, 35 45, 45 45 C 50 45, 55 55, 55 65 C 55 75, 50 85, 45 85 C 35 85, 25 75, 25 65 Z" fill="#FFECB3"/>
+
+  <!-- Eye -->
+  <circle cx="40" cy="58" r="8" fill="black"/>
+  <circle cx="43" cy="55" r="3" fill="white"/>
+
+  <!-- Dorsal Fin (top) -->
+  <path d="M 50 45 C 60 35, 70 35, 75 45 C 70 45, 60 50, 50 45 Z" fill="#90EE90"/>
+
+  <!-- Pectoral Fin (side) -->
+  <path d="M 45 75 C 50 80, 55 75, 50 70 C 45 65, 40 70, 45 75 Z" fill="#ADD8E6"/>
+
+  <!-- Tail Fin - Rainbow Colors -->
+  <path d="M 70 65 C 80 50, 90 40, 110 45 C 105 55, 100 65, 110 75 C 90 80, 80 70, 70 65 Z" fill="url(#rainbowGradient)"/>
+
+  <defs>
+    <linearGradient id="rainbowGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:red;stop-opacity:1" />
+      <stop offset="16.6%" style="stop-color:orange;stop-opacity:1" />
+      <stop offset="33.3%" style="stop-color:yellow;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:green;stop-opacity:1" />
+      <stop offset="66.6%" style="stop-color:blue;stop-opacity:1" />
+      <stop offset="83.3%" style="stop-color:indigo;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:violet;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+</svg>

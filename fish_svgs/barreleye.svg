@@ -1,0 +1,30 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="beDome" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#B3E5FC" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#81D4FA" stop-opacity="0.15"/>
+    </radialGradient>
+  </defs>
+  <!-- Body -->
+  <ellipse cx="60" cy="72" rx="35" ry="20" fill="#455A64"/>
+  <!-- Transparent dome head -->
+  <path d="M28 60 C28 32 50 22 68 22 C82 22 92 32 92 52 C92 62 82 68 68 68 C50 68 28 68 28 60Z" fill="url(#beDome)" stroke="#B3E5FC" stroke-width="1" stroke-opacity="0.5"/>
+  <!-- Inside the dome - brain visible -->
+  <ellipse cx="62" cy="48" rx="10" ry="6" fill="#EF9A9A" opacity="0.3"/>
+  <!-- Green tubular eyes (inside dome, pointing up) -->
+  <ellipse cx="48" cy="45" rx="6" ry="8" fill="#00C853"/>
+  <circle cx="48" cy="40" r="4" fill="#69F0AE"/>
+  <circle cx="48" cy="39" r="2" fill="white"/>
+  <ellipse cx="68" cy="45" rx="6" ry="8" fill="#00C853"/>
+  <circle cx="68" cy="40" r="4" fill="#69F0AE"/>
+  <circle cx="68" cy="39" r="2" fill="white"/>
+  <!-- Small actual mouth/face at front -->
+  <circle cx="32" cy="65" r="3" fill="black"/>
+  <circle cx="32" cy="65" r="1.5" fill="#263238"/>
+  <path d="M28 68 C30 70 34 70 36 68" stroke="#37474F" stroke-width="1" fill="none"/>
+  <!-- Tail fin -->
+  <path d="M92 66 L108 58 L106 72 L108 86 L92 78 Z" fill="#37474F"/>
+  <!-- Small fins -->
+  <path d="M50 88 L48 98 L56 92 Z" fill="#546E7A" opacity="0.7"/>
+  <path d="M55 54 L58 46 L62 54 Z" fill="#546E7A" opacity="0.5"/>
+</svg>

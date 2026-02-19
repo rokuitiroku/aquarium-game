@@ -1,0 +1,26 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Elongated body -->
+  <path d="M15 62 C15 52 30 45 55 45 C80 45 100 50 110 58 C115 62 115 70 110 74 C100 80 80 82 55 82 C30 82 15 75 15 62Z" fill="#8D6E63"/>
+  <!-- Belly -->
+  <path d="M20 68 C20 65 35 62 55 62 C80 62 100 64 108 68 C108 74 95 78 55 78 C30 78 20 74 20 68Z" fill="#D7CCC8"/>
+  <!-- Dark patches -->
+  <ellipse cx="45" cy="60" rx="8" ry="6" fill="#5D4037" opacity="0.4"/>
+  <ellipse cx="70" cy="58" rx="8" ry="6" fill="#5D4037" opacity="0.4"/>
+  <ellipse cx="92" cy="62" rx="6" ry="5" fill="#5D4037" opacity="0.4"/>
+  <!-- Dorsal fin -->
+  <path d="M55 46 L60 36 L68 46 Z" fill="#A1887F"/>
+  <!-- Tail fin -->
+  <path d="M108 60 L120 52 L118 66 L120 80 L108 72 Z" fill="#A1887F"/>
+  <!-- Pectoral fin -->
+  <path d="M35 74 L30 84 L42 80 Z" fill="#A1887F" opacity="0.7"/>
+  <!-- Whiskers -->
+  <path d="M15 60 C8 55 4 50 0 48" stroke="#6D4C41" stroke-width="1.5" fill="none"/>
+  <path d="M15 64 C8 62 4 64 0 62" stroke="#6D4C41" stroke-width="1.5" fill="none"/>
+  <path d="M15 68 C8 72 4 76 0 78" stroke="#6D4C41" stroke-width="1.5" fill="none"/>
+  <!-- Eye -->
+  <circle cx="25" cy="58" r="7" fill="white"/>
+  <circle cx="28" cy="59" r="4" fill="black"/>
+  <circle cx="26" cy="56" r="2" fill="white"/>
+  <!-- Mouth -->
+  <path d="M16 66 C18 68 18 68 16 70" stroke="#5D4037" stroke-width="1" fill="none"/>
+</svg>

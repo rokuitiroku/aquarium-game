@@ -1,0 +1,27 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bellyGradient" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#E0E0E0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Body - Dark Blue-Black -->
+  <path d="M 30 50 C 10 55, 10 75, 30 80 L 100 80 C 120 75, 120 55, 100 50 L 30 50 Z" fill="#202028"/>
+
+  <!-- Belly - White -->
+  <path d="M 35 60 C 20 62, 20 70, 35 72 L 95 72 C 110 70, 110 62, 95 60 L 35 60 Z" fill="url(#bellyGradient)"/>
+
+  <!-- Head Stub / Mouth Area - Dark Blue-Black -->
+  <path d="M 25 60 C 20 60, 20 70, 25 70 L 35 70 L 35 60 Z" fill="#202028"/>
+
+  <!-- Eye - Right Side -->
+  <circle cx="45" cy="58" r="7" fill="#FFFFFF"/>
+  <circle cx="45" cy="58" r="4" fill="#000000"/>
+  <circle cx="47" cy="56" r="1.5" fill="#FFFFFF"/> <!-- Highlight -->
+
+  <!-- Tail - Dark Blue-Black -->
+  <path d="M 95 66 C 100 66, 110 68, 115 70 C 110 72, 100 74, 95 74 Z" fill="#202028"/>
+  <path d="M 115 70 C 120 71, 125 71, 128 70 C 125 69, 120 69, 115 70 Z" fill="#202028"/>
+
+</svg>

@@ -1,0 +1,26 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Massive elongated body -->
+  <path d="M10 58 C10 42 30 34 60 34 C85 34 105 42 112 55 C115 62 115 70 112 77 C105 90 85 94 60 94 C30 94 10 82 10 58Z" fill="#2E7D32"/>
+  <!-- Belly -->
+  <path d="M15 70 C15 65 35 60 60 60 C85 60 105 64 110 70 C108 82 88 88 60 88 C35 88 15 82 15 70Z" fill="#4CAF50"/>
+  <!-- Red scale accents -->
+  <ellipse cx="50" cy="55" rx="7" ry="4" fill="#C62828" opacity="0.5"/>
+  <ellipse cx="65" cy="52" rx="7" ry="4" fill="#C62828" opacity="0.5"/>
+  <ellipse cx="80" cy="56" rx="7" ry="4" fill="#C62828" opacity="0.5"/>
+  <ellipse cx="55" cy="70" rx="7" ry="4" fill="#C62828" opacity="0.4"/>
+  <ellipse cx="72" cy="68" rx="7" ry="4" fill="#C62828" opacity="0.4"/>
+  <ellipse cx="88" cy="64" rx="6" ry="3" fill="#C62828" opacity="0.4"/>
+  <!-- Dorsal fin -->
+  <path d="M75 35 L80 24 L88 34 Z" fill="#1B5E20"/>
+  <!-- Tail fin -->
+  <path d="M110 58 L124 48 L122 66 L124 84 L110 74 Z" fill="#1B5E20"/>
+  <!-- Pectoral fin -->
+  <path d="M30 80 L24 94 L38 88 Z" fill="#388E3C" opacity="0.7"/>
+  <!-- Eye -->
+  <circle cx="22" cy="52" r="9" fill="white"/>
+  <circle cx="25" cy="54" r="5" fill="black"/>
+  <circle cx="23" cy="51" r="2.5" fill="white"/>
+  <circle cx="26" cy="53" r="1" fill="white"/>
+  <!-- Mouth -->
+  <path d="M10 60 C14 62 14 62 10 65" stroke="#1B5E20" stroke-width="1.5" fill="none"/>
+</svg>

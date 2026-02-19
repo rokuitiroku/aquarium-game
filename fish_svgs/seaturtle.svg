@@ -1,0 +1,28 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Flippers back -->
+  <ellipse cx="75" cy="82" rx="18" ry="8" transform="rotate(30 75 82)" fill="#2E7D32"/>
+  <ellipse cx="75" cy="46" rx="18" ry="8" transform="rotate(-30 75 46)" fill="#2E7D32"/>
+  <!-- Shell -->
+  <ellipse cx="60" cy="64" rx="35" ry="26" fill="#33691E"/>
+  <!-- Shell pattern - hexagonal plates -->
+  <ellipse cx="50" cy="55" rx="10" ry="8" fill="#558B2F" stroke="#33691E" stroke-width="1"/>
+  <ellipse cx="70" cy="55" rx="10" ry="8" fill="#558B2F" stroke="#33691E" stroke-width="1"/>
+  <ellipse cx="60" cy="68" rx="10" ry="8" fill="#558B2F" stroke="#33691E" stroke-width="1"/>
+  <ellipse cx="42" cy="68" rx="8" ry="6" fill="#558B2F" stroke="#33691E" stroke-width="1"/>
+  <ellipse cx="78" cy="68" rx="8" ry="6" fill="#558B2F" stroke="#33691E" stroke-width="1"/>
+  <!-- Front flippers -->
+  <ellipse cx="32" cy="78" rx="16" ry="7" transform="rotate(20 32 78)" fill="#388E3C"/>
+  <ellipse cx="32" cy="50" rx="16" ry="7" transform="rotate(-20 32 50)" fill="#388E3C"/>
+  <!-- Head -->
+  <ellipse cx="26" cy="64" rx="14" ry="12" fill="#4CAF50"/>
+  <!-- Head top -->
+  <ellipse cx="22" cy="60" rx="8" ry="6" fill="#388E3C"/>
+  <!-- Eye -->
+  <circle cx="18" cy="60" r="6" fill="white"/>
+  <circle cx="16" cy="61" r="4" fill="black"/>
+  <circle cx="15" cy="59" r="1.5" fill="white"/>
+  <!-- Mouth - cute smile -->
+  <path d="M14 68 C16 70 20 70 22 68" stroke="#1B5E20" stroke-width="1.5" fill="none"/>
+  <!-- Tail -->
+  <path d="M94 64 L104 62 L100 66 Z" fill="#2E7D32"/>
+</svg>

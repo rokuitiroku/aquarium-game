@@ -1,0 +1,24 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+    <!-- Body -->
+    <path d="M25 60 C15 75, 20 95, 45 95 C70 95, 95 85, 95 65 C95 45, 80 30, 60 30 C40 30, 30 45, 25 60Z" fill="#FFC0CB"/>
+
+    <!-- Tail -->
+    <path d="M95 65 C105 75, 115 70, 110 55 C105 40, 95 50, 95 65Z" fill="#FFC0CB"/>
+
+    <!-- Left Gills (top) -->
+    <ellipse cx="28" cy="40" rx="3" ry="8" transform="rotate(-20 28 40)" fill="#FF69B4"/>
+    <ellipse cx="32" cy="35" rx="3" ry="8" transform="rotate(0 32 35)" fill="#FF69B4"/>
+    <ellipse cx="36" cy="30" rx="3" ry="8" transform="rotate(20 36 30)" fill="#FF69B4"/>
+
+    <!-- Right Gills (bottom) -->
+    <ellipse cx="28" cy="50" rx="3" ry="8" transform="rotate(-20 28 50)" fill="#FF69B4"/>
+    <ellipse cx="32" cy="45" rx="3" ry="8" transform="rotate(0 32 45)" fill="#FF69B4"/>
+    <ellipse cx="36" cy="40" rx="3" ry="8" transform="rotate(20 36 40)" fill="#FF69B4"/>
+
+    <!-- Eyes -->
+    <circle cx="58" cy="45" r="8" fill="#000"/>
+    <circle cx="55" cy="42" r="3" fill="#FFF"/>
+
+    <!-- Smile -->
+    <path d="M60 60 Q65 65, 70 60" stroke="#000" stroke-width="2" fill="none"/>
+</svg>

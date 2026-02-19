@@ -1,0 +1,20 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Body of the discus -->
+  <ellipse cx="60" cy="64" rx="45" ry="40" fill="#FFC0CB"/>
+  <ellipse cx="60" cy="64" rx="43" ry="38" fill="#ADD8E6"/>
+
+  <!-- Fins (top and bottom) -->
+  <path d="M60 24 C50 10, 40 20, 45 40 L60 24" fill="#FFA07A"/>
+  <path d="M60 104 C50 118, 40 108, 45 88 L60 104" fill="#FFA07A"/>
+
+  <!-- Tail fin -->
+  <path d="M95 64 C110 50, 110 78, 95 64" fill="#FFA07A"/>
+
+  <!-- Gills -->
+  <path d="M25 60 C30 50, 35 55, 30 65 L25 60" fill="#C0C0C0"/>
+
+  <!-- Eye -->
+  <circle cx="40" cy="50" r="8" fill="#FFFFFF"/>
+  <circle cx="42" cy="52" r="5" fill="#000000"/>
+  <circle cx="44" cy="49" r="2" fill="#FFFFFF"/>
+</svg>

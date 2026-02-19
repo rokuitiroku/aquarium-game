@@ -1,0 +1,27 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Body (blue-grey) -->
+  <path d="M25 60 C10 60 15 85 30 85 H90 C110 85 115 65 105 55 C95 45 80 40 70 45 C60 50 40 50 25 60 Z" fill="#778899"/>
+
+  <!-- Tail fin (blue-grey) -->
+  <path d="M100 55 L120 45 L115 60 L120 75 L100 65 Z" fill="#778899"/>
+
+  <!-- Dorsal fin 1 (lobed, blue-grey) -->
+  <path d="M60 40 C65 30 75 30 80 40 L70 45 L60 40 Z" fill="#778899"/>
+
+  <!-- Pectoral fin (loobed, blue-grey) -->
+  <path d="M35 65 C40 75 40 85 30 80 L25 70 L35 65 Z" fill="#778899"/>
+
+  <!-- Pelvic fin (lobed, blue-grey) -->
+  <path d="M55 75 C60 85 65 85 60 80 L50 75 L55 75 Z" fill="#778899"/>
+
+  <!-- Anal fin (lobed, blue-grey) -->
+  <path d="M75 75 C80 85 85 85 80 80 L70 75 L75 75 Z" fill="#778899"/>
+
+  <!-- Eye 1 (big, black) -->
+  <circle cx="50" cy="55" r="10" fill="#000"/>
+  <!-- Eye 1 highlight -->
+  <circle cx="55" cy="52" r="3" fill="#fff"/>
+
+  <!-- Mouth (simple arc) -->
+  <path d="M30 65 Q40 70 45 65" stroke="#000" stroke-width="2" fill="none"/>
+</svg>

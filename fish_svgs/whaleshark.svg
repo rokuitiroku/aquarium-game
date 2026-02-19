@@ -1,0 +1,31 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Body - massive grey -->
+  <ellipse cx="58" cy="64" rx="52" ry="30" fill="#7A8B99"/>
+  <!-- Belly -->
+  <ellipse cx="55" cy="72" rx="42" ry="16" fill="#B0BEC5"/>
+  <!-- White spots -->
+  <circle cx="35" cy="50" r="3" fill="white" opacity="0.7"/>
+  <circle cx="50" cy="45" r="2.5" fill="white" opacity="0.7"/>
+  <circle cx="65" cy="48" r="3" fill="white" opacity="0.7"/>
+  <circle cx="80" cy="52" r="2.5" fill="white" opacity="0.7"/>
+  <circle cx="42" cy="58" r="2" fill="white" opacity="0.7"/>
+  <circle cx="58" cy="55" r="2.5" fill="white" opacity="0.7"/>
+  <circle cx="72" cy="60" r="2" fill="white" opacity="0.7"/>
+  <circle cx="30" cy="65" r="2" fill="white" opacity="0.7"/>
+  <circle cx="88" cy="62" r="2" fill="white" opacity="0.7"/>
+  <!-- Tail fin -->
+  <path d="M105 55 L120 38 L118 64 L120 90 L105 73 Z" fill="#6B7B8A"/>
+  <!-- Dorsal fin -->
+  <path d="M55 35 L62 22 L70 35 Z" fill="#6B7B8A"/>
+  <!-- Pectoral fin -->
+  <path d="M35 78 L28 92 L45 88 Z" fill="#6B7B8A"/>
+  <!-- Wide flat head -->
+  <path d="M6 54 C6 50 12 46 20 48 L20 80 C12 82 6 78 6 74 Z" fill="#7A8B99"/>
+  <!-- Mouth line -->
+  <path d="M6 64 L18 64" stroke="#546E7A" stroke-width="2" fill="none"/>
+  <!-- Eye -->
+  <circle cx="22" cy="54" r="8" fill="white"/>
+  <circle cx="25" cy="56" r="5" fill="#1A1A2E"/>
+  <circle cx="23" cy="53" r="2" fill="white"/>
+  <circle cx="26" cy="55" r="1" fill="white"/>
+</svg>

@@ -1,0 +1,27 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Body - white base -->
+  <ellipse cx="55" cy="64" rx="40" ry="25" fill="#FFF8E1"/>
+  <!-- Red patches (kohaku pattern) -->
+  <ellipse cx="38" cy="55" rx="14" ry="12" fill="#D32F2F" opacity="0.85"/>
+  <ellipse cx="68" cy="60" rx="16" ry="11" fill="#D32F2F" opacity="0.85"/>
+  <ellipse cx="52" cy="72" rx="10" ry="8" fill="#D32F2F" opacity="0.7"/>
+  <!-- Tail fin -->
+  <path d="M92 55 C100 42 115 38 118 48 C120 55 112 60 100 62" fill="#FFF8E1"/>
+  <path d="M92 73 C100 86 115 90 118 80 C120 73 112 68 100 66" fill="#FFF8E1"/>
+  <path d="M100 55 C104 50 108 48 106 58" fill="#D32F2F" opacity="0.6"/>
+  <path d="M100 73 C104 78 108 80 106 70" fill="#D32F2F" opacity="0.6"/>
+  <!-- Dorsal fin -->
+  <path d="M50 40 L55 28 L64 40 Z" fill="#FFCDD2"/>
+  <!-- Pectoral fin -->
+  <path d="M35 78 L28 90 L42 86 Z" fill="#FFCDD2" opacity="0.8"/>
+  <!-- Whiskers -->
+  <path d="M16 60 C10 56 6 54 2 52" stroke="#BCAAA4" stroke-width="1" fill="none"/>
+  <path d="M16 68 C10 72 6 74 2 76" stroke="#BCAAA4" stroke-width="1" fill="none"/>
+  <!-- Eye -->
+  <circle cx="28" cy="56" r="8" fill="white"/>
+  <circle cx="31" cy="58" r="5" fill="black"/>
+  <circle cx="29" cy="55" r="2" fill="white"/>
+  <circle cx="32" cy="57" r="1" fill="white"/>
+  <!-- Mouth -->
+  <path d="M16 64 C18 66 18 66 16 68" stroke="#795548" stroke-width="1" fill="none"/>
+</svg>

@@ -1,0 +1,33 @@
+<svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bodyGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#FF69B4" />
+      <stop offset="100%" style="stop-color:#DA70D6" />
+    </linearGradient>
+    <linearGradient id="finGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#DA70D6" />
+      <stop offset="100%" style="stop-color:#FF6347" />
+    </linearGradient>
+  </defs>
+
+  <!-- Body -->
+  <ellipse cx="60" cy="64" rx="30" ry="20" fill="url(#bodyGradient)" />
+  <path d="M78 64 Q85 50 90 60 Q85 78 78 64 Z" fill="url(#bodyGradient)" />
+
+  <!-- Dorsal Fin -->
+  <path d="M55 45 Q70 20 85 40 Q75 55 55 45 Z" fill="url(#finGradient)" stroke="#8A2BE2" stroke-width="1" />
+
+  <!-- Caudal Fin (tail) -->
+  <path d="M85 64 Q105 40 120 55 Q100 70 120 80 Q105 95 85 64 Z" fill="url(#finGradient)" stroke="#8A2BE2" stroke-width="1" />
+
+  <!-- Pelvic Fin (bottom) -->
+  <path d="M55 80 Q70 105 85 85 Q75 70 55 80 Z" fill="url(#finGradient)" stroke="#8A2BE2" stroke-width="1" />
+
+  <!-- Pectoral Fin (side) -->
+  <path d="M45 70 Q55 80 65 70 Q55 60 45 70 Z" fill="url(#finGradient)" opacity="0.8" />
+
+  <!-- Eye -->
+  <circle cx="50" cy="55" r="8" fill="white" />
+  <circle cx="50" cy="55" r="4" fill="black" />
+  <circle cx="52" cy="53" r="1.5" fill="white" />
+</svg>

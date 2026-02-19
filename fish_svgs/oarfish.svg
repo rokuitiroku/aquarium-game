@@ -1,0 +1,21 @@
+<svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Body (long silver serpentine) -->
+  <path d="M10 64 C20 50, 40 55, 60 60 S80 65, 100 68 S115 70, 120 72 M10 64 C20 78, 40 73, 60 68 S80 63, 100 60 S115 58, 120 56" fill="#C0C0C0" stroke="#A9A9A9" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M10 64 C20 50, 40 55, 60 60 S80 65, 100 68 S115 70, 120 72" fill="none" stroke="#C0C0C0" stroke-width="6"/>
+  <path d="M10 64 C20 78, 40 73, 60 68 S80 63, 100 60 S115 58, 120 56" fill="none" stroke="#C0C0C0" stroke-width="6"/>
+  <path d="M10 64 C20 50, 40 55, 60 60 S80 65, 100 68 S115 70, 120 72 M10 64 C20 78, 40 73, 60 68 S80 63, 100 60 S115 58, 120 56" fill="#E0E0E0" stroke="none"/>
+  <path d="M10 64 Q25 58, 40 64 Q25 70, 10 64 Z" fill="#E0E0E0" stroke="#A9A9A9" stroke-width="1"/>
+
+  <!-- Mouth -->
+  <path d="M18 68 Q22 69, 26 68 Q22 67, 18 68 Z" fill="#F0F0F0" stroke="#A9A9A9" stroke-width="0.5"/>
+
+  <!-- Head fins (red) -->
+  <path d="M25 50 Q30 40, 35 50 Q30 45, 25 50 Z" fill="#FF0000" stroke="#CC0000" stroke-width="1"/>
+  <path d="M30 52 Q35 42, 40 52 Q35 47, 30 52 Z" fill="#FF0000" stroke="#CC0000" stroke-width="1"/>
+  <path d="M35 54 Q40 44, 45 54 Q40 49, 35 54 Z" fill="#FF0000" stroke="#CC0000" stroke-width="1"/>
+
+  <!-- Eyes -->
+  <circle cx="30" cy="62" r="6" fill="#FFF"/>
+  <circle cx="30" cy="62" r="4" fill="#000"/>
+  <circle cx="32" cy="60" r="1.5" fill="#FFF"/>
+</svg>

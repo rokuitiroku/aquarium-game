@@ -1,0 +1,27 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Body -->
+  <path d="M25 64 C25 40 70 30 100 45 C110 50 115 60 110 70 C100 85 70 90 25 64Z" fill="#ff69b4"/> 
+  
+  <!-- Tail Fin (pinkish/purple) -->
+  <path d="M100 45 L115 35 L120 64 L115 90 L100 70 Z" fill="#DA70D6"/>
+
+  <!-- Top Fin (small, pinkish/purple) -->
+  <path d="M70 45 L75 35 L80 45 Z" fill="#DA70D6"/>
+
+  <!-- Bottom Fin (small, pinkish/purple) -->
+  <path d="M70 80 L75 90 L80 80 Z" fill="#DA70D6"/>
+
+  <!-- Stripes -->
+  <!-- Blue Stripe -->
+  <path d="M28 58 C28 50 70 40 95 50 C100 52 100 58 95 60 C70 70 28 66 28 58Z" fill="#00bfff"/>
+  
+  <!-- Red Stripe -->
+  <path d="M28 68 C28 60 70 50 95 60 C100 62 100 68 95 70 C70 80 28 76 28 68Z" fill="#ff0000"/>
+
+  <!-- Eye -->
+  <circle cx="45" cy="55" r="10" fill="white"/>
+  <circle cx="48" cy="58" r="5" fill="black"/>
+  <!-- Eye Highlight -->
+  <circle cx="45" cy="55" r="3" fill="white" opacity="0.8"/>
+  <circle cx="47" cy="57" r="1.5" fill="white" opacity="0.8"/>
+</svg>

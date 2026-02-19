@@ -1,0 +1,24 @@
+<svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Body -->
+  <path d="M30 64 C30 35, 75 30, 95 64 C75 98, 30 93, 30 64" fill="#FF5733"/>
+  
+  <!-- Tail fin -->
+  <path d="M95 64 C100 50, 115 55, 120 64 C115 73, 100 78, 95 64" fill="#FF5733"/>
+  
+  <!-- Dorsal fin -->
+  <path d="M60 40 C65 30, 75 35, 70 45 L60 40" fill="#FF5733"/>
+  
+  <!-- Ventral fin -->
+  <path d="M55 88 C60 98, 70 93, 65 83 L55 88" fill="#FF5733"/>
+
+  <!-- Gills -->
+  <ellipse cx="45" cy="64" rx="4" ry="8" fill="#FF7F50" transform="rotate(5 45 64)"/>
+  
+  <!-- Left Eye -->
+  <circle cx="58" cy="55" r="10" fill="white"/>
+  <circle cx="62" cy="58" r="6" fill="black"/>
+  <circle cx="64" cy="54" r="2" fill="white"/>
+  
+  <!-- Mouth (simple curve) -->
+  <path d="M35 70 Q40 75, 45 70" stroke="black" stroke-width="2" fill="none"/>
+</svg>

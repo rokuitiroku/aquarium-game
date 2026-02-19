@@ -1,0 +1,30 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Body -->
+  <ellipse cx="58" cy="64" rx="38" ry="28" fill="#263238"/>
+  <!-- Orange-red spots/pattern -->
+  <ellipse cx="42" cy="55" rx="8" ry="6" fill="#FF6D00" opacity="0.7"/>
+  <ellipse cx="60" cy="50" rx="10" ry="7" fill="#FF3D00" opacity="0.6"/>
+  <ellipse cx="78" cy="56" rx="8" ry="6" fill="#FF6D00" opacity="0.7"/>
+  <ellipse cx="50" cy="70" rx="9" ry="6" fill="#FF3D00" opacity="0.6"/>
+  <ellipse cx="68" cy="72" rx="8" ry="5" fill="#FF6D00" opacity="0.7"/>
+  <ellipse cx="84" cy="65" rx="6" ry="5" fill="#FF3D00" opacity="0.5"/>
+  <!-- Eye spot (ocellus) on tail base -->
+  <circle cx="88" cy="62" r="6" fill="#1A1A1A"/>
+  <circle cx="88" cy="62" r="4" fill="#FF6D00"/>
+  <circle cx="88" cy="62" r="2" fill="black"/>
+  <!-- Dorsal fin -->
+  <path d="M35 38 C42 28 58 26 72 30 C78 32 82 36 82 38" fill="#37474F"/>
+  <!-- Anal fin -->
+  <path d="M45 90 C52 98 62 100 72 96 C76 94 78 90 78 88" fill="#37474F"/>
+  <!-- Tail fin -->
+  <path d="M92 56 L110 50 L108 64 L110 78 L92 72 Z" fill="#37474F"/>
+  <!-- Pectoral fin -->
+  <path d="M38 76 L32 86 L44 82 Z" fill="#37474F" opacity="0.7"/>
+  <!-- Eye -->
+  <circle cx="34" cy="56" r="9" fill="white"/>
+  <circle cx="37" cy="58" r="5" fill="black"/>
+  <circle cx="35" cy="55" r="2.5" fill="white"/>
+  <circle cx="38" cy="57" r="1" fill="white"/>
+  <!-- Mouth -->
+  <path d="M22 66 C24 68 24 68 22 70" stroke="#1A1A1A" stroke-width="1.5" fill="none"/>
+</svg>

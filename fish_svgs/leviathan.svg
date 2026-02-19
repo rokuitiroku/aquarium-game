@@ -1,0 +1,36 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="lvEye" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FF1744"/>
+      <stop offset="100%" stop-color="#FF1744" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <!-- Massive serpentine body -->
+  <path d="M10 55 C10 38 25 28 45 28 C65 28 70 38 75 48 C80 55 90 52 100 48 C110 44 118 48 122 56 C126 64 122 76 110 80 C100 84 90 78 80 72 C70 66 60 72 45 78 C30 84 10 78 10 55Z" fill="#1A237E"/>
+  <!-- Belly -->
+  <path d="M14 62 C14 55 30 48 48 48 C60 48 68 52 74 58 C68 62 56 68 44 72 C30 76 14 72 14 62Z" fill="#283593" opacity="0.6"/>
+  <!-- Spines along back -->
+  <path d="M28 30 L32 20 L36 30" fill="#0D47A1"/>
+  <path d="M42 28 L46 16 L50 28" fill="#0D47A1"/>
+  <path d="M56 32 L60 22 L64 34" fill="#0D47A1"/>
+  <path d="M98 46 L102 36 L106 48" fill="#0D47A1"/>
+  <path d="M112 50 L116 40 L118 52" fill="#0D47A1"/>
+  <!-- Tail fin -->
+  <path d="M118 56 C124 50 128 42 126 38 C122 42 120 50 118 56" fill="#1A237E"/>
+  <path d="M118 72 C124 78 128 86 126 90 C122 86 120 78 118 72" fill="#1A237E"/>
+  <!-- Armored scales -->
+  <ellipse cx="35" cy="48" rx="6" ry="4" fill="#283593" opacity="0.4"/>
+  <ellipse cx="50" cy="44" rx="6" ry="4" fill="#283593" opacity="0.4"/>
+  <!-- Glowing eye -->
+  <circle cx="22" cy="50" r="12" fill="url(#lvEye)"/>
+  <circle cx="22" cy="50" r="8" fill="white"/>
+  <circle cx="24" cy="52" r="5" fill="#FF1744"/>
+  <circle cx="24" cy="52" r="3" fill="black"/>
+  <circle cx="22" cy="49" r="2" fill="white"/>
+  <circle cx="25" cy="51" r="1" fill="#FF8A80"/>
+  <!-- Jagged mouth -->
+  <path d="M10 58 L6 56 L10 62 L4 60 L10 66" stroke="#0D47A1" stroke-width="1.5" fill="none"/>
+  <!-- Teeth -->
+  <path d="M8 56 L10 60 L12 56" fill="white"/>
+  <path d="M6 60 L8 64 L10 60" fill="white"/>
+</svg>

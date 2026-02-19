@@ -1,0 +1,28 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Flat disc body -->
+  <ellipse cx="55" cy="64" rx="42" ry="32" fill="#607D8B"/>
+  <!-- Belly lighter -->
+  <ellipse cx="55" cy="68" rx="35" ry="22" fill="#90A4AE" opacity="0.4"/>
+  <!-- Spotted pattern -->
+  <circle cx="38" cy="52" r="3" fill="#455A64" opacity="0.5"/>
+  <circle cx="55" cy="48" r="3.5" fill="#455A64" opacity="0.5"/>
+  <circle cx="72" cy="52" r="3" fill="#455A64" opacity="0.5"/>
+  <circle cx="45" cy="62" r="2.5" fill="#455A64" opacity="0.5"/>
+  <circle cx="65" cy="60" r="3" fill="#455A64" opacity="0.5"/>
+  <circle cx="40" cy="74" r="2.5" fill="#455A64" opacity="0.5"/>
+  <circle cx="58" cy="76" r="3" fill="#455A64" opacity="0.5"/>
+  <circle cx="74" cy="68" r="2.5" fill="#455A64" opacity="0.5"/>
+  <!-- Wing tips slightly lifted -->
+  <path d="M14 58 C10 55 8 60 10 66 C12 70 15 68 14 64" fill="#546E7A"/>
+  <path d="M96 58 C100 55 102 60 100 66 C98 70 95 68 96 64" fill="#546E7A"/>
+  <!-- Long tail -->
+  <path d="M90 64 C100 64 110 66 120 72 C122 74 124 78 126 82" stroke="#546E7A" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <!-- Tail barb -->
+  <path d="M120 72 L124 70 L126 74 Z" fill="#455A64"/>
+  <!-- Eyes on top -->
+  <circle cx="42" cy="52" r="7" fill="white"/>
+  <circle cx="44" cy="53" r="4" fill="black"/>
+  <circle cx="42" cy="51" r="2" fill="white"/>
+  <!-- Cute mouth underneath -->
+  <path d="M48 70 C52 72 58 72 62 70" stroke="#455A64" stroke-width="1.5" fill="none"/>
+</svg>

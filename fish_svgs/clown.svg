@@ -1,0 +1,24 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <!-- Body -->
+  <ellipse cx="60" cy="64" rx="45" ry="30" fill="#FF8C00"/>
+  <path d="M95 64 C105 54, 105 74, 95 64 Z" fill="#FF8C00"/>
+
+  <!-- Tail Fin -->
+  <path d="M100 64 C105 50, 120 50, 115 64 C120 78, 105 78, 100 64 Z" fill="#FF8C00"/>
+
+  <!-- Dorsal Fin -->
+  <path d="M40 38 C45 30, 55 30, 50 38 C55 46, 45 46, 40 38 Z" fill="#FF8C00"/>
+  
+  <!-- Pectoral Fin -->
+  <path d="M35 75 C40 65, 50 65, 45 75 C50 85, 40 85, 35 75 Z" fill="#FF8C00"/>
+
+  <!-- Stripes -->
+  <rect x="25" y="40" width="10" height="48" fill="white" rx="3" ry="3"/>
+  <rect x="55" y="38" width="10" height="52" fill="white" rx="3" ry="3"/>
+  <rect x="85" y="40" width="10" height="48" fill="white" rx="3" ry="3"/>
+
+  <!-- Eyes -->
+  <circle cx="38" cy="50" r="10" fill="white"/>
+  <circle cx="38" cy="50" r="6" fill="black"/>
+  <circle cx="41" cy="48" r="2" fill="white"/> <!-- Highlight -->
+</svg>

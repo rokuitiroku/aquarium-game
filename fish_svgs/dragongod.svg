@@ -1,0 +1,39 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="dgGlow" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#FFD700" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#FFD700" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="dgBody" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFD700"/>
+      <stop offset="100%" stop-color="#FF8C00"/>
+    </linearGradient>
+  </defs>
+  <!-- Glow aura -->
+  <ellipse cx="60" cy="64" rx="58" ry="50" fill="url(#dgGlow)"/>
+  <!-- Serpentine body -->
+  <path d="M15 64 C20 40 40 30 60 35 C80 40 90 50 100 55 C110 60 115 64 110 72 C105 80 90 82 70 78 C50 74 30 80 15 64Z" fill="url(#dgBody)" stroke="#DAA520" stroke-width="1.5"/>
+  <!-- Scales detail -->
+  <ellipse cx="45" cy="50" rx="6" ry="4" fill="#FFEC80" opacity="0.5"/>
+  <ellipse cx="60" cy="48" rx="6" ry="4" fill="#FFEC80" opacity="0.5"/>
+  <ellipse cx="75" cy="52" rx="6" ry="4" fill="#FFEC80" opacity="0.5"/>
+  <ellipse cx="90" cy="58" rx="5" ry="3" fill="#FFEC80" opacity="0.5"/>
+  <!-- Dragon horns -->
+  <path d="M25 42 L18 28 L28 36 Z" fill="#DAA520"/>
+  <path d="M32 38 L28 24 L36 32 Z" fill="#DAA520"/>
+  <!-- Flowing mane fins -->
+  <path d="M40 35 C35 25 50 20 55 30" fill="#FF6347" opacity="0.7"/>
+  <path d="M50 33 C48 22 62 18 60 28" fill="#FF4500" opacity="0.6"/>
+  <!-- Tail -->
+  <path d="M105 60 L120 48 L118 64 L120 80 L105 72 Z" fill="#FF8C00"/>
+  <path d="M120 48 L125 42 L122 52 Z" fill="#FF6347" opacity="0.7"/>
+  <path d="M120 80 L125 86 L122 76 Z" fill="#FF6347" opacity="0.7"/>
+  <!-- Whiskers -->
+  <path d="M18 58 C8 52 2 48 0 44" stroke="#DAA520" stroke-width="1.5" fill="none"/>
+  <path d="M18 62 C10 60 4 62 0 58" stroke="#DAA520" stroke-width="1.5" fill="none"/>
+  <!-- Eye -->
+  <circle cx="26" cy="50" r="8" fill="white"/>
+  <circle cx="29" cy="52" r="5" fill="#8B0000"/>
+  <circle cx="27" cy="49" r="2" fill="white"/>
+  <circle cx="30" cy="51" r="1" fill="#FFD700"/>
+</svg>

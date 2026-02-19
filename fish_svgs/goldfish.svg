@@ -1,0 +1,29 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="gfBody" cx="40%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#FF6F00"/>
+      <stop offset="100%" stop-color="#E65100"/>
+    </radialGradient>
+  </defs>
+  <!-- Body - round and cute -->
+  <ellipse cx="52" cy="62" rx="32" ry="28" fill="url(#gfBody)"/>
+  <!-- Belly highlight -->
+  <ellipse cx="48" cy="70" rx="20" ry="12" fill="#FF8F00" opacity="0.5"/>
+  <!-- Flowing double tail -->
+  <path d="M82 52 C95 38 110 32 115 40 C118 48 105 55 90 58" fill="#FF6F00" opacity="0.85"/>
+  <path d="M82 72 C95 88 110 94 115 86 C118 78 105 72 90 68" fill="#FF6F00" opacity="0.85"/>
+  <path d="M85 58 C92 56 98 58 95 64 C98 70 92 72 85 68" fill="#E65100" opacity="0.6"/>
+  <!-- Dorsal fin - flowing -->
+  <path d="M42 36 C45 24 55 20 60 28 C65 22 68 26 65 36" fill="#FF8F00" opacity="0.8"/>
+  <!-- Pectoral fin -->
+  <path d="M38 78 L30 92 L46 86 Z" fill="#FF8F00" opacity="0.7"/>
+  <!-- Anal fin -->
+  <path d="M60 86 L58 96 L66 88 Z" fill="#FF8F00" opacity="0.7"/>
+  <!-- Eye -->
+  <circle cx="36" cy="55" r="9" fill="white"/>
+  <circle cx="39" cy="57" r="5" fill="black"/>
+  <circle cx="37" cy="53" r="2.5" fill="white"/>
+  <circle cx="40" cy="56" r="1" fill="white"/>
+  <!-- Mouth -->
+  <path d="M22 64 C24 66 24 68 22 70" stroke="#BF360C" stroke-width="1.5" fill="none"/>
+</svg>
