@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0a1628">
+<link rel="manifest" href="manifest.json">
 <title>🐟 水槽シミュレーション</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap');
@@ -44,6 +46,27 @@
     display: flex;
     align-items: center;
     gap: 10px;
+  }
+
+  .progress-display {
+    font-size: 0.7rem;
+    color: rgba(126, 200, 227, 0.55);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .progress-display .prog-bar {
+    width: 48px;
+    height: 6px;
+    background: rgba(126, 200, 227, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .progress-display .prog-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, #7ec8e3, #ffd700);
+    transition: width 0.5s;
   }
 
   .income-display {
@@ -307,81 +330,145 @@
   /* ===== ガチャ演出 ===== */
   .gacha-overlay {
     display:none; position:fixed; inset:0; z-index:200;
-    background:rgba(0,0,0,0); align-items:center; justify-content:center;
+    align-items:center; justify-content:center;
+    background:rgba(0,0,0,0);
     transition: background 0.5s;
   }
-  .gacha-overlay.open { display:flex; background:rgba(0,0,0,0.85); }
+  .gacha-overlay.open { display:flex; background:rgba(0,0,0,0.92); }
 
+  /* 扉演出 */
+  .gacha-doors {
+    position:fixed; inset:0; z-index:201; display:flex; pointer-events:none;
+  }
+  .gacha-door {
+    width:50%; height:100%;
+    background: linear-gradient(180deg, #1a1a3e 0%, #0d0d2b 50%, #1a1a3e 100%);
+    border: none; position:relative; overflow:hidden;
+    transition: transform 0.8s cubic-bezier(0.6, 0, 0.2, 1);
+  }
+  .gacha-door::after {
+    content:''; position:absolute; top:0; width:3px; height:100%;
+    background: linear-gradient(180deg, transparent, rgba(126,200,227,0.6), rgba(255,215,0,0.6), rgba(126,200,227,0.6), transparent);
+  }
+  .gacha-door-left::after { right:0; }
+  .gacha-door-right::after { left:0; }
+  .gacha-door-left { transform-origin:left center; }
+  .gacha-door-right { transform-origin:right center; }
+  .gacha-doors.open .gacha-door-left { transform:translateX(-105%); }
+  .gacha-doors.open .gacha-door-right { transform:translateX(105%); }
+  .gacha-door-emblem {
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    font-size:4rem; opacity:0.3;
+  }
+
+  /* 光の柱 */
+  .gacha-pillar {
+    position:fixed; top:-10%; left:50%; transform:translateX(-50%); z-index:202;
+    width:0; height:120%; pointer-events:none;
+    background: linear-gradient(180deg, transparent, rgba(126,200,227,0.4), rgba(255,255,255,0.6), rgba(126,200,227,0.4), transparent);
+    opacity:0; transition: width 0.4s, opacity 0.3s;
+  }
+  .gacha-pillar.active { width:120px; opacity:1; }
+  .gacha-pillar.rare {
+    background: linear-gradient(180deg, transparent, rgba(255,215,0,0.5), rgba(255,255,255,0.8), rgba(255,215,0,0.5), transparent);
+    width:200px;
+  }
+
+  /* 画面割れ（レア演出） */
+  .gacha-crack {
+    position:fixed; inset:0; z-index:203; pointer-events:none;
+    opacity:0; transition:opacity 0.3s;
+  }
+  .gacha-crack.active { opacity:1; }
+  .gacha-crack svg { width:100%; height:100%; }
+
+  /* カード本体 */
   .gacha-card {
-    position:relative; width:280px; text-align:center;
+    position:relative; width:280px; text-align:center; z-index:204;
     transform: scale(0) rotateY(180deg);
     transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
-  .gacha-overlay.reveal .gacha-card {
-    transform: scale(1) rotateY(0deg);
-  }
+  .gacha-overlay.reveal .gacha-card { transform: scale(1) rotateY(0deg); }
 
   .gacha-glow {
-    position:absolute; inset:-40px; border-radius:50%;
-    background:radial-gradient(circle, rgba(255,215,0,0.15) 0%, transparent 70%);
+    position:absolute; inset:-60px; border-radius:50%;
+    background:radial-gradient(circle, rgba(126,200,227,0.2) 0%, transparent 70%);
     animation: gachaPulse 2s ease-in-out infinite;
   }
   .gacha-glow.rare {
-    background:radial-gradient(circle, rgba(255,215,0,0.35) 0%, rgba(255,100,0,0.1) 40%, transparent 70%);
+    background:radial-gradient(circle, rgba(255,215,0,0.4) 0%, rgba(255,100,0,0.15) 40%, transparent 70%);
     animation: gachaPulseRare 1.5s ease-in-out infinite;
   }
-
   @keyframes gachaPulse {
     0%, 100% { transform:scale(1); opacity:0.6; }
-    50% { transform:scale(1.15); opacity:1; }
+    50% { transform:scale(1.2); opacity:1; }
   }
   @keyframes gachaPulseRare {
     0%, 100% { transform:scale(1); opacity:0.7; }
-    50% { transform:scale(1.3); opacity:1; }
+    50% { transform:scale(1.4); opacity:1; }
   }
+
+  /* 放射状の光線 */
+  .gacha-rays {
+    position:absolute; inset:-100px; z-index:0; pointer-events:none;
+    opacity:0; transition: opacity 0.5s;
+  }
+  .gacha-overlay.reveal .gacha-rays { opacity:1; }
+  .gacha-ray {
+    position:absolute; top:50%; left:50%;
+    width:2px; height:150px; transform-origin:bottom center;
+    background: linear-gradient(to top, rgba(255,215,0,0.3), transparent);
+    animation: rayRotate 8s linear infinite;
+  }
+  .gacha-rays.rare .gacha-ray {
+    background: linear-gradient(to top, rgba(255,215,0,0.6), transparent);
+    height:200px; width:3px;
+  }
+  @keyframes rayRotate { 0%{transform:rotate(var(--r))} 100%{transform:rotate(calc(var(--r) + 360deg))} }
 
   .gacha-icon {
     font-size:5rem; position:relative; z-index:1;
-    filter: drop-shadow(0 0 20px rgba(255,215,0,0.4));
+    filter: drop-shadow(0 0 20px rgba(126,200,227,0.4));
     animation: gachaFloat 2.5s ease-in-out infinite;
   }
   .gacha-icon.rare {
-    filter: drop-shadow(0 0 30px rgba(255,215,0,0.8));
+    filter: drop-shadow(0 0 35px rgba(255,215,0,0.9));
     animation: gachaFloat 2s ease-in-out infinite, gachaShine 3s linear infinite;
   }
   @keyframes gachaFloat {
     0%, 100% { transform:translateY(0); }
-    50% { transform:translateY(-8px); }
+    50% { transform:translateY(-10px); }
   }
   @keyframes gachaShine {
-    0% { filter: drop-shadow(0 0 30px rgba(255,215,0,0.8)) hue-rotate(0deg); }
-    100% { filter: drop-shadow(0 0 30px rgba(255,215,0,0.8)) hue-rotate(360deg); }
+    0% { filter: drop-shadow(0 0 35px rgba(255,215,0,0.9)) hue-rotate(0deg); }
+    100% { filter: drop-shadow(0 0 35px rgba(255,215,0,0.9)) hue-rotate(360deg); }
   }
 
   .gacha-label {
-    color:#7ec8e3; font-size:0.75rem; margin-top:6px;
+    color:#7ec8e3; font-size:0.85rem; margin-top:8px; letter-spacing:2px;
     opacity:0; transform:translateY(10px);
-    transition: opacity 0.4s 0.5s, transform 0.4s 0.5s;
+    transition: opacity 0.4s 0.3s, transform 0.4s 0.3s;
   }
-  .gacha-overlay.reveal .gacha-label { opacity:0.7; transform:translateY(0); }
+  .gacha-overlay.reveal .gacha-label { opacity:0.8; transform:translateY(0); }
+  .gacha-label.rare { color:#ffd700; font-size:1rem; text-shadow:0 0 15px rgba(255,215,0,0.5); }
 
   .gacha-name {
-    color:#fff; font-size:1.4rem; font-weight:900; margin-top:8px;
+    color:#fff; font-size:1.5rem; font-weight:900; margin-top:8px;
     text-shadow: 0 0 20px rgba(126,200,227,0.5);
-    opacity:0; transform:translateY(15px);
-    transition: opacity 0.4s 0.6s, transform 0.4s 0.6s;
+    opacity:0; transform:translateY(15px) scale(0.8);
+    transition: opacity 0.4s 0.5s, transform 0.5s 0.5s cubic-bezier(0.34,1.56,0.64,1);
   }
-  .gacha-overlay.reveal .gacha-name { opacity:1; transform:translateY(0); }
+  .gacha-overlay.reveal .gacha-name { opacity:1; transform:translateY(0) scale(1); }
   .gacha-name.rare {
-    color:#ffd700;
+    color:#ffd700; font-size:1.7rem;
     text-shadow: 0 0 25px rgba(255,215,0,0.6), 0 0 50px rgba(255,100,0,0.3);
   }
 
   .gacha-variant-badge {
-    display:inline-block; margin-top:8px; padding:4px 14px;
-    border-radius:20px; font-size:0.8rem; font-weight:700;
+    display:inline-block; margin-top:10px; padding:5px 16px;
+    border-radius:20px; font-size:0.85rem; font-weight:700;
     opacity:0; transform:scale(0);
-    transition: opacity 0.3s 0.8s, transform 0.4s 0.8s cubic-bezier(0.34,1.56,0.64,1);
+    transition: opacity 0.3s 0.7s, transform 0.4s 0.7s cubic-bezier(0.34,1.56,0.64,1);
   }
   .gacha-overlay.reveal .gacha-variant-badge { opacity:1; transform:scale(1); }
   .gacha-variant-badge.gold { background:linear-gradient(135deg,#ffd700,#ff8f00); color:#3e2723; }
@@ -390,14 +477,14 @@
   .gacha-variant-badge.holo { background:linear-gradient(135deg,#f44336,#4caf50,#2196f3,#ff9800); color:#fff; }
 
   .gacha-income {
-    color:rgba(255,215,0,0.7); font-size:0.8rem; margin-top:8px;
-    opacity:0; transition: opacity 0.4s 0.9s;
+    color:rgba(255,215,0,0.8); font-size:0.85rem; margin-top:8px;
+    opacity:0; transition: opacity 0.4s 0.8s;
   }
   .gacha-overlay.reveal .gacha-income { opacity:1; }
 
   .gacha-close-hint {
     color:rgba(126,200,227,0.35); font-size:0.7rem; margin-top:24px;
-    opacity:0; transition: opacity 0.4s 1.1s;
+    opacity:0; transition: opacity 0.4s 1s;
     animation: gachaBlink 2s ease-in-out infinite 1.5s;
   }
   .gacha-overlay.reveal .gacha-close-hint { opacity:1; }
@@ -406,27 +493,59 @@
     50% { opacity:0.7; }
   }
 
-  /* ガチャ紙吹雪 */
+  /* スキップヒント */
+  .gacha-skip-hint {
+    position:fixed; bottom:12%; left:50%; transform:translateX(-50%);
+    z-index:210; color:rgba(126,200,227,0.4); font-size:0.75rem;
+    opacity:0; transition:opacity 0.3s;
+    pointer-events:none;
+  }
+  .gacha-skip-hint.show { opacity:1; }
+
+  /* 紙吹雪 */
   .gacha-confetti {
     position:absolute; width:8px; height:8px; border-radius:2px;
     animation: confettiFall linear forwards;
     pointer-events:none;
   }
   @keyframes confettiFall {
-    0% { transform:translateY(-20px) rotate(0deg) scale(1); opacity:1; }
-    100% { transform:translateY(300px) rotate(720deg) scale(0.3); opacity:0; }
+    0% { transform:translateY(-30px) rotate(0deg) scale(1); opacity:1; }
+    100% { transform:translateY(350px) rotate(720deg) scale(0.2); opacity:0; }
   }
 
-  /* ガチャ開封中のカウントダウン */
+  /* フラッシュ */
+  .gacha-flash {
+    position:fixed; inset:0; z-index:205; pointer-events:none;
+    background:#fff; opacity:0; transition: opacity 0.1s;
+  }
+  .gacha-flash.active { opacity:0.8; }
+
+  /* カウントダウン */
   .gacha-opening {
-    color:#ffd700; font-size:2.5rem; font-weight:900;
-    text-shadow: 0 0 30px rgba(255,215,0,0.5);
-    animation: gachaCountPulse 0.5s ease-out;
+    color:#ffd700; font-size:3rem; font-weight:900;
+    text-shadow: 0 0 40px rgba(255,215,0,0.6);
+    animation: gachaCountPulse 0.45s ease-out;
   }
   @keyframes gachaCountPulse {
-    0% { transform:scale(2); opacity:0; }
+    0% { transform:scale(2.5); opacity:0; }
     60% { transform:scale(0.9); opacity:1; }
     100% { transform:scale(1); opacity:1; }
+  }
+
+  /* 多連ガチャ結果のグリッド項目アニメ */
+  .gacha-multi-card {
+    opacity:0; transform:translateY(20px) scale(0.9);
+    animation: multiCardIn 0.4s ease-out forwards;
+  }
+  @keyframes multiCardIn {
+    to { opacity:1; transform:translateY(0) scale(1); }
+  }
+
+  /* 多連結果のカウンター */
+  .gacha-counter {
+    position:fixed; top:8%; left:50%; transform:translateX(-50%);
+    z-index:210; color:rgba(255,255,255,0.6); font-size:0.9rem;
+    font-weight:bold; pointer-events:none;
   }
 
   .info {
@@ -478,6 +597,7 @@
 <div class="header">
   <h1>🐟 水槽シミュレーション</h1>
   <div class="header-right">
+    <div class="progress-display" id="progressDisplay" style="cursor:pointer" onclick="openCollection()"></div>
     <div class="income-display" id="incomeDisplay"></div>
     <div class="coin-display" id="coinDisplay">
       <span>🪙</span>
@@ -527,15 +647,53 @@
   </div>
 </div>
 
-<div class="gacha-overlay" id="gachaOverlay" onclick="closeGachaResult()">
+<!-- 図鑑 魚詳細 -->
+<div class="shop-overlay" id="fishDetailOverlay" style="z-index:10001">
+  <div class="shop-panel" id="fishDetailPanel" style="max-width:420px">
+  </div>
+</div>
+
+<!-- 扉 -->
+<div class="gacha-doors" id="gachaDoors">
+  <div class="gacha-door gacha-door-left"><div class="gacha-door-emblem">🎰</div></div>
+  <div class="gacha-door gacha-door-right"><div class="gacha-door-emblem">🎰</div></div>
+</div>
+<!-- 光の柱 -->
+<div class="gacha-pillar" id="gachaPillar"></div>
+<!-- 画面割れ -->
+<div class="gacha-crack" id="gachaCrack">
+  <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+    <path d="M50 0 L48 18 L42 25 L46 38 L38 50 L44 62 L40 75 L46 88 L50 100" stroke="rgba(255,215,0,0.7)" stroke-width="0.4" fill="none"/>
+    <path d="M50 0 L53 15 L58 28 L54 42 L60 55 L56 68 L62 82 L50 100" stroke="rgba(255,215,0,0.7)" stroke-width="0.4" fill="none"/>
+    <path d="M0 50 L15 48 L28 44 L40 50 L55 46 L68 50 L80 44 L100 50" stroke="rgba(255,215,0,0.5)" stroke-width="0.3" fill="none"/>
+  </svg>
+</div>
+<!-- フラッシュ -->
+<div class="gacha-flash" id="gachaFlash"></div>
+<!-- カウンター（複数連用） -->
+<div class="gacha-counter" id="gachaCounter" style="display:none;"></div>
+<!-- スキップヒント -->
+<div class="gacha-skip-hint" id="gachaSkipHint">タップでスキップ</div>
+
+<div class="gacha-overlay" id="gachaOverlay">
   <div class="gacha-card" id="gachaCard">
+    <div class="gacha-rays" id="gachaRays"></div>
     <div class="gacha-glow" id="gachaGlow"></div>
     <div class="gacha-icon" id="gachaIcon"></div>
     <div class="gacha-label" id="gachaLabel"></div>
     <div class="gacha-name" id="gachaName"></div>
     <div id="gachaBadge"></div>
     <div class="gacha-income" id="gachaIncome"></div>
-    <div class="gacha-close-hint">タップして閉じる</div>
+    <div class="gacha-close-hint" id="gachaCloseHint">タップして閉じる</div>
+  </div>
+</div>
+
+<!-- 複数連まとめ結果 -->
+<div class="gacha-overlay" id="gachaMultiOverlay" onclick="closeMultiGacha(event)">
+  <div id="gachaMultiPanel" style="background:rgba(10,14,26,0.95);border-radius:16px;padding:20px;max-width:520px;width:92%;max-height:80vh;overflow-y:auto;border:2px solid rgba(126,200,227,0.3);">
+    <div id="gachaMultiTitle" style="text-align:center;font-size:1.3rem;font-weight:bold;color:#7ec8e3;margin-bottom:14px;"></div>
+    <div id="gachaMultiGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;"></div>
+    <div style="text-align:center;margin-top:16px;color:rgba(255,255,255,0.5);font-size:0.85rem;">タップして閉じる</div>
   </div>
 </div>
 
@@ -614,6 +772,17 @@ function updateIncomeDisplay() {
   const income = getTotalPassiveIncome();
   const el = document.getElementById('incomeDisplay');
   el.textContent = income > 0 ? ('💰 ' + Math.floor(income) + '🪙/10秒') : '';
+  updateProgressDisplay();
+}
+
+function updateProgressDisplay() {
+  const col = getCollectionCompletion();
+  const unlockedAreas = AREAS.filter(a => a.unlocked).length;
+  const totalAreas = AREAS.length;
+  // 図鑑80% + エリア20%の加重平均
+  const pct = Math.round(col.percent * 0.8 + (unlockedAreas / totalAreas * 100) * 0.2);
+  const el = document.getElementById('progressDisplay');
+  el.innerHTML = '📊 ' + pct + '%<div class="prog-bar"><div class="prog-fill" style="width:'+pct+'%"></div></div>';
 }
 
 // ============================================================
@@ -672,7 +841,7 @@ function getSelectedFood() { return FOOD_TYPES.find(f => f.id === selectedFoodId
 // 🐟 魚の種類（20種）
 // ============================================================
 const FISH_TYPES = [
-  { id:'common', area:'freshwater', name:'ノーマル', icon:'🐟', shopPrice:0, unlocked:true, passiveIncome:0.5,
+  { id:'common', area:'freshwater', name:'ノーマル', icon:'🐟', shopPrice:0, unlocked:true, passiveIncome:1,
     sizeRange:[12,16], speedRange:[0.5,1.2], shape:'standard', bodyW:0.65, bodyH:0.45,
     tailStyle:'tri', dorsalStyle:'normal', patternType:'random',
     palettes:[
@@ -684,7 +853,7 @@ const FISH_TYPES = [
     desc:'元気いっぱいの普通の魚',
     greeting:'ノーマルだよ！元気いっぱい泳いでるよ～' },
 
-  { id:'medaka', area:'freshwater', name:'メダカ', icon:'💛', shopPrice:100, unlocked:false, passiveIncome:1.2,
+  { id:'medaka', area:'freshwater', name:'メダカ', icon:'💛', shopPrice:2000, unlocked:false, passiveIncome:2,
     sizeRange:[8,11], speedRange:[0.6,1.3], shape:'standard', bodyW:0.6, bodyH:0.38,
     tailStyle:'tri', dorsalStyle:'normal', patternType:'none',
     palettes:[
@@ -695,14 +864,14 @@ const FISH_TYPES = [
     desc:'小さくてかわいいメダカ',
     greeting:'メダカだよ～小さいけど頑張ってるよ！' },
 
-  { id:'neon', area:'freshwater', name:'ネオンテトラ', icon:'✨', shopPrice:400, unlocked:false, passiveIncome:2,
+  { id:'neon', area:'freshwater', name:'ネオンテトラ', icon:'✨', shopPrice:5000, unlocked:false, passiveIncome:3,
     sizeRange:[9,13], speedRange:[0.8,1.5], shape:'standard', bodyW:0.65, bodyH:0.35,
     tailStyle:'fork', dorsalStyle:'normal', patternType:'neon', glowColor:'#00d4ff',
     palettes:[{body:'#00d4ff',fin:'#0099cc',belly:'#80eaff',stripe:'#ff3366'}],
     desc:'光る体が美しい。収入3倍',
     greeting:'ネオンテトラだよ！キラキラでしょ✨' },
 
-  { id:'guppy', area:'freshwater', name:'グッピー', icon:'🌈', shopPrice:800, unlocked:false, passiveIncome:3,
+  { id:'guppy', area:'freshwater', name:'グッピー', icon:'🌈', shopPrice:10000, unlocked:false, passiveIncome:5,
     sizeRange:[10,14], speedRange:[0.6,1.2], shape:'standard', bodyW:0.58, bodyH:0.4,
     tailStyle:'fan', dorsalStyle:'normal', patternType:'none',
     palettes:[
@@ -713,7 +882,7 @@ const FISH_TYPES = [
     desc:'カラフルな尻尾が自慢！',
     greeting:'グッピーだよ！しっぽが自慢なの♪' },
 
-  { id:'platy', area:'freshwater', name:'プラティ', icon:'🍑', shopPrice:1500, unlocked:false, passiveIncome:4,
+  { id:'platy', area:'freshwater', name:'プラティ', icon:'🍑', shopPrice:18000, unlocked:false, passiveIncome:7,
     sizeRange:[10,14], speedRange:[0.5,1.1], shape:'standard', bodyW:0.6, bodyH:0.42,
     tailStyle:'tri', dorsalStyle:'normal', patternType:'none',
     palettes:[
@@ -724,7 +893,7 @@ const FISH_TYPES = [
     desc:'丈夫で人懐っこい！',
     greeting:'プラティだよ！人懐っこいんだ～' },
 
-  { id:'corydoras', area:'freshwater', name:'コリドラス', icon:'🐱', shopPrice:2500, unlocked:false, passiveIncome:6,
+  { id:'corydoras', area:'freshwater', name:'コリドラス', icon:'🐱', shopPrice:28000, unlocked:false, passiveIncome:9,
     sizeRange:[10,14], speedRange:[0.3,0.8], shape:'standard', bodyW:0.55, bodyH:0.46,
     tailStyle:'tri', dorsalStyle:'normal', patternType:'dots', hasWhiskers:true, bottomDweller:true,
     palettes:[
@@ -734,7 +903,7 @@ const FISH_TYPES = [
     desc:'底でもぐもぐ♪ 癒し系',
     greeting:'コリドラスだよ！底でもぐもぐ♪' },
 
-  { id:'angel', area:'freshwater', name:'エンゼルフィッシュ', icon:'👼', shopPrice:5000, unlocked:false, passiveIncome:9,
+  { id:'angel', area:'freshwater', name:'エンゼルフィッシュ', icon:'👼', shopPrice:55000, unlocked:false, passiveIncome:15,
     sizeRange:[18,24], speedRange:[0.3,0.8], shape:'standard', bodyW:0.5, bodyH:0.5,
     tailStyle:'tri', dorsalStyle:'tall', patternType:'vbands', hasVentralFin:true,
     palettes:[
@@ -744,7 +913,7 @@ const FISH_TYPES = [
     desc:'優雅な泳ぎ。収入14倍',
     greeting:'エンゼルフィッシュだよ！優雅でしょ？' },
 
-  { id:'betta', area:'freshwater', name:'ベタ', icon:'🌸', shopPrice:7000, unlocked:false, passiveIncome:12,
+  { id:'betta', area:'freshwater', name:'ベタ', icon:'🌸', shopPrice:75000, unlocked:false, passiveIncome:18,
     sizeRange:[16,22], speedRange:[0.3,0.7], shape:'standard', bodyW:0.55, bodyH:0.42,
     tailStyle:'flowing', dorsalStyle:'flowing', patternType:'none',
     palettes:[
@@ -755,14 +924,14 @@ const FISH_TYPES = [
     desc:'ヒラヒラの大きなヒレ',
     greeting:'ベタだよ！ヒラヒラ～綺麗でしょ？' },
 
-  { id:'clown', area:'coral', name:'クマノミ', icon:'🐠', shopPrice:55000, unlocked:false, passiveIncome:70,
+  { id:'clown', area:'coral', name:'クマノミ', icon:'🐠', shopPrice:1100000, unlocked:false, passiveIncome:60,
     sizeRange:[11,15], speedRange:[0.5,1.0], shape:'standard', bodyW:0.55, bodyH:0.44,
     tailStyle:'tri', dorsalStyle:'normal', patternType:'bands',
     palettes:[{body:'#ff6d00',fin:'#e65100',belly:'#ffab40',stripe:'#fff'}],
     desc:'白い帯がチャームポイント',
     greeting:'クマノミだよ！イソギンチャク探し中…' },
 
-  { id:'discus', area:'coral', name:'ディスカス', icon:'🔮', shopPrice:95000, unlocked:false, passiveIncome:120,
+  { id:'discus', area:'coral', name:'ディスカス', icon:'🔮', shopPrice:2000000, unlocked:false, passiveIncome:100,
     sizeRange:[18,24], speedRange:[0.3,0.7], shape:'standard', bodyW:0.48, bodyH:0.52,
     tailStyle:'tri', dorsalStyle:'normal', patternType:'swirl',
     palettes:[
@@ -773,21 +942,21 @@ const FISH_TYPES = [
     desc:'熱帯魚の王様！円盤型',
     greeting:'ディスカスだよ！熱帯魚の王様✨' },
 
-  { id:'arowana', area:'tropical', name:'アロワナ', icon:'🐉', shopPrice:400000, unlocked:false, passiveIncome:500,
+  { id:'arowana', area:'tropical', name:'アロワナ', icon:'🐉', shopPrice:25000000, unlocked:false, passiveIncome:880,
     sizeRange:[28,36], speedRange:[0.4,0.8], shape:'standard', bodyW:0.85, bodyH:0.33,
     tailStyle:'tri', dorsalStyle:'normal', patternType:'scales', hasWhiskers:true,
     palettes:[{body:'#ffd700',fin:'#daa520',belly:'#fff8dc',stripe:'#b8860b'}],
     desc:'伝説の龍魚。威厳がすごい',
     greeting:'アロワナだよ！龍みたいでしょ？' },
 
-  { id:'mandarin', area:'coral', name:'マンダリンフィッシュ', icon:'🎨', shopPrice:120000, unlocked:false, passiveIncome:150,
+  { id:'mandarin', area:'coral', name:'マンダリンフィッシュ', icon:'🎨', shopPrice:2500000, unlocked:false, passiveIncome:120,
     sizeRange:[10,14], speedRange:[0.3,0.7], shape:'standard', bodyW:0.55, bodyH:0.46,
     tailStyle:'tri', dorsalStyle:'normal', patternType:'swirl', glowColor:'rgba(0,180,255,0.3)',
     palettes:[{body:'#0097a7',fin:'#00838f',belly:'#80deea',stripe:'#ff6f00'}],
     desc:'世界一おしゃれな魚！',
     greeting:'マンダリンだよ！世界一おしゃれ♪' },
 
-  { id:'seahorse', area:'coral', name:'タツノオトシゴ', icon:'🪸', shopPrice:150000, unlocked:false, passiveIncome:190,
+  { id:'seahorse', area:'coral', name:'タツノオトシゴ', icon:'🪸', shopPrice:3200000, unlocked:false, passiveIncome:150,
     sizeRange:[16,22], speedRange:[0.2,0.5], shape:'seahorse', bodyW:0.3, bodyH:0.8,
     tailStyle:'curl', dorsalStyle:'small', patternType:'none',
     palettes:[
@@ -797,7 +966,7 @@ const FISH_TYPES = [
     desc:'ゆらゆら泳ぐ不思議な姿',
     greeting:'タツノオトシゴだよ！ゆらゆら～' },
 
-  { id:'puffer', area:'coral', name:'フグ', icon:'🐡', shopPrice:185000, unlocked:false, passiveIncome:230,
+  { id:'puffer', area:'coral', name:'フグ', icon:'🐡', shopPrice:4000000, unlocked:false, passiveIncome:180,
     sizeRange:[14,20], speedRange:[0.3,0.7], shape:'puffer', bodyW:0.5, bodyH:0.5,
     tailStyle:'tiny', dorsalStyle:'small', patternType:'dots',
     palettes:[
@@ -807,7 +976,7 @@ const FISH_TYPES = [
     desc:'ぷくぷく膨らむよ？',
     greeting:'フグだよ！ぷくぷく膨らむよ？' },
 
-  { id:'butterfly', area:'coral', name:'チョウチョウウオ', icon:'🦋', shopPrice:280000, unlocked:false, passiveIncome:350,
+  { id:'butterfly', area:'coral', name:'チョウチョウウオ', icon:'🦋', shopPrice:6500000, unlocked:false, passiveIncome:270,
     sizeRange:[14,18], speedRange:[0.4,0.9], shape:'standard', bodyW:0.45, bodyH:0.5,
     tailStyle:'tri', dorsalStyle:'tall', patternType:'eyespot',
     palettes:[
@@ -817,35 +986,35 @@ const FISH_TYPES = [
     desc:'蝶のように美しい！',
     greeting:'チョウチョウウオだよ！蝶みたいでしょ？' },
 
-  { id:'oarfish', area:'deepsea', name:'リュウグウノツカイ', icon:'🎏', shopPrice:80000, unlocked:false, passiveIncome:100,
+  { id:'oarfish', area:'deepsea', name:'リュウグウノツカイ', icon:'🎏', shopPrice:2000000, unlocked:false, passiveIncome:100,
     sizeRange:[20,28], speedRange:[0.3,0.6], shape:'serpent', bodyW:1.2, bodyH:0.15,
     tailStyle:'long', dorsalStyle:'crest', patternType:'none',
     palettes:[{body:'#b0bec5',fin:'#e53935',belly:'#eceff1',stripe:'#c62828'}],
     desc:'深海からやってきた！超レア',
     greeting:'リュウグウノツカイだよ！深海から来たよ～' },
 
-  { id:'coelacanth', area:'deepsea', name:'シーラカンス', icon:'🦕', shopPrice:500000, unlocked:false, passiveIncome:600,
+  { id:'coelacanth', area:'deepsea', name:'シーラカンス', icon:'🦕', shopPrice:12000000, unlocked:false, passiveIncome:520,
     sizeRange:[24,32], speedRange:[0.3,0.6], shape:'standard', bodyW:0.75, bodyH:0.42,
     tailStyle:'lobe', dorsalStyle:'normal', patternType:'scales',
     palettes:[{body:'#37474f',fin:'#263238',belly:'#546e7a',stripe:'#455a64'}],
     desc:'生きた化石！太古の魚',
     greeting:'シーラカンスだよ！生きた化石なんだ！' },
 
-  { id:'manta', area:'deepsea', name:'マンタ', icon:'🦇', shopPrice:850000, unlocked:false, passiveIncome:1000,
+  { id:'manta', area:'deepsea', name:'マンタ', icon:'🦇', shopPrice:24000000, unlocked:false, passiveIncome:980,
     sizeRange:[30,40], speedRange:[0.3,0.6], shape:'manta', bodyW:1.0, bodyH:0.3,
     tailStyle:'whip', dorsalStyle:'none', patternType:'none',
     palettes:[{body:'#37474f',fin:'#263238',belly:'#eceff1'}],
     desc:'大きな翼で優雅に泳ぐ',
     greeting:'マンタだよ！大きい翼でしょ～？' },
 
-  { id:'whaleshark', area:'deepsea', name:'ジンベエザメ', icon:'🐳', shopPrice:1400000, unlocked:false, passiveIncome:1700,
+  { id:'whaleshark', area:'deepsea', name:'ジンベエザメ', icon:'🐳', shopPrice:45000000, unlocked:false, passiveIncome:1750,
     sizeRange:[34,44], speedRange:[0.25,0.5], shape:'standard', bodyW:0.85, bodyH:0.4,
     tailStyle:'fork', dorsalStyle:'normal', patternType:'spots',
     palettes:[{body:'#455a64',fin:'#37474f',belly:'#cfd8dc',stripe:'#eceff1'}],
     desc:'優しい巨人。水槽の主',
     greeting:'ジンベエザメだよ！優しい巨人だよ✨' },
 
-  { id:'dragongod', area:'mystic', name:'龍神', icon:'🐲', shopPrice:500000, unlocked:false, passiveIncome:600,
+  { id:'dragongod', area:'mystic', name:'龍神', icon:'🐲', shopPrice:50000000, unlocked:false, passiveIncome:1500,
     sizeRange:[32,42], speedRange:[0.3,0.7], shape:'mythic', bodyW:0.9, bodyH:0.3,
     tailStyle:'flowing', dorsalStyle:'flowing', patternType:'scales',
     glowColor:'rgba(255,215,0,0.5)',
@@ -854,37 +1023,37 @@ const FISH_TYPES = [
     greeting:'龍神だよ…水槽の守り神じゃ' },
 
   // ===== 新魚：淡水 =====
-  { id:'killifish', area:'freshwater', name:'キリフィッシュ', icon:'🌿', shopPrice:150, unlocked:false, passiveIncome:1,
+  { id:'killifish', area:'freshwater', name:'キリフィッシュ', icon:'🌿', shopPrice:800, unlocked:false, passiveIncome:1,
     sizeRange:[8,11], speedRange:[0.7,1.4], shape:'standard', bodyW:0.58, bodyH:0.35,
     tailStyle:'tri', dorsalStyle:'normal', patternType:'vstripes',
     palettes:[{body:'#e65100',fin:'#bf360c',belly:'#ffcc80',stripe:'#fff3e0'},{body:'#1565c0',fin:'#0d47a1',belly:'#90caf9',stripe:'#bbdefb'}],
     desc:'小さくてカラフルな熱帯魚',
     greeting:'キリフィッシュだよ！ちっちゃいでしょ？' },
-  { id:'loach', area:'freshwater', name:'ドジョウ', icon:'🐍', shopPrice:3500, unlocked:false, passiveIncome:7,
+  { id:'loach', area:'freshwater', name:'ドジョウ', icon:'🐍', shopPrice:40000, unlocked:false, passiveIncome:12,
     sizeRange:[16,22], speedRange:[0.3,0.7], shape:'serpent', bodyW:0.9, bodyH:0.15,
     tailStyle:'long', dorsalStyle:'small', patternType:'dots', hasWhiskers:true, bottomDweller:true,
     palettes:[{body:'#8d6e63',fin:'#6d4c41',belly:'#d7ccc8',stripe:'#a1887f'}],
     desc:'底でもぞもぞ。ヒゲがチャームポイント',
     greeting:'ドジョウだよ～底が落ち着くんだ♪' },
-  { id:'goldfish', area:'freshwater', name:'金魚', icon:'🏮', shopPrice:10000, unlocked:false, passiveIncome:18,
+  { id:'goldfish', area:'freshwater', name:'金魚', icon:'🏮', shopPrice:100000, unlocked:false, passiveIncome:22,
     sizeRange:[14,20], speedRange:[0.4,0.9], shape:'standard', bodyW:0.5, bodyH:0.48,
     tailStyle:'flowing', dorsalStyle:'flowing', patternType:'none',
     palettes:[{body:'#ff3d00',fin:'#dd2c00',belly:'#ffab91'},{body:'#fff176',fin:'#fff9c4',belly:'#ffffff'}],
     desc:'ひらひら優雅な和の魚',
     greeting:'金魚だよ～ひらひら～♪' },
-  { id:'koi', area:'freshwater', name:'錦鯉', icon:'🎏', shopPrice:18000, unlocked:false, passiveIncome:35,
+  { id:'koi', area:'freshwater', name:'錦鯉', icon:'🎏', shopPrice:140000, unlocked:false, passiveIncome:28,
     sizeRange:[22,30], speedRange:[0.3,0.7], shape:'standard', bodyW:0.75, bodyH:0.38,
     tailStyle:'fan', dorsalStyle:'normal', patternType:'bands',
     palettes:[{body:'#ffffff',fin:'#ffccbc',belly:'#fff',stripe:'#ff3d00'},{body:'#ffd600',fin:'#ff6f00',belly:'#fff8e1',stripe:'#e65100'}],
     desc:'泳ぐ宝石。和の象徴',
     greeting:'錦鯉だよ！泳ぐ宝石って呼ばれてるの✨' },
-  { id:'axolotl', area:'freshwater', name:'ウーパールーパー', icon:'🩷', shopPrice:30000, unlocked:false, passiveIncome:60,
+  { id:'axolotl', area:'freshwater', name:'ウーパールーパー', icon:'🩷', shopPrice:200000, unlocked:false, passiveIncome:35,
     sizeRange:[16,22], speedRange:[0.2,0.5], shape:'puffer', bodyW:0.5, bodyH:0.45,
     tailStyle:'tiny', dorsalStyle:'small', patternType:'dots',
     palettes:[{body:'#ffcdd2',fin:'#ef9a9a',belly:'#fff',stripe:'#e57373'},{body:'#e0e0e0',fin:'#bdbdbd',belly:'#fafafa',stripe:'#9e9e9e'}],
     desc:'にっこり笑顔の癒し系',
     greeting:'ウーパールーパーだよ！にこっ☺' },
-  { id:'arapaima', area:'freshwater', name:'ピラルクー', icon:'🐊', shopPrice:50000, unlocked:false, passiveIncome:100,
+  { id:'arapaima', area:'freshwater', name:'ピラルクー', icon:'🐊', shopPrice:300000, unlocked:false, passiveIncome:45,
     sizeRange:[32,42], speedRange:[0.3,0.6], shape:'standard', bodyW:0.9, bodyH:0.35,
     tailStyle:'tri', dorsalStyle:'normal', patternType:'scales',
     palettes:[{body:'#455a64',fin:'#37474f',belly:'#78909c',stripe:'#e53935'}],
@@ -892,37 +1061,37 @@ const FISH_TYPES = [
     greeting:'ピラルクーだよ！でっかいでしょ？' },
 
   // ===== 新魚：サンゴ礁 =====
-  { id:'surgeonfish', area:'coral', name:'ナンヨウハギ', icon:'💙', shopPrice:25000, unlocked:false, passiveIncome:30,
+  { id:'surgeonfish', area:'coral', name:'ナンヨウハギ', icon:'💙', shopPrice:500000, unlocked:false, passiveIncome:30,
     sizeRange:[12,16], speedRange:[0.5,1.1], shape:'standard', bodyW:0.52, bodyH:0.48,
     tailStyle:'fork', dorsalStyle:'normal', patternType:'bands',
     palettes:[{body:'#1565c0',fin:'#0d47a1',belly:'#42a5f5',stripe:'#ffd600'}],
     desc:'青と黄色のサンゴの人気者',
     greeting:'ナンヨウハギだよ！ドリーって呼んで♪' },
-  { id:'lionfish', area:'coral', name:'ミノカサゴ', icon:'🦁', shopPrice:40000, unlocked:false, passiveIncome:50,
+  { id:'lionfish', area:'coral', name:'ミノカサゴ', icon:'🦁', shopPrice:800000, unlocked:false, passiveIncome:45,
     sizeRange:[16,22], speedRange:[0.3,0.7], shape:'standard', bodyW:0.55, bodyH:0.45,
     tailStyle:'flowing', dorsalStyle:'tall', patternType:'vstripes',
     palettes:[{body:'#d32f2f',fin:'#b71c1c',belly:'#ffcdd2',stripe:'#fff'}],
     desc:'美しくも危険なヒレ持ち',
     greeting:'ミノカサゴだよ！ヒレに触らないでね！' },
-  { id:'moorishidol', area:'coral', name:'ツノダシ', icon:'🏹', shopPrice:75000, unlocked:false, passiveIncome:95,
+  { id:'moorishidol', area:'coral', name:'ツノダシ', icon:'🏹', shopPrice:1500000, unlocked:false, passiveIncome:80,
     sizeRange:[14,20], speedRange:[0.4,0.9], shape:'standard', bodyW:0.4, bodyH:0.55,
     tailStyle:'tri', dorsalStyle:'tall', patternType:'vbands',
     palettes:[{body:'#fff176',fin:'#ffd600',belly:'#fff9c4',stripe:'#212121'}],
     desc:'長いツノがトレードマーク',
     greeting:'ツノダシだよ！このツノ、カッコいいでしょ？' },
-  { id:'triggerfish', area:'coral', name:'モンガラカワハギ', icon:'🎯', shopPrice:220000, unlocked:false, passiveIncome:280,
+  { id:'triggerfish', area:'coral', name:'モンガラカワハギ', icon:'🎯', shopPrice:5000000, unlocked:false, passiveIncome:220,
     sizeRange:[14,20], speedRange:[0.4,0.8], shape:'standard', bodyW:0.55, bodyH:0.5,
     tailStyle:'tri', dorsalStyle:'normal', patternType:'dots',
     palettes:[{body:'#1a237e',fin:'#283593',belly:'#e8eaf6',stripe:'#ffd600'}],
     desc:'ド派手な水玉模様！',
     greeting:'モンガラカワハギだよ！派手でしょ～？' },
-  { id:'napoleonfish', area:'coral', name:'ナポレオンフィッシュ', icon:'🫅', shopPrice:350000, unlocked:false, passiveIncome:450,
+  { id:'napoleonfish', area:'coral', name:'ナポレオンフィッシュ', icon:'🫅', shopPrice:8000000, unlocked:false, passiveIncome:330,
     sizeRange:[26,34], speedRange:[0.3,0.6], shape:'standard', bodyW:0.7, bodyH:0.45,
     tailStyle:'tri', dorsalStyle:'normal', patternType:'scales',
     palettes:[{body:'#1565c0',fin:'#0d47a1',belly:'#64b5f6',stripe:'#0d47a1'}],
     desc:'でっかいオデコの王者',
     greeting:'ナポレオンフィッシュだよ！このオデコが自慢！' },
-  { id:'seaturtle', area:'coral', name:'ウミガメ', icon:'🐢', shopPrice:450000, unlocked:false, passiveIncome:580,
+  { id:'seaturtle', area:'coral', name:'ウミガメ', icon:'🐢', shopPrice:10000000, unlocked:false, passiveIncome:400,
     sizeRange:[28,36], speedRange:[0.25,0.5], shape:'manta', bodyW:0.8, bodyH:0.35,
     tailStyle:'whip', dorsalStyle:'none', patternType:'scales',
     palettes:[{body:'#2e7d32',fin:'#1b5e20',belly:'#a5d6a7',stripe:'#388e3c'}],
@@ -930,41 +1099,41 @@ const FISH_TYPES = [
     greeting:'ウミガメだよ～のんびり旅してるの🌊' },
 
   // ===== 新魚：深海 =====
-  { id:'anglerfish', area:'deepsea', name:'チョウチンアンコウ', icon:'🔦', shopPrice:150000, unlocked:false, passiveIncome:180,
+  { id:'anglerfish', area:'deepsea', name:'チョウチンアンコウ', icon:'🔦', shopPrice:3500000, unlocked:false, passiveIncome:160,
     sizeRange:[14,20], speedRange:[0.2,0.5], shape:'puffer', bodyW:0.55, bodyH:0.5,
     tailStyle:'tiny', dorsalStyle:'small', patternType:'none',
     glowColor:'rgba(100,255,100,0.4)',
     palettes:[{body:'#37474f',fin:'#263238',belly:'#455a64',stripe:'#69f0ae'}],
     desc:'暗闇で光る不思議な釣り竿',
     greeting:'チョウチンアンコウだよ…光についてきて…' },
-  { id:'viperfish', area:'deepsea', name:'ホウライエソ', icon:'🗡️', shopPrice:250000, unlocked:false, passiveIncome:300,
+  { id:'viperfish', area:'deepsea', name:'ホウライエソ', icon:'🗡️', shopPrice:5500000, unlocked:false, passiveIncome:250,
     sizeRange:[14,20], speedRange:[0.4,0.9], shape:'standard', bodyW:0.7, bodyH:0.3,
     tailStyle:'fork', dorsalStyle:'normal', patternType:'neon',
     glowColor:'rgba(0,255,136,0.4)',
     palettes:[{body:'#212121',fin:'#111',belly:'#424242',stripe:'#00ff88'}],
     desc:'鋭い牙と光る体',
     greeting:'ホウライエソだよ…この牙、怖い？' },
-  { id:'giantisopod', area:'deepsea', name:'ダイオウグソクムシ', icon:'🪲', shopPrice:380000, unlocked:false, passiveIncome:450,
+  { id:'giantisopod', area:'deepsea', name:'ダイオウグソクムシ', icon:'🪲', shopPrice:8000000, unlocked:false, passiveIncome:360,
     sizeRange:[16,22], speedRange:[0.15,0.4], shape:'puffer', bodyW:0.55, bodyH:0.5,
     tailStyle:'tiny', dorsalStyle:'small', patternType:'scales', bottomDweller:true,
     palettes:[{body:'#78909c',fin:'#546e7a',belly:'#b0bec5',stripe:'#607d8b'}],
     desc:'深海のダンゴムシ。大人気！',
     greeting:'グソクムシだよ…じっとしてるのが好き…' },
-  { id:'gulpereel', area:'deepsea', name:'フクロウナギ', icon:'👄', shopPrice:650000, unlocked:false, passiveIncome:780,
+  { id:'gulpereel', area:'deepsea', name:'フクロウナギ', icon:'👄', shopPrice:17000000, unlocked:false, passiveIncome:720,
     sizeRange:[18,26], speedRange:[0.2,0.5], shape:'serpent', bodyW:1.0, bodyH:0.2,
     tailStyle:'long', dorsalStyle:'small', patternType:'none',
     glowColor:'rgba(255,50,100,0.3)',
     palettes:[{body:'#212121',fin:'#d32f2f',belly:'#424242',stripe:'#ff5252'}],
     desc:'巨大な口が特徴の深海魚',
     greeting:'フクロウナギだよ…お口おっきいでしょ？' },
-  { id:'vampiresquid', area:'deepsea', name:'メンダコ', icon:'👻', shopPrice:1100000, unlocked:false, passiveIncome:1300,
+  { id:'vampiresquid', area:'deepsea', name:'メンダコ', icon:'👻', shopPrice:33000000, unlocked:false, passiveIncome:1300,
     sizeRange:[16,22], speedRange:[0.2,0.5], shape:'manta', bodyW:0.7, bodyH:0.4,
     tailStyle:'whip', dorsalStyle:'none', patternType:'none',
     glowColor:'rgba(255,51,102,0.4)',
     palettes:[{body:'#c62828',fin:'#b71c1c',belly:'#ef9a9a',stripe:'#ff5252'}],
     desc:'深海の幽霊。ひらひら漂う',
     greeting:'メンダコだよ…ふわふわ～👻' },
-  { id:'barreleye', area:'deepsea', name:'デメニギス', icon:'🔮', shopPrice:1800000, unlocked:false, passiveIncome:2200,
+  { id:'barreleye', area:'deepsea', name:'デメニギス', icon:'🔮', shopPrice:60000000, unlocked:false, passiveIncome:2300,
     sizeRange:[12,18], speedRange:[0.2,0.5], shape:'standard', bodyW:0.6, bodyH:0.45,
     tailStyle:'tri', dorsalStyle:'normal', patternType:'none',
     glowColor:'rgba(0,255,204,0.5)',
@@ -973,37 +1142,37 @@ const FISH_TYPES = [
     greeting:'デメニギスだよ…頭の中、見える？' },
 
   // ===== 新魚：熱帯河川 =====
-  { id:'piranha', area:'tropical', name:'ピラニア', icon:'😈', shopPrice:200000, unlocked:false, passiveIncome:250,
+  { id:'piranha', area:'tropical', name:'ピラニア', icon:'😈', shopPrice:15000000, unlocked:false, passiveIncome:550,
     sizeRange:[12,16], speedRange:[0.6,1.2], shape:'standard', bodyW:0.5, bodyH:0.48,
     tailStyle:'tri', dorsalStyle:'normal', patternType:'none',
     palettes:[{body:'#546e7a',fin:'#37474f',belly:'#e53935',stripe:'#c62828'}],
     desc:'小さいけど凶暴！群れが怖い',
     greeting:'ピラニアだよ！ガブッ！…なんてね😈' },
-  { id:'oscar', area:'tropical', name:'オスカー', icon:'🔥', shopPrice:650000, unlocked:false, passiveIncome:800,
+  { id:'oscar', area:'tropical', name:'オスカー', icon:'🔥', shopPrice:40000000, unlocked:false, passiveIncome:1400,
     sizeRange:[18,24], speedRange:[0.3,0.7], shape:'standard', bodyW:0.6, bodyH:0.42,
     tailStyle:'tri', dorsalStyle:'normal', patternType:'spots',
     palettes:[{body:'#37474f',fin:'#263238',belly:'#455a64',stripe:'#ff6d00'}],
     desc:'賢くて人懐っこい大型魚',
     greeting:'オスカーだよ！ご飯まだ？🔥' },
-  { id:'stingray', area:'tropical', name:'淡水エイ', icon:'🌀', shopPrice:1000000, unlocked:false, passiveIncome:1200,
+  { id:'stingray', area:'tropical', name:'淡水エイ', icon:'🌀', shopPrice:65000000, unlocked:false, passiveIncome:2200,
     sizeRange:[22,30], speedRange:[0.25,0.5], shape:'manta', bodyW:0.9, bodyH:0.3,
     tailStyle:'whip', dorsalStyle:'none', patternType:'dots',
     palettes:[{body:'#5d4037',fin:'#4e342e',belly:'#d7ccc8',stripe:'#fff176'}],
     desc:'水玉模様の美しいエイ',
     greeting:'淡水エイだよ～水玉がチャームポイント♪' },
-  { id:'flowerhorn', area:'tropical', name:'フラワーホーン', icon:'🌺', shopPrice:1500000, unlocked:false, passiveIncome:1800,
+  { id:'flowerhorn', area:'tropical', name:'フラワーホーン', icon:'🌺', shopPrice:100000000, unlocked:false, passiveIncome:3300,
     sizeRange:[20,28], speedRange:[0.3,0.7], shape:'standard', bodyW:0.55, bodyH:0.5,
     tailStyle:'tri', dorsalStyle:'tall', patternType:'swirl',
     palettes:[{body:'#e53935',fin:'#c62828',belly:'#ff8a80',stripe:'#ffd600'}],
     desc:'立派なコブが福を呼ぶ！',
     greeting:'フラワーホーンだよ！このコブ、縁起いいの✨' },
-  { id:'redtailcatfish', area:'tropical', name:'レッドテールキャット', icon:'🐱', shopPrice:2200000, unlocked:false, passiveIncome:2700,
+  { id:'redtailcatfish', area:'tropical', name:'レッドテールキャット', icon:'🐱', shopPrice:160000000, unlocked:false, passiveIncome:5100,
     sizeRange:[30,38], speedRange:[0.25,0.5], shape:'standard', bodyW:0.8, bodyH:0.38,
     tailStyle:'tri', dorsalStyle:'normal', patternType:'bands', hasWhiskers:true,
     palettes:[{body:'#37474f',fin:'#263238',belly:'#eceff1',stripe:'#e53935'}],
     desc:'赤い尻尾の巨大ナマズ',
     greeting:'レッドテールキャットだよ！大きくなるよ～' },
-  { id:'electriceel', area:'tropical', name:'デンキウナギ', icon:'⚡', shopPrice:3200000, unlocked:false, passiveIncome:4000,
+  { id:'electriceel', area:'tropical', name:'デンキウナギ', icon:'⚡', shopPrice:250000000, unlocked:false, passiveIncome:7800,
     sizeRange:[22,30], speedRange:[0.3,0.6], shape:'serpent', bodyW:1.1, bodyH:0.15,
     tailStyle:'long', dorsalStyle:'small', patternType:'neon',
     glowColor:'rgba(255,255,0,0.4)',
@@ -1012,42 +1181,42 @@ const FISH_TYPES = [
     greeting:'デンキウナギだよ⚡ ビリッとしちゃうぞ！' },
 
   // ===== 新魚：神秘 =====
-  { id:'phoenix', area:'mystic', name:'鳳凰魚', icon:'🔥', shopPrice:1200000, unlocked:false, passiveIncome:1500,
+  { id:'phoenix', area:'mystic', name:'鳳凰魚', icon:'🔥', shopPrice:90000000, unlocked:false, passiveIncome:2600,
     sizeRange:[28,36], speedRange:[0.3,0.7], shape:'mythic', bodyW:0.85, bodyH:0.3,
     tailStyle:'flowing', dorsalStyle:'flowing', patternType:'scales',
     glowColor:'rgba(255,100,0,0.5)',
     palettes:[{body:'#ff6d00',fin:'#dd2c00',belly:'#ffe0b2',stripe:'#ff3d00'}],
     desc:'炎をまとう不死鳥の魚',
     greeting:'鳳凰魚だよ…炎の翼で舞うのじゃ🔥' },
-  { id:'leviathan', area:'mystic', name:'リヴァイアサン', icon:'🌊', shopPrice:2500000, unlocked:false, passiveIncome:3000,
+  { id:'leviathan', area:'mystic', name:'リヴァイアサン', icon:'🌊', shopPrice:150000000, unlocked:false, passiveIncome:4200,
     sizeRange:[34,44], speedRange:[0.2,0.5], shape:'serpent', bodyW:1.3, bodyH:0.18,
     tailStyle:'long', dorsalStyle:'crest', patternType:'scales',
     glowColor:'rgba(0,100,255,0.4)',
     palettes:[{body:'#0d47a1',fin:'#1a237e',belly:'#42a5f5',stripe:'#82b1ff'}],
     desc:'海の底に潜む伝説の巨獣',
     greeting:'リヴァイアサンだ…深淵より来たり…' },
-  { id:'moonjellyfish', area:'mystic', name:'月光クラゲ', icon:'🌙', shopPrice:4000000, unlocked:false, passiveIncome:5000,
+  { id:'moonjellyfish', area:'mystic', name:'月光クラゲ', icon:'🌙', shopPrice:250000000, unlocked:false, passiveIncome:6800,
     sizeRange:[18,26], speedRange:[0.15,0.4], shape:'seahorse', bodyW:0.4, bodyH:0.6,
     tailStyle:'curl', dorsalStyle:'small', patternType:'none',
     glowColor:'rgba(200,200,255,0.5)',
     palettes:[{body:'rgba(180,180,255,0.7)',fin:'rgba(150,150,230,0.5)',belly:'rgba(220,220,255,0.6)'}],
     desc:'月の光を宿す幻のクラゲ',
     greeting:'月光クラゲだよ…月の光をあげる🌙' },
-  { id:'crystaldragon', area:'mystic', name:'水晶龍', icon:'💎', shopPrice:6500000, unlocked:false, passiveIncome:8000,
+  { id:'crystaldragon', area:'mystic', name:'水晶龍', icon:'💎', shopPrice:400000000, unlocked:false, passiveIncome:10500,
     sizeRange:[32,42], speedRange:[0.3,0.6], shape:'mythic', bodyW:0.9, bodyH:0.3,
     tailStyle:'flowing', dorsalStyle:'flowing', patternType:'scales',
     glowColor:'rgba(180,100,255,0.5)',
     palettes:[{body:'rgba(180,140,255,0.8)',fin:'#7c4dff',belly:'rgba(220,200,255,0.6)',stripe:'#b388ff'}],
     desc:'水晶の鱗を持つ神龍',
     greeting:'水晶龍だよ…この鱗、綺麗でしょ？💎' },
-  { id:'cosmicwhale', area:'mystic', name:'宇宙クジラ', icon:'🌌', shopPrice:10000000, unlocked:false, passiveIncome:12000,
+  { id:'cosmicwhale', area:'mystic', name:'宇宙クジラ', icon:'🌌', shopPrice:650000000, unlocked:false, passiveIncome:16500,
     sizeRange:[36,46], speedRange:[0.2,0.4], shape:'manta', bodyW:1.1, bodyH:0.35,
     tailStyle:'whip', dorsalStyle:'none', patternType:'spots',
     glowColor:'rgba(100,0,200,0.4)',
     palettes:[{body:'#1a0a3a',fin:'#0a0020',belly:'#311b92',stripe:'#e0e0e0'}],
     desc:'星空を泳ぐ超巨大クジラ',
     greeting:'宇宙クジラだよ…星の海を旅してきたの🌌' },
-  { id:'worldserpent', area:'mystic', name:'世界蛇', icon:'🐍', shopPrice:15000000, unlocked:false, passiveIncome:18000,
+  { id:'worldserpent', area:'mystic', name:'世界蛇', icon:'🐍', shopPrice:1000000000, unlocked:false, passiveIncome:25000,
     sizeRange:[36,46], speedRange:[0.25,0.5], shape:'serpent', bodyW:1.4, bodyH:0.2,
     tailStyle:'long', dorsalStyle:'crest', patternType:'scales',
     glowColor:'rgba(0,255,100,0.5)',
@@ -1142,12 +1311,15 @@ let collection = {};
 function initCollection() {
   for (const ft of FISH_TYPES) {
     if (!collection[ft.id]) {
-      collection[ft.id] = { discovered:false, variantDiscovered:{gold:false,albino:false,neon:false,holo:false} };
+      collection[ft.id] = { discovered:false, variantDiscovered:{gold:false,albino:false,neon:false,holo:false}, hueShifts:[] };
+    } else if (!collection[ft.id].hueShifts) {
+      collection[ft.id].hueShifts = [];
     }
   }
 }
-function discoverFish(typeId, variantType) {
-  if (!collection[typeId]) collection[typeId] = { discovered:false, variantDiscovered:{gold:false,albino:false,neon:false,holo:false} };
+function discoverFish(typeId, variantType, hueShift) {
+  if (!collection[typeId]) collection[typeId] = { discovered:false, variantDiscovered:{gold:false,albino:false,neon:false,holo:false}, hueShifts:[] };
+  if (!collection[typeId].hueShifts) collection[typeId].hueShifts = [];
   let isNew = false;
   if (!collection[typeId].discovered) {
     collection[typeId].discovered = true; isNew = true;
@@ -1159,6 +1331,11 @@ function discoverFish(typeId, variantType) {
     const ft = FISH_TYPES.find(t => t.id === typeId);
     const vt = VARIANT_TYPES.find(v => v.id === variantType);
     if (ft && vt) showNotification('✨ レア図鑑！ ' + ft.name + vt.suffix + ' を発見！');
+  }
+  // カラーバリエーションを保存（変異種でない場合のみ、最大12色まで）
+  if (hueShift !== undefined && !variantType) {
+    const hs = collection[typeId].hueShifts;
+    if (!hs.includes(hueShift) && hs.length < 12) hs.push(hueShift);
   }
   return isNew;
 }
@@ -1174,9 +1351,9 @@ function getCollectionCompletion() {
 
 // ガチャ設定
 const GACHA_TIERS = [
-  { name:'ノーマルガチャ',   icon:'🎲', cost:5000,  pool:'normal',  variantChance:0.03, desc:'ランダムな魚1匹（レア率3%）' },
-  { name:'プレミアムガチャ', icon:'🎰', cost:15000, pool:'premium', variantChance:0.08, desc:'中級以上の魚（レア率8%）' },
-  { name:'レジェンドガチャ', icon:'👑', cost:50000, pool:'legend',  variantChance:0.15, desc:'高級魚確定（レア率15%）' },
+  { name:'ノーマルガチャ',   icon:'🎲', cost:50000,   variantChance:0.03, desc:'レア率3%' },
+  { name:'プレミアムガチャ', icon:'🎰', cost:500000,  variantChance:0.08, desc:'レア率8%' },
+  { name:'レジェンドガチャ', icon:'👑', cost:5000000, variantChance:0.15, desc:'レア率15%' },
 ];
 
 // ============================================================
@@ -1194,7 +1371,7 @@ const AREAS = [
     plantStyle:'seaweed',
     plantColors:[{r:40,g:160,b:60},{r:30,g:130,b:80}]
   },
-  { id:'coral', name:'サンゴ礁', icon:'🪸', price:20000, unlocked:false,
+  { id:'coral', name:'サンゴ礁', icon:'🪸', price:2000000, unlocked:false,
     desc:'カラフルなサンゴの海',
     bg: {
       day:   ['#064a6e','#0878a0','#065a7a'],
@@ -1205,7 +1382,7 @@ const AREAS = [
     plantStyle:'coral',
     plantColors:[{r:220,g:80,b:100},{r:255,g:140,b:60},{r:180,g:60,b:160}]
   },
-  { id:'deepsea', name:'深海', icon:'🌑', price:50000, unlocked:false,
+  { id:'deepsea', name:'深海', icon:'🌑', price:20000000, unlocked:false,
     desc:'暗い深海。神秘的な生き物たち',
     bg: {
       day:   ['#020a14','#041828','#030e1c'],
@@ -1216,7 +1393,7 @@ const AREAS = [
     plantStyle:'deepsea',
     plantColors:[{r:20,g:60,b:80},{r:10,g:80,b:60}]
   },
-  { id:'tropical', name:'熱帯河川', icon:'🌴', price:100000, unlocked:false,
+  { id:'tropical', name:'熱帯河川', icon:'🌴', price:80000000, unlocked:false,
     desc:'アマゾンの大河。巨大魚の楽園',
     bg: {
       day:   ['#1a3a20','#1c5c30','#143a1c'],
@@ -1227,7 +1404,7 @@ const AREAS = [
     plantStyle:'tropical',
     plantColors:[{r:30,g:180,b:40},{r:20,g:140,b:30},{r:60,g:160,b:50}]
   },
-  { id:'mystic', name:'神秘の泉', icon:'✨', price:200000, unlocked:false,
+  { id:'mystic', name:'神秘の泉', icon:'✨', price:300000000, unlocked:false,
     desc:'不思議な光が漂う伝説のエリア',
     bg: {
       day:   ['#1a0a3a','#2c1a5a','#180840'],
@@ -2106,9 +2283,8 @@ function firstInit() {
   const loaded = loadGame();
   initEnvironment();
   if (!loaded) {
-    for (let i = 0; i < 5; i++) fishes.push(new Fish('common'));
+    for (let i = 0; i < 5; i++) { const f = new Fish('common'); fishes.push(f); discoverFish('common', null, f.hueShift); }
     areaStates[currentAreaId].fishes = fishes;
-    discoverFish('common');
   }
   buildFoodSelector();
   buildAreaTabs();
@@ -2272,31 +2448,37 @@ function renderShop() {
     const btn = document.createElement('button'); btn.className = 'shop-buy-btn';
     if (ft.shopPrice === 0) {
       btn.textContent = '🪙 無料';
-      btn.onclick = () => { const f=new Fish(ft.id); fishes.push(f); discoverFish(ft.id); renderShop(); updateIncomeDisplay(); buildAreaTabs(); showNotification(ft.name+'が仲間に！'); };
+      btn.onclick = () => { const f=new Fish(ft.id); fishes.push(f); discoverFish(ft.id, null, f.hueShift); renderShop(); updateIncomeDisplay(); buildAreaTabs(); showNotification(ft.name+'が仲間に！'); };
     } else {
       btn.textContent = '🪙 '+ft.shopPrice.toLocaleString(); btn.disabled = coins<ft.shopPrice;
-      btn.onclick = () => { if (spendCoins(ft.shopPrice)) { ft.unlocked=true; const f=new Fish(ft.id); fishes.push(f); discoverFish(ft.id); renderShop(); updateIncomeDisplay(); buildAreaTabs(); showNotification(ft.name+'が仲間に！'); } };
+      btn.onclick = () => { if (spendCoins(ft.shopPrice)) { ft.unlocked=true; const f=new Fish(ft.id); fishes.push(f); discoverFish(ft.id, null, f.hueShift); renderShop(); updateIncomeDisplay(); buildAreaTabs(); showNotification(ft.name+'が仲間に！'); } };
     }
     item.appendChild(btn); c.appendChild(item);
   }
 
   // 6. ガチャ
-  sec('🎰 ガチャ（レア魚チャンス！）');
+  const curAreaName = curArea.icon + ' ' + curArea.name;
+  sec('🎰 ガチャ（'+curAreaName+'のレア魚チャンス！）');
   for (const g of GACHA_TIERS) {
-    const item = row(g.icon, g.name, g.desc);
-    const btn = document.createElement('button'); btn.className = 'shop-buy-btn';
-    btn.textContent = '🪙 '+g.cost.toLocaleString(); btn.disabled = coins<g.cost;
-    btn.onclick = () => { if (spendCoins(g.cost)) performGacha(g); };
-    item.appendChild(btn); c.appendChild(item);
+    const item = row(g.icon, g.name, g.desc + '・' + curArea.name + 'の魚が出る');
+    const btnWrap = document.createElement('div');
+    btnWrap.style.cssText = 'display:flex;gap:4px;flex-wrap:wrap;';
+    for (const n of [1, 5, 10]) {
+      const total = g.cost * n;
+      const btn = document.createElement('button'); btn.className = 'shop-buy-btn';
+      btn.style.cssText = 'font-size:0.75rem;padding:4px 8px;';
+      btn.textContent = (n===1?'':'') + n + '連 🪙' + total.toLocaleString();
+      btn.disabled = coins < total;
+      btn.onclick = () => { if (spendCoins(total)) performMultiGacha(g, n); };
+      btnWrap.appendChild(btn);
+    }
+    item.appendChild(btnWrap); c.appendChild(item);
   }
 }
 
-function performGacha(gacha) {
-  // 抽選
-  let pool;
-  if (gacha.pool==='normal') pool = FISH_TYPES.filter(f => f.shopPrice <= 10000);
-  else if (gacha.pool==='premium') pool = FISH_TYPES.filter(f => f.shopPrice >= 1000 && f.shopPrice <= 100000);
-  else pool = FISH_TYPES.filter(f => f.shopPrice >= 10000);
+// ガチャ抽選ロジック（共通）
+function rollGacha(gacha) {
+  const pool = FISH_TYPES.filter(f => f.area === currentAreaId);
   const weights = pool.map(f => 1/Math.sqrt(Math.max(f.shopPrice,1)));
   const totalW = weights.reduce((a,b) => a+b, 0);
   let r = Math.random() * totalW, chosen = pool[0];
@@ -2304,21 +2486,160 @@ function performGacha(gacha) {
   const isVariant = Math.random() < gacha.variantChance;
   let variantType = null;
   if (isVariant) variantType = VARIANT_TYPES[Math.floor(Math.random()*VARIANT_TYPES.length)].id;
-
-  // 魚追加
   const fish = new Fish(chosen.id, undefined, undefined, isVariant, variantType);
   fishes.push(fish); chosen.unlocked = true;
-  discoverFish(chosen.id, variantType);
-  updateIncomeDisplay(); buildAreaTabs(); renderShop();
-
-  // ===== 演出開始 =====
-  showGachaResult(chosen, isVariant, variantType, fish);
+  discoverFish(chosen.id, variantType, fish.hueShift);
+  return { fishType: chosen, isVariant, variantType, fish };
 }
 
-function showGachaResult(fishType, isVariant, variantType, fishObj) {
+// ガチャ演出の状態管理
+let gachaAnimating = false;
+let gachaSkipRequested = false;
+let gachaQueue = []; // 複数連の残りキュー
+let gachaAllResults = []; // 複数連のまとめ用
+let gachaCurrentGacha = null;
+
+function gachaSleep(ms) {
+  return new Promise(resolve => {
+    const t = setTimeout(resolve, ms);
+    const check = setInterval(() => {
+      if (gachaSkipRequested) { clearTimeout(t); clearInterval(check); resolve(); }
+    }, 50);
+  });
+}
+
+function performGacha(gacha) {
+  const result = rollGacha(gacha);
+  updateIncomeDisplay(); buildAreaTabs(); renderShop();
+  gachaQueue = [result];
+  gachaAllResults = [result];
+  gachaCurrentGacha = gacha;
+  runGachaSequence(false);
+}
+
+function performMultiGacha(gacha, count) {
+  if (count === 1) { performGacha(gacha); return; }
+  const results = [];
+  for (let i = 0; i < count; i++) results.push(rollGacha(gacha));
+  updateIncomeDisplay(); buildAreaTabs(); renderShop();
+  gachaQueue = results.slice();
+  gachaAllResults = results.slice();
+  gachaCurrentGacha = gacha;
+  runGachaSequence(true);
+}
+
+async function runGachaSequence(isMulti) {
+  gachaAnimating = true;
+  gachaSkipRequested = false;
+
+  const doors = document.getElementById('gachaDoors');
+  const pillar = document.getElementById('gachaPillar');
+  const crack = document.getElementById('gachaCrack');
+  const flash = document.getElementById('gachaFlash');
   const overlay = document.getElementById('gachaOverlay');
-  const card = document.getElementById('gachaCard');
+  const counter = document.getElementById('gachaCounter');
+  const skipHint = document.getElementById('gachaSkipHint');
+
+  // タップでスキップ
+  function onTap() { gachaSkipRequested = true; }
+  document.addEventListener('click', onTap, { once: false });
+
+  for (let idx = 0; idx < gachaQueue.length; idx++) {
+    const result = gachaQueue[idx];
+    gachaSkipRequested = false;
+
+    // カウンター表示（複数連）
+    if (isMulti) {
+      counter.style.display = 'block';
+      counter.textContent = (idx+1) + ' / ' + gachaQueue.length;
+    }
+
+    // スキップヒント
+    skipHint.classList.add('show');
+
+    // === Phase 1: 扉閉じ ===
+    doors.style.display = 'flex';
+    doors.classList.remove('open');
+    await gachaSleep(100);
+
+    // === Phase 2: 扉の隙間から光 ===
+    await gachaSleep(gachaSkipRequested ? 0 : 600);
+
+    // === Phase 3: レア判定で演出分岐 ===
+    if (result.isVariant && !gachaSkipRequested) {
+      // 画面割れ演出
+      crack.classList.add('active');
+      await gachaSleep(400);
+      // 虹色の柱
+      pillar.className = 'gacha-pillar active rare';
+      await gachaSleep(500);
+      crack.classList.remove('active');
+    } else if (!gachaSkipRequested) {
+      // 通常の光の柱
+      pillar.className = 'gacha-pillar active';
+      await gachaSleep(400);
+    }
+
+    // === Phase 4: 扉オープン ===
+    doors.classList.add('open');
+    await gachaSleep(gachaSkipRequested ? 0 : 500);
+
+    // === Phase 5: フラッシュ ===
+    flash.classList.add('active');
+    await gachaSleep(gachaSkipRequested ? 50 : 120);
+    flash.classList.remove('active');
+
+    // === Phase 6: カード降臨 ===
+    showGachaCard(result);
+    await gachaSleep(gachaSkipRequested ? 50 : 100);
+    overlay.classList.add('reveal');
+
+    // 紙吹雪
+    spawnConfetti(overlay, result.isVariant);
+
+    // === 待機（タップで次へ） ===
+    pillar.className = 'gacha-pillar';
+    skipHint.classList.remove('show');
+
+    // タップ待ち
+    gachaSkipRequested = false;
+    await new Promise(resolve => {
+      function handler() {
+        document.removeEventListener('click', handler);
+        resolve();
+      }
+      // 少し遅延してからクリック受付（誤タップ防止）
+      setTimeout(() => document.addEventListener('click', handler, { once: true }), 300);
+    });
+
+    // カードを閉じる
+    overlay.classList.remove('open', 'reveal');
+    overlay.querySelectorAll('.gacha-confetti').forEach(e => e.remove());
+    doors.style.display = 'none';
+
+    await gachaSleep(150);
+  }
+
+  // クリーンアップ
+  document.removeEventListener('click', onTap);
+  counter.style.display = 'none';
+  skipHint.classList.remove('show');
+  doors.style.display = 'none';
+  doors.classList.remove('open');
+  pillar.className = 'gacha-pillar';
+  gachaAnimating = false;
+
+  // 複数連ならまとめ表示
+  if (isMulti && gachaAllResults.length > 1) {
+    await gachaSleep(200);
+    showMultiSummary();
+  }
+}
+
+function showGachaCard(result) {
+  const overlay = document.getElementById('gachaOverlay');
   const glow = document.getElementById('gachaGlow');
+  const rays = document.getElementById('gachaRays');
   const icon = document.getElementById('gachaIcon');
   const label = document.getElementById('gachaLabel');
   const nameEl = document.getElementById('gachaName');
@@ -2327,93 +2648,114 @@ function showGachaResult(fishType, isVariant, variantType, fishObj) {
 
   // リセット
   overlay.classList.remove('reveal');
-  card.style.transform = '';
   glow.className = 'gacha-glow';
+  rays.className = 'gacha-rays';
   icon.className = 'gacha-icon';
   nameEl.className = 'gacha-name';
+  label.className = 'gacha-label';
   badgeEl.innerHTML = '';
-  // 古い紙吹雪削除
   overlay.querySelectorAll('.gacha-confetti').forEach(e => e.remove());
 
-  // カウントダウン演出
-  overlay.classList.add('open');
-  icon.textContent = '';
-  label.textContent = '';
-  nameEl.textContent = '';
-  incomeEl.textContent = '';
+  // 放射光線を生成
+  rays.innerHTML = '';
+  const rayCount = result.isVariant ? 16 : 10;
+  for (let i = 0; i < rayCount; i++) {
+    const ray = document.createElement('div');
+    ray.className = 'gacha-ray';
+    ray.style.setProperty('--r', (i * (360/rayCount)) + 'deg');
+    rays.appendChild(ray);
+  }
+  if (result.isVariant) rays.classList.add('rare');
 
-  const counts = ['3', '2', '1'];
-  let step = 0;
+  // アイコン
+  icon.innerHTML = fishIconHTML(result.fishType.id, 110, result.variantType, result.fish.hueShift);
 
-  function nextCount() {
-    if (step < counts.length) {
-      icon.innerHTML = '<div class="gacha-opening">' + counts[step] + '</div>';
-      step++;
-      setTimeout(nextCount, 450);
-    } else {
-      // カード表示！
-      revealCard();
-    }
+  // ラベル
+  const vt = result.isVariant ? VARIANT_TYPES.find(v => v.id === result.variantType) : null;
+  if (result.isVariant) {
+    label.textContent = '✨ RARE ✨';
+    label.classList.add('rare');
+  } else {
+    label.textContent = 'GET!';
   }
 
-  setTimeout(nextCount, 200);
+  // 名前
+  const fullName = result.fishType.name + (vt ? ' ' + vt.suffix : '');
+  nameEl.textContent = fullName;
 
-  function revealCard() {
-    // アイコンセット
-    icon.innerHTML = fishIconHTML(fishType.id, 100, variantType, fishObj.hueShift);
-    label.textContent = isVariant ? '✨ レア出現！ ✨' : '🎉 GET！';
-    const vt = isVariant ? VARIANT_TYPES.find(v => v.id === variantType) : null;
-    const fullName = fishType.name + (vt ? ' ' + vt.suffix : '');
-    nameEl.textContent = fullName;
+  if (result.isVariant) {
+    glow.classList.add('rare');
+    icon.classList.add('rare');
+    nameEl.classList.add('rare');
+    const badge = document.createElement('div');
+    badge.className = 'gacha-variant-badge ' + result.variantType;
+    badge.textContent = vt.name + ' 変異種！ 収入2.5倍';
+    badgeEl.appendChild(badge);
+  }
 
-    if (isVariant) {
-      glow.classList.add('rare');
-      icon.classList.add('rare');
-      nameEl.classList.add('rare');
-      // バッジ
-      const badge = document.createElement('div');
-      badge.className = 'gacha-variant-badge ' + variantType;
-      badge.textContent = vt.name + ' 変異種！ 収入2.5倍';
-      badgeEl.appendChild(badge);
-    }
+  const income = result.fish.getPassiveIncome();
+  incomeEl.textContent = '💰 自動収入 +' + income + '🪙/10秒';
 
-    const income = fishObj.getPassiveIncome();
-    incomeEl.textContent = '💰 自動収入 +' + income + '🪙/10秒';
+  overlay.classList.add('open');
+}
 
-    // カードを表示（アニメーション発火）
-    requestAnimationFrame(() => {
-      overlay.classList.add('reveal');
-    });
+function spawnConfetti(container, isRare) {
+  const count = isRare ? 50 : 18;
+  const colors = isRare
+    ? ['#ffd700','#ff6f00','#ffeb3b','#ff5722','#e040fb','#00e5ff','#76ff03','#fff']
+    : ['#7ec8e3','#ffd700','#6bcb77','#ff8a80','#b388ff'];
+  for (let i = 0; i < count; i++) {
+    setTimeout(() => {
+      const conf = document.createElement('div');
+      conf.className = 'gacha-confetti';
+      conf.style.left = (10 + Math.random()*80) + '%';
+      conf.style.top = (5 + Math.random()*15) + '%';
+      conf.style.background = colors[Math.floor(Math.random()*colors.length)];
+      conf.style.width = (4+Math.random()*10) + 'px';
+      conf.style.height = (4+Math.random()*10) + 'px';
+      conf.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+      conf.style.animationDuration = (1.5+Math.random()*2.5) + 's';
+      container.appendChild(conf);
+      setTimeout(() => conf.remove(), 4500);
+    }, Math.random() * 800);
+  }
+}
 
-    // 紙吹雪（レアの場合は豪華に）
-    const confettiCount = isVariant ? 40 : 15;
-    const colors = isVariant
-      ? ['#ffd700','#ff6f00','#ffeb3b','#ff5722','#e040fb','#00e5ff','#76ff03']
-      : ['#7ec8e3','#ffd700','#6bcb77','#ff8a80','#b388ff'];
-    for (let i = 0; i < confettiCount; i++) {
-      setTimeout(() => {
-        const conf = document.createElement('div');
-        conf.className = 'gacha-confetti';
-        conf.style.left = (20 + Math.random()*60) + '%';
-        conf.style.top = (10 + Math.random()*20) + '%';
-        conf.style.background = colors[Math.floor(Math.random()*colors.length)];
-        conf.style.width = (4+Math.random()*8) + 'px';
-        conf.style.height = (4+Math.random()*8) + 'px';
-        conf.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
-        conf.style.animationDuration = (1.5+Math.random()*2) + 's';
-        conf.style.animationDelay = '0s';
-        overlay.appendChild(conf);
-        setTimeout(() => conf.remove(), 4000);
-      }, Math.random() * 600);
-    }
+function showMultiSummary() {
+  const overlay = document.getElementById('gachaMultiOverlay');
+  const title = document.getElementById('gachaMultiTitle');
+  const grid = document.getElementById('gachaMultiGrid');
+  const gacha = gachaCurrentGacha;
+  const results = gachaAllResults;
+  const rareCount = results.filter(r => r.isVariant).length;
+  title.textContent = gacha.icon + ' ' + gacha.name + ' ' + results.length + '連結果' + (rareCount > 0 ? '  ✨レア'+rareCount+'体！' : '');
+  grid.innerHTML = '';
+  results.forEach((r, i) => {
+    const card = document.createElement('div');
+    card.className = 'gacha-multi-card';
+    card.style.animationDelay = (i * 0.08) + 's';
+    const isRare = r.isVariant;
+    card.style.cssText += ';background:' + (isRare ? 'linear-gradient(135deg,rgba(255,215,0,0.15),rgba(255,100,0,0.15))' : 'rgba(126,200,227,0.08)') + ';border-radius:10px;padding:10px;text-align:center;border:1px solid ' + (isRare ? 'rgba(255,215,0,0.4)' : 'rgba(126,200,227,0.15)') + ';';
+    const vt = r.isVariant ? VARIANT_TYPES.find(v => v.id === r.variantType) : null;
+    const name = r.fishType.name + (vt ? ' ' + vt.suffix : '');
+    const income = r.fish.getPassiveIncome();
+    card.innerHTML = '<div style="margin-bottom:6px;">' + fishIconHTML(r.fishType.id, 56, r.variantType, r.fish.hueShift) + '</div>'
+      + (isRare ? '<div style="font-size:0.65rem;color:#ffd700;font-weight:bold;margin-bottom:2px;">✨ ' + vt.name + '</div>' : '')
+      + '<div style="font-size:0.8rem;color:#fff;font-weight:bold;">' + name + '</div>'
+      + '<div style="font-size:0.7rem;color:rgba(255,255,255,0.5);margin-top:2px;">+' + income + '🪙/10秒</div>';
+    grid.appendChild(card);
+  });
+  overlay.classList.add('open');
+}
+
+function closeMultiGacha(e) {
+  if (e.target.id === 'gachaMultiOverlay') {
+    document.getElementById('gachaMultiOverlay').classList.remove('open');
   }
 }
 
 function closeGachaResult() {
-  const overlay = document.getElementById('gachaOverlay');
-  if (!overlay.classList.contains('reveal')) return; // まだ開封中なら閉じない
-  overlay.classList.remove('open','reveal');
-  overlay.querySelectorAll('.gacha-confetti').forEach(e => e.remove());
+  // 旧関数（互換用）- 新しい演出では使わない
 }
 
 document.getElementById('shopOverlay').addEventListener('click', e => { if (e.target.id === 'shopOverlay') closeShop(); });
@@ -2438,6 +2780,7 @@ function renderCollection() {
     entry.style.cssText = 'background:rgba(126,200,227,0.04);border:1px solid rgba(126,200,227,'+(disc?'0.2':'0.06')+');border-radius:10px;padding:8px 4px;text-align:center;cursor:pointer;transition:all 0.2s;'+(disc?'':'opacity:0.3;filter:grayscale(1);');
     entry.onmouseover = () => { entry.style.background='rgba(126,200,227,0.12)'; };
     entry.onmouseout = () => { entry.style.background='rgba(126,200,227,0.04)'; };
+    if (disc) entry.onclick = () => openFishDetail(ft.id);
     // アイコン
     const iconDiv = document.createElement('div');
     iconDiv.style.fontSize = '1.5rem';
@@ -2473,6 +2816,69 @@ function renderCollection() {
     grid.appendChild(entry);
   }
 }
+
+// --- 図鑑 魚詳細 ---
+function openFishDetail(fishId) {
+  const ft = FISH_TYPES.find(t => t.id === fishId);
+  if (!ft) return;
+  const col = collection[fishId] || {};
+  const area = AREAS.find(a => a.id === ft.area);
+  const hueShifts = col.hueShifts || [];
+  const panel = document.getElementById('fishDetailPanel');
+
+  let html = '<div style="text-align:center;padding:8px 0">';
+  // メインアイコン大きく
+  html += '<div style="margin-bottom:8px">'+fishIconHTML(ft.id, 72)+'</div>';
+  // 名前
+  html += '<div style="font-size:1.3rem;font-weight:bold;color:#7ec8e3">'+ft.name+'</div>';
+  // エリア
+  html += '<div style="font-size:0.75rem;color:rgba(126,200,227,0.6);margin:4px 0">'+(area?area.icon+' '+area.name:'')+'</div>';
+  // 説明
+  html += '<div style="font-size:0.85rem;color:#cde4f0;margin:8px 16px;line-height:1.5">'+ft.desc+'</div>';
+  // 収入
+  html += '<div style="font-size:0.8rem;color:rgba(255,215,0,0.8);margin:6px 0">収入: '+ft.passiveIncome+' 🪙/10秒</div>';
+  html += '<div style="font-size:0.75rem;color:rgba(126,200,227,0.4);margin-bottom:4px">購入価格: '+(ft.shopPrice===0?'無料':'🪙 '+ft.shopPrice.toLocaleString())+'</div>';
+  html += '</div>';
+
+  // 変異種セクション
+  html += '<div style="border-top:1px solid rgba(126,200,227,0.15);margin:8px 0;padding-top:10px">';
+  html += '<div style="font-size:0.8rem;color:rgba(126,200,227,0.6);margin-bottom:8px">✨ 変異種</div>';
+  html += '<div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap">';
+  for (const vt of VARIANT_TYPES) {
+    const vDisc = col.variantDiscovered?.[vt.id];
+    html += '<div style="text-align:center;opacity:'+(vDisc?'1':'0.3')+';filter:'+(vDisc?'none':'grayscale(1)')+'">';
+    html += '<div>'+fishIconHTML(ft.id, 40, vt.id)+'</div>';
+    html += '<div style="font-size:0.6rem;color:'+(vDisc?'#cde4f0':'#666')+';margin-top:2px">'+vt.name+'</div>';
+    html += '</div>';
+  }
+  html += '</div></div>';
+
+  // カラーバリエーションセクション
+  html += '<div style="border-top:1px solid rgba(126,200,227,0.15);margin:8px 0;padding-top:10px">';
+  html += '<div style="font-size:0.8rem;color:rgba(126,200,227,0.6);margin-bottom:8px">🎨 カラーバリエーション <span style="font-size:0.65rem;color:rgba(126,200,227,0.35)">'+hueShifts.length+'/12</span></div>';
+  if (hueShifts.length > 0) {
+    html += '<div style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap">';
+    for (const hs of hueShifts) {
+      html += '<div style="text-align:center">';
+      html += fishIconHTML(ft.id, 36, null, hs);
+      html += '</div>';
+    }
+    html += '</div>';
+  } else {
+    html += '<div style="font-size:0.75rem;color:rgba(126,200,227,0.3)">まだ色が集まっていません</div>';
+  }
+  html += '</div>';
+
+  // 閉じるボタン
+  html += '<button class="shop-close" onclick="closeFishDetail()" style="margin-top:12px">もどる</button>';
+  panel.innerHTML = html;
+  document.getElementById('fishDetailOverlay').classList.add('open');
+}
+
+function closeFishDetail() {
+  document.getElementById('fishDetailOverlay').classList.remove('open');
+}
+document.getElementById('fishDetailOverlay').addEventListener('click', e => { if (e.target.id === 'fishDetailOverlay') closeFishDetail(); });
 
 // ============================================================
 // 放置系システム
@@ -2547,7 +2953,7 @@ function updateBreeding() {
           const baby = new Fish(typeId, parent.x + (Math.random()-0.5)*30, parent.y + (Math.random()-0.5)*20, isVariant, variantType);
           baby.size = baby.baseSize * 0.6;
           fishes.push(baby);
-          discoverFish(typeId, variantType);
+          discoverFish(typeId, variantType, baby.hueShift);
           const typeName = FISH_TYPES.find(t => t.id === typeId)?.name || typeId;
           const vtSuffix = isVariant ? VARIANT_TYPES.find(v => v.id===variantType).suffix : '';
           const prefix = isVariant ? '✨ レア！ ' : '🎉 ';
@@ -2783,7 +3189,7 @@ function loadGame() {
           fish.size = fd.size || fish.size;
           if (fd.hueShift !== undefined) fish.hueShift = fd.hueShift;
           areaStates[areaId].fishes.push(fish);
-          discoverFish(fd.typeId, fd.variantType||null);
+          discoverFish(fd.typeId, fd.variantType||null, fish.hueShift);
         }
       }
     } else if (data.fishes) {
@@ -2792,7 +3198,7 @@ function loadGame() {
         const fish = new Fish(fd.typeId);
         fish.size = fd.size || fish.size;
         areaStates.freshwater.fishes.push(fish);
-        discoverFish(fd.typeId);
+        discoverFish(fd.typeId, null, fish.hueShift);
       }
     }
 
@@ -2844,6 +3250,7 @@ window.addEventListener('beforeunload', saveGame);
 // ============================================================
 firstInit();
 requestAnimationFrame(gameLoop);
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
 </script>
 </body>
 </html>

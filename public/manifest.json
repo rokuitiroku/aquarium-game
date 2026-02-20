@@ -1,0 +1,17 @@
+{
+  "name": "水槽シミュレーション",
+  "short_name": "水槽シム",
+  "description": "アクアリウム放置ゲーム",
+  "start_url": "./aquarium.html",
+  "display": "standalone",
+  "background_color": "#0a1628",
+  "theme_color": "#0a1628",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='80' font-size='80'>🐟</text></svg>",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
