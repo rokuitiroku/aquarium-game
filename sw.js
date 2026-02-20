@@ -1,9 +1,10 @@
-const CACHE_NAME = 'aquarium-v1';
+const CACHE_NAME = 'aquarium-v2';
 
 self.addEventListener('install', e => {
   e.waitUntil(
     caches.open(CACHE_NAME).then(cache => cache.addAll([
-      './', './aquarium.html', './manifest.json'
+      './', './aquarium.html', './manifest.json',
+      './js/data.js', './js/fish.js', './js/ui.js', './js/gacha.js', './js/game.js'
     ]))
   );
   self.skipWaiting();
