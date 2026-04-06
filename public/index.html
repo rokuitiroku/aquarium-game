@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#0a1628">
+<meta name="theme-color" content="#f5efe6">
 <link rel="manifest" href="manifest.json">
 <title>🐟 水槽シミュレーション</title>
 <style>
@@ -12,7 +12,7 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    background: #0a0e1a;
+    background: #f5efe6;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -27,90 +27,185 @@
     padding-right: env(safe-area-inset-right);
   }
 
-  .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  /* ===== ステータスバー（水槽上部） ===== */
+  .status-bar {
     width: min(800px, calc(100vw - 40px));
-    margin-bottom: 10px;
-  }
-
-  h1 {
-    color: #7ec8e3;
-    font-size: 1.3rem;
-    letter-spacing: 0.1em;
-    text-shadow: 0 0 20px rgba(126, 200, 227, 0.4);
-  }
-
-  .header-right {
     display: flex;
     align-items: center;
-    gap: 10px;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 6px 14px;
+    margin-bottom: 6px;
+    background: linear-gradient(145deg, #f8f2e6, #efe5d0);
+    border: 2px solid #c8b890;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(120,100,60,0.12), inset 0 1px 0 rgba(255,255,255,0.4);
+  }
+
+  /* ===== ゲームパネル ===== */
+  .game-panel {
+    width: min(800px, calc(100vw - 40px));
+    background: linear-gradient(145deg, #f8f2e6, #efe5d0);
+    border: 2px solid #c8b890;
+    border-radius: 16px;
+    padding: 10px 14px;
+    margin-top: 6px;
+    box-shadow: 0 2px 10px rgba(120,100,60,0.15), inset 0 1px 0 rgba(255,255,255,0.4);
+  }
+
+  .coin-display {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(220,180,80,0.15);
+    border: 1.5px solid rgba(200,170,80,0.35);
+    border-radius: 14px;
+    padding: 4px 12px;
+    color: #b8922a;
+    font-weight: 700;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+  }
+  .coin-display.flash {
+    background: rgba(220,180,80,0.3);
+    transform: scale(1.08);
   }
 
   .progress-display {
-    font-size: 0.7rem;
-    color: rgba(126, 200, 227, 0.55);
+    font-size: 0.72rem;
+    color: #6a8a60;
     display: flex;
     align-items: center;
     gap: 4px;
+    cursor: pointer;
   }
   .progress-display .prog-bar {
     width: 48px;
     height: 6px;
-    background: rgba(126, 200, 227, 0.1);
+    background: rgba(140,180,140,0.2);
     border-radius: 3px;
     overflow: hidden;
   }
   .progress-display .prog-fill {
     height: 100%;
     border-radius: 3px;
-    background: linear-gradient(90deg, #7ec8e3, #ffd700);
+    background: linear-gradient(90deg, #8cc8a0, #e8c86a);
     transition: width 0.5s;
   }
 
   .income-display {
-    color: rgba(126, 200, 227, 0.6);
-    font-size: 0.75rem;
+    color: #b8922a;
+    font-size: 0.72rem;
   }
 
-  .coin-display {
+  .gp-buttons {
     display: flex;
     align-items: center;
-    gap: 8px;
-    background: rgba(255, 215, 0, 0.1);
-    border: 1px solid rgba(255, 215, 0, 0.3);
-    border-radius: 20px;
-    padding: 6px 16px;
-    color: #ffd700;
-    font-weight: 700;
-    font-size: 1rem;
-    text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
-    transition: all 0.3s;
+    justify-content: center;
+    gap: 6px;
+    flex-wrap: wrap;
   }
-  .coin-display.flash {
-    background: rgba(255, 215, 0, 0.25);
-    transform: scale(1.08);
+
+  .gp-btn {
+    font-family: 'Zen Maru Gothic', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 6px 10px;
+    border: 1.5px solid rgba(140,180,140,0.3);
+    border-radius: 12px;
+    background: rgba(255,250,240,0.7);
+    color: #5a7a5a;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .gp-btn:hover {
+    background: rgba(140,180,140,0.2);
+    border-color: #7ab880;
+    transform: translateY(-1px);
+  }
+  .gp-btn:active { transform: scale(0.95); }
+  .gp-btn.active-toggle {
+    background: rgba(140,180,140,0.25);
+    border-color: #6aaa70;
+    box-shadow: 0 1px 4px rgba(100,150,100,0.2);
+  }
+  .gp-btn-icon { font-size: 1.2rem; line-height: 1; }
+  .gp-btn-label { font-size: 0.55rem; line-height: 1; }
+  .gp-btn-danger { border-color: rgba(255,80,80,0.3); }
+  .gp-btn-danger:hover {
+    background: rgba(255,60,60,0.12);
+    border-color: rgba(255,80,80,0.5);
+  }
+
+  /* イベントログ */
+  .gp-log {
+    margin-top: 8px;
+    padding-top: 6px;
+    border-top: 1.5px solid rgba(180,160,120,0.2);
+    max-height: 60px;
+    overflow-y: auto;
+    font-size: 0.65rem;
+    color: #8a9a80;
+    line-height: 1.6;
+  }
+  .gp-log:empty { display: none; }
+  .gp-log-entry {
+    display: flex;
+    gap: 6px;
+  }
+  .gp-log-time {
+    color: #b8a880;
+    flex-shrink: 0;
+  }
+
+  /* エサ選択ドロップアップ */
+  .hud-food-wrap { position: relative; }
+  .hud-food-panel {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(250,245,235,0.97);
+    border: 1.5px solid #c8b890;
+    border-radius: 12px;
+    padding: 8px;
+    gap: 4px;
+    flex-direction: column;
+    min-width: 140px;
+    box-shadow: 0 -4px 16px rgba(120,100,60,0.15);
+    z-index: 6;
+  }
+  .hud-food-panel.open { display: flex; }
+  .hud-food-panel > span {
+    color: #8a9a80;
+    font-size: 0.65rem;
+    text-align: center;
+    margin-bottom: 2px;
   }
 
   .tank-wrapper {
     position: relative;
-    border-radius: 16px;
+    border-radius: 18px;
     padding: 6px;
-    background: linear-gradient(135deg, #1a3a4a, #0d1f2d);
-    box-shadow: 0 0 40px rgba(30, 100, 160, 0.15), inset 0 0 30px rgba(0,0,0,0.3);
+    background: linear-gradient(135deg, #d4c4a8, #c0b090);
+    box-shadow: 0 3px 15px rgba(120,100,60,0.2), inset 0 2px 4px rgba(255,255,255,0.3);
+    border: 2px solid #bba880;
   }
 
   canvas { display: block; border-radius: 12px; cursor: pointer; }
 
   .coin-popup {
     position: absolute;
-    color: #ffd700;
+    color: #c8960a;
     font-weight: 700;
     font-size: 0.9rem;
     pointer-events: none;
     animation: coinPop 1s ease-out forwards;
-    text-shadow: 0 0 6px rgba(255, 215, 0, 0.6);
+    text-shadow: 0 1px 0 rgba(255,255,255,0.4);
     z-index: 10;
   }
   @keyframes coinPop {
@@ -120,38 +215,39 @@
 
   .fish-tooltip {
     position: absolute;
-    background: rgba(10, 20, 40, 0.92);
-    border: 1px solid rgba(126, 200, 227, 0.4);
+    background: rgba(255,250,240,0.95);
+    border: 2px solid #c8b890;
     border-radius: 12px;
     padding: 8px 14px;
-    color: #cde4f0;
+    color: #5a4a30;
     font-size: 0.78rem;
     pointer-events: none;
     z-index: 20;
     white-space: nowrap;
     opacity: 0;
     transition: opacity 0.2s;
-    box-shadow: 0 0 16px rgba(30, 100, 160, 0.3);
+    box-shadow: 0 2px 8px rgba(120,100,60,0.15);
   }
   .fish-tooltip.visible { opacity: 1; }
-  .fish-tooltip .tt-name { font-weight: 700; font-size: 0.85rem; margin-bottom: 2px; }
-  .fish-tooltip .tt-greeting { color: rgba(126, 200, 227, 0.7); }
-  .fish-tooltip .tt-stats { color: rgba(255, 215, 0, 0.7); font-size: 0.7rem; margin-top: 3px; }
+  .fish-tooltip .tt-name { font-weight: 700; font-size: 0.85rem; margin-bottom: 2px; color:#4a6a50; }
+  .fish-tooltip .tt-greeting { color: #7a9a80; }
+  .fish-tooltip .tt-stats { color: #b8922a; font-size: 0.7rem; margin-top: 3px; }
 
   .notification {
     position: absolute;
     top: 16px;
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(10, 20, 40, 0.9);
-    border: 1px solid rgba(126, 200, 227, 0.3);
+    background: rgba(255,250,240,0.92);
+    border: 2px solid #c8b890;
     border-radius: 16px;
     padding: 8px 20px;
-    color: #cde4f0;
+    color: #5a4a30;
     font-size: 0.8rem;
     z-index: 30;
     animation: notifAnim 3s ease-out forwards;
     white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(120,100,60,0.15);
   }
   @keyframes notifAnim {
     0% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
@@ -160,73 +256,32 @@
     100% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
   }
 
-  .food-selector {
-    display: flex;
-    gap: 6px;
-    margin-top: 10px;
-    align-items: center;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  .food-selector span {
-    color: rgba(126, 200, 227, 0.5);
-    font-size: 0.75rem;
-    margin-right: 4px;
-  }
-
   .food-btn {
     font-family: 'Zen Maru Gothic', sans-serif;
-    padding: 5px 12px;
-    border: 1px solid rgba(126, 200, 227, 0.2);
-    border-radius: 14px;
-    background: rgba(126, 200, 227, 0.06);
-    color: #7ec8e3;
-    font-size: 0.75rem;
+    padding: 5px 10px;
+    border: 1.5px solid rgba(140,180,140,0.3);
+    border-radius: 10px;
+    background: rgba(255,250,240,0.8);
+    color: #5a7a5a;
+    font-size: 0.72rem;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.2s;
     white-space: nowrap;
+    text-align: left;
   }
-  .food-btn:hover { background: rgba(126, 200, 227, 0.15); }
+  .food-btn:hover { background: rgba(140,180,140,0.15); }
   .food-btn.active {
-    background: rgba(126, 200, 227, 0.2);
-    border-color: rgba(126, 200, 227, 0.6);
-    box-shadow: 0 0 8px rgba(126, 200, 227, 0.2);
+    background: rgba(140,180,140,0.2);
+    border-color: #7ab880;
   }
-  .food-btn.locked { opacity: 0.4; cursor: not-allowed; }
+  .food-btn.locked { opacity: 0.35; cursor: not-allowed; }
 
-  .controls {
-    display: flex;
-    gap: 8px;
-    margin-top: 10px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  .controls button {
-    font-family: 'Zen Maru Gothic', sans-serif;
-    padding: 7px 14px;
-    border: 1px solid rgba(126, 200, 227, 0.3);
-    border-radius: 20px;
-    background: rgba(126, 200, 227, 0.08);
-    color: #7ec8e3;
-    font-size: 0.8rem;
-    cursor: pointer;
-    transition: all 0.3s;
-  }
-  .controls button:hover {
-    background: rgba(126, 200, 227, 0.2);
-    border-color: rgba(126, 200, 227, 0.6);
-  }
-  .controls button.active-toggle {
-    background: rgba(126, 200, 227, 0.25);
-    border-color: rgba(126, 200, 227, 0.7);
-    box-shadow: 0 0 8px rgba(126, 200, 227, 0.2);
-  }
 
   .shop-overlay {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(120,110,80,0.45);
     z-index: 100;
     align-items: center;
     justify-content: center;
@@ -235,36 +290,36 @@
   .shop-overlay.open { display: flex; }
 
   .shop-panel {
-    background: linear-gradient(145deg, #0f2233, #162d44);
-    border: 1px solid rgba(126, 200, 227, 0.2);
+    background: linear-gradient(145deg, #faf5ea, #f0e8d8);
+    border: 2px solid #c8b890;
     border-radius: 20px;
     padding: 28px 32px;
     max-width: 560px;
     width: 90vw;
     max-height: 80vh;
     overflow-y: auto;
-    box-shadow: 0 0 60px rgba(30, 100, 160, 0.3);
+    box-shadow: 0 4px 20px rgba(120,100,60,0.2);
   }
 
   .shop-title {
-    color: #ffd700;
+    color: #b8922a;
     font-size: 1.3rem;
     text-align: center;
     margin-bottom: 6px;
   }
   .shop-coins {
     text-align: center;
-    color: #ffd700;
+    color: #b8922a;
     font-size: 0.9rem;
     margin-bottom: 18px;
     opacity: 0.8;
   }
   .shop-section-title {
-    color: #7ec8e3;
+    color: #5a8a60;
     font-size: 0.85rem;
     margin: 16px 0 10px;
     padding-bottom: 4px;
-    border-bottom: 1px solid rgba(126, 200, 227, 0.15);
+    border-bottom: 2px solid rgba(140,180,140,0.25);
   }
 
   .shop-item {
@@ -274,27 +329,27 @@
     padding: 10px 14px;
     border-radius: 12px;
     margin-bottom: 8px;
-    background: rgba(126, 200, 227, 0.04);
-    border: 1px solid rgba(126, 200, 227, 0.08);
+    background: rgba(140,180,140,0.06);
+    border: 1px solid rgba(140,180,140,0.15);
     transition: all 0.2s;
   }
   .shop-item:hover {
-    background: rgba(126, 200, 227, 0.1);
-    border-color: rgba(126, 200, 227, 0.2);
+    background: rgba(140,180,140,0.12);
+    border-color: rgba(140,180,140,0.3);
   }
   .shop-item-icon { font-size: 1.8rem; min-width: 36px; display: flex; align-items: center; justify-content: center; }
-  .shop-item-icon img { border-radius: 6px; background: rgba(126,200,227,0.08); }
+  .shop-item-icon img { border-radius: 6px; background: rgba(140,180,140,0.08); }
   .shop-item-info { flex: 1; }
-  .shop-item-name { color: #cde4f0; font-size: 0.9rem; font-weight: 700; }
-  .shop-item-desc { color: rgba(126, 200, 227, 0.5); font-size: 0.7rem; margin-top: 2px; }
+  .shop-item-name { color: #4a5a40; font-size: 0.9rem; font-weight: 700; }
+  .shop-item-desc { color: #8a9a80; font-size: 0.7rem; margin-top: 2px; }
 
   .shop-buy-btn {
     font-family: 'Zen Maru Gothic', sans-serif;
     padding: 6px 14px;
-    border: 1px solid rgba(255, 215, 0, 0.3);
+    border: 2px solid rgba(200,170,80,0.4);
     border-radius: 14px;
-    background: rgba(255, 215, 0, 0.1);
-    color: #ffd700;
+    background: rgba(220,180,80,0.12);
+    color: #a07a10;
     font-size: 0.8rem;
     font-weight: 700;
     cursor: pointer;
@@ -302,14 +357,14 @@
     white-space: nowrap;
   }
   .shop-buy-btn:hover:not(:disabled) {
-    background: rgba(255, 215, 0, 0.25);
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+    background: rgba(220,180,80,0.25);
+    box-shadow: 0 1px 6px rgba(200,170,80,0.2);
   }
   .shop-buy-btn:disabled { opacity: 0.3; cursor: not-allowed; }
   .shop-buy-btn.owned {
-    border-color: rgba(100, 200, 100, 0.4);
-    color: #6bcb77;
-    background: rgba(100, 200, 100, 0.1);
+    border-color: rgba(100, 180, 100, 0.4);
+    color: #5aaa60;
+    background: rgba(100, 180, 100, 0.1);
   }
 
   .shop-close {
@@ -317,15 +372,15 @@
     margin: 18px auto 0;
     font-family: 'Zen Maru Gothic', sans-serif;
     padding: 8px 28px;
-    border: 1px solid rgba(126, 200, 227, 0.3);
+    border: 2px solid rgba(140,180,140,0.35);
     border-radius: 20px;
-    background: rgba(126, 200, 227, 0.08);
-    color: #7ec8e3;
+    background: rgba(140,180,140,0.1);
+    color: #5a8a60;
     font-size: 0.85rem;
     cursor: pointer;
     transition: all 0.3s;
   }
-  .shop-close:hover { background: rgba(126, 200, 227, 0.2); }
+  .shop-close:hover { background: rgba(140,180,140,0.2); }
 
   /* ===== ガチャ演出 ===== */
   .gacha-overlay {
@@ -548,37 +603,31 @@
     font-weight:bold; pointer-events:none;
   }
 
-  .info {
-    color: rgba(126, 200, 227, 0.45);
-    font-size: 0.7rem;
-    margin-top: 8px;
-  }
-
   .area-tabs {
     display: flex;
     gap: 4px;
-    margin-bottom: 6px;
+    margin-top: 4px;
     justify-content: center;
     width: min(800px, calc(100vw - 40px));
   }
   .area-tab {
     font-family: 'Zen Maru Gothic', sans-serif;
     padding: 5px 13px;
-    border: 1px solid rgba(126, 200, 227, 0.15);
-    border-bottom: none;
-    border-radius: 12px 12px 0 0;
-    background: rgba(126, 200, 227, 0.04);
-    color: rgba(126, 200, 227, 0.5);
+    border: 2px solid rgba(180,160,120,0.25);
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+    background: rgba(255,250,240,0.5);
+    color: #8a7a60;
     font-size: 0.72rem;
     cursor: pointer;
     transition: all 0.3s;
     white-space: nowrap;
   }
-  .area-tab:hover { background: rgba(126, 200, 227, 0.1); }
+  .area-tab:hover { background: rgba(255,250,240,0.8); }
   .area-tab.active {
-    background: rgba(126, 200, 227, 0.18);
-    border-color: rgba(126, 200, 227, 0.5);
-    color: #7ec8e3;
+    background: rgba(255,250,240,0.9);
+    border-color: #c0a870;
+    color: #6a5a30;
     font-weight: 700;
   }
   .area-tab.locked {
@@ -590,23 +639,259 @@
     opacity: 0.6;
     margin-left: 3px;
   }
+  /* ===== ランダムイベント演出 ===== */
+  .event-overlay {
+    display:none; position:fixed; inset:0; z-index:150;
+    align-items:center; justify-content:center; pointer-events:none;
+  }
+  .event-overlay.open { display:flex; pointer-events:auto; }
+  .shark-overlay { background:rgba(180,0,0,0); transition:background 0.5s; }
+  .shark-overlay.danger { background:rgba(180,0,0,0.4); }
+  .shark-icon {
+    position:fixed; top:50%; font-size:6rem;
+    transform:translateY(-50%);
+    animation:sharkSwim 1.5s ease-in-out forwards;
+    filter:drop-shadow(0 0 20px rgba(255,0,0,0.8));
+    z-index:151;
+  }
+  @keyframes sharkSwim {
+    0%{left:-120px} 40%{left:45%} 60%{left:55%} 100%{left:calc(100% + 120px)}
+  }
+  .coin-rain-particle {
+    position:fixed; font-size:1.5rem; pointer-events:none; z-index:151;
+    animation:coinFall linear forwards;
+  }
+  @keyframes coinFall {
+    0%{transform:translateY(-40px) rotate(0deg);opacity:1}
+    100%{transform:translateY(100vh) rotate(720deg);opacity:0.3}
+  }
+  .golden-time-indicator {
+    position:absolute; top:0; left:0; right:0; height:3px;
+    background:linear-gradient(90deg,#ffd700,#ff8f00,#ffd700);
+    border-radius:0 0 4px 4px;
+    box-shadow:0 0 12px rgba(255,215,0,0.6);
+    z-index:15; animation:goldenPulse 1s ease-in-out infinite;
+  }
+  @keyframes goldenPulse { 0%,100%{opacity:0.7} 50%{opacity:1} }
+  .golden-time-text {
+    position:absolute; top:6px; right:8px;
+    color:#ffd700; font-size:0.7rem; font-weight:700;
+    text-shadow:0 0 8px rgba(255,215,0,0.5); z-index:16;
+  }
+  .event-notification {
+    position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);
+    z-index:160; text-align:center; pointer-events:none;
+  }
+  .event-notification-text {
+    color:#fff; font-size:1.8rem; font-weight:900;
+    text-shadow:0 0 30px rgba(255,255,255,0.5);
+    animation:eventTextIn 0.5s ease-out;
+  }
+  @keyframes eventTextIn {
+    0%{transform:scale(2.5);opacity:0} 60%{transform:scale(0.9);opacity:1} 100%{transform:scale(1);opacity:1}
+  }
+  .event-flash {
+    position:fixed; inset:0; z-index:155; pointer-events:none;
+    opacity:0; transition:opacity 0.1s;
+  }
+  .event-flash.red { background:rgba(255,0,0,0.6); }
+  .event-flash.gold { background:rgba(255,215,0,0.5); }
+  .event-flash.active { opacity:1; }
+  .treasure-reveal {
+    font-size:4rem; z-index:152;
+    animation:treasurePop 1s ease-out forwards;
+  }
+  @keyframes treasurePop {
+    0%{transform:scale(0) rotate(-30deg);opacity:0}
+    50%{transform:scale(1.3) rotate(5deg);opacity:1}
+    100%{transform:scale(1) rotate(0deg);opacity:1}
+  }
+
+  /* ===== 水質バー ===== */
+  .water-quality-bar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.7rem;
+    color: #5a9bb5;
+  }
+  .wq-bar-track {
+    width: 50px;
+    height: 7px;
+    background: rgba(140,180,200,0.15);
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid rgba(140,180,200,0.25);
+  }
+  .wq-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, #6ac0a0, #80d0c0);
+    transition: width 0.5s, background 0.5s;
+  }
+  .wq-bar-fill.warn {
+    background: linear-gradient(90deg, #d4a840, #e0c060);
+  }
+  .wq-bar-fill.danger {
+    background: linear-gradient(90deg, #d05050, #e07060);
+  }
+
+  .fish-count-display {
+    font-size: 0.7rem;
+    color: #5a8a60;
+    font-weight: 700;
+  }
+
+  /* ===== 来客表示 ===== */
+  .visitor-display {
+    font-size: 0.7rem;
+    color: #8a9a80;
+  }
+
+  /* ===== 来客通路（水槽の外） ===== */
+  .visitor-walkway-outer {
+    position: relative;
+    width: min(800px, calc(100vw - 40px));
+    height: 30px;
+    overflow: hidden;
+    margin-top: 2px;
+  }
+  .visitor-sprite {
+    position: absolute;
+    bottom: 2px;
+    transition: left 0.3s linear;
+    line-height: 1;
+  }
+
+  /* かわいい来客キャラ */
+  .v-char {
+    width: 22px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .v-head {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: #ffe0c0;
+    position: relative;
+    border: 1.5px solid #d4a070;
+    z-index: 1;
+  }
+  .v-head::before, .v-head::after {
+    content: '';
+    position: absolute;
+    width: 3px; height: 3px;
+    border-radius: 50%;
+    background: #4a3a2a;
+    top: 7px;
+  }
+  .v-head::before { left: 4px; }
+  .v-head::after { right: 4px; }
+  .v-mouth {
+    position: absolute;
+    bottom: 3px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 5px; height: 2.5px;
+    border-bottom: 1.5px solid #d07060;
+    border-radius: 0 0 50% 50%;
+  }
+  .v-blush-l, .v-blush-r {
+    position: absolute;
+    width: 4px; height: 3px;
+    border-radius: 50%;
+    background: rgba(255,130,130,0.35);
+    top: 9px;
+  }
+  .v-blush-l { left: 1px; }
+  .v-blush-r { right: 1px; }
+  .v-hair {
+    position: absolute;
+    top: -2px; left: -1px; right: -1px;
+    height: 10px;
+    border-radius: 10px 10px 0 0;
+    z-index: 2;
+  }
+  .v-body {
+    width: 16px; height: 10px;
+    border-radius: 3px 3px 6px 6px;
+    margin-top: -2px;
+    border: 1.2px solid rgba(0,0,0,0.1);
+  }
+
+  /* 来客タイプ別カラー */
+  .v-boy .v-hair { background: #6a4a2a; }
+  .v-boy .v-body { background: #6aade8; }
+  .v-girl .v-hair { background: #b06030; height:12px; border-radius:10px; }
+  .v-girl .v-body { background: #f0a0b0; }
+  .v-man .v-hair { background: #3a2a1a; }
+  .v-man .v-body { background: #5080b0; }
+  .v-woman .v-hair { background: #8a5030; height:12px; border-radius:10px; }
+  .v-woman .v-body { background: #e08090; }
+  .v-grandpa .v-hair { background: #c0b8b0; }
+  .v-grandpa .v-body { background: #8a9a70; }
+  .v-grandma .v-hair { background: #d0c8c0; height:12px; border-radius:10px; }
+  .v-grandma .v-body { background: #b080a0; }
+  .v-baby .v-head { width:16px; height:16px; }
+  .v-baby .v-hair { background: #e0c8a0; height:6px; }
+  .v-baby .v-body { background: #f0e080; width:12px; height:8px; }
+  .v-scientist .v-hair { background: #f0f0f0; }
+  .v-scientist .v-body { background: #f0f0f0; }
+  .v-scientist .v-head::before, .v-scientist .v-head::after { background: #2060c0; border-radius: 0; width:4px; height:2px; border: 0.5px solid #2060c0; }
+  .v-princess .v-hair { background: #ffd700; height:12px; }
+  .v-princess .v-body { background: #f0c0d0; }
+  .v-princess::before {
+    content: '👑';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 8px;
+    z-index: 3;
+  }
+  .v-camera .v-hair { background: #5a4a3a; }
+  .v-camera .v-body { background: #708090; }
+  .v-camera::after {
+    content: '📷';
+    position: absolute;
+    top: 10px;
+    right: -6px;
+    font-size: 7px;
+    z-index: 3;
+  }
+  .visitor-react {
+    position: absolute;
+    top: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.75rem;
+    animation: reactPop 1.5s ease-out forwards;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  @keyframes reactPop {
+    0% { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateX(-50%) translateY(-12px) scale(1.2); }
+  }
 </style>
 </head>
 <body>
 
-<div class="header">
-  <h1>🐟 水槽シミュレーション</h1>
-  <div class="header-right">
-    <div class="progress-display" id="progressDisplay" style="cursor:pointer" onclick="openCollection()"></div>
-    <div class="income-display" id="incomeDisplay"></div>
-    <div class="coin-display" id="coinDisplay">
-      <span>🪙</span>
-      <span id="coinText">0</span>
-    </div>
+<div class="status-bar">
+  <div class="coin-display" id="coinDisplay">
+    <span>🪙</span>
+    <span id="coinText">0</span>
   </div>
+  <div class="water-quality-bar" id="waterQualityBar">
+    💧<div class="wq-bar-track"><div class="wq-bar-fill" id="wqBarFill" style="width:100%"></div></div>
+  </div>
+  <div class="progress-display" id="progressDisplay" onclick="openCollection()"></div>
+  <div class="fish-count-display" id="fishCountDisplay">🐟 0/5</div>
+  <div class="visitor-display" id="visitorDisplay">👥 0/3</div>
+  <div class="income-display" id="incomeDisplay"></div>
 </div>
-
-<div class="area-tabs" id="areaTabs"></div>
 
 <div class="tank-wrapper" id="tankWrapper">
   <canvas id="tank"></canvas>
@@ -617,17 +902,26 @@
   </div>
 </div>
 
-<div class="food-selector" id="foodSelector"></div>
+<div class="area-tabs" id="areaTabs"></div>
 
-<div class="controls">
-  <button onclick="openShop()">🛒 ショップ</button>
-  <button onclick="openCollection()">📖 図鑑</button>
-  <button id="bubbleBtn" onclick="toggleBubbler()">🫧 ブクブク</button>
-  <button onclick="toggleLight()">💡 ライト</button>
-  <button onclick="killAll()" style="background:rgba(255,60,60,0.15);border-color:rgba(255,60,60,0.3)">💀 全滅</button>
+<div class="visitor-walkway-outer" id="visitorWalkway"></div>
+
+<div class="game-panel">
+  <div class="gp-buttons">
+    <button class="gp-btn" onclick="openShop()" title="ショップ"><span class="gp-btn-icon">🛒</span><span class="gp-btn-label">ショップ</span></button>
+    <button class="gp-btn" onclick="openCollection()" title="図鑑"><span class="gp-btn-icon">📖</span><span class="gp-btn-label">図鑑</span></button>
+    <button class="gp-btn" id="bubbleBtn" onclick="toggleBubbler()" title="ブクブク"><span class="gp-btn-icon">🫧</span><span class="gp-btn-label">ブクブク</span></button>
+    <button class="gp-btn" onclick="toggleLight()" title="ライト"><span class="gp-btn-icon">💡</span><span class="gp-btn-label">ライト</span></button>
+    <button class="gp-btn" id="bgmBtn" onclick="toggleBGM()" title="BGM"><span class="gp-btn-icon">🔇</span><span class="gp-btn-label">BGM</span></button>
+    <button class="gp-btn" onclick="doWaterChange()" title="水替え"><span class="gp-btn-icon">💧</span><span class="gp-btn-label">水替え</span></button>
+    <div class="hud-food-wrap">
+      <button class="gp-btn" id="hudFoodToggle" onclick="toggleFoodPanel()" title="エサ"><span class="gp-btn-icon">🍞</span><span class="gp-btn-label">エサ</span></button>
+      <div class="hud-food-panel" id="foodSelector"></div>
+    </div>
+    <button class="gp-btn gp-btn-danger" onclick="killAll()" title="全滅"><span class="gp-btn-icon">💀</span><span class="gp-btn-label">全滅</span></button>
+  </div>
+  <div class="gp-log" id="eventLog"></div>
 </div>
-
-<p class="info">水槽をクリックしてエサをあげよう ・ 魚がエサを食べるとコインGET ・ 放置でも稼げるよ！</p>
 
 <div class="shop-overlay" id="shopOverlay">
   <div class="shop-panel">
@@ -641,7 +935,7 @@
 <div class="shop-overlay" id="collectionOverlay">
   <div class="shop-panel" style="max-width:640px">
     <div class="shop-title">📖 おさかな図鑑</div>
-    <div id="collectionProgress" style="text-align:center;color:rgba(126,200,227,0.7);font-size:0.85rem;margin-bottom:12px"></div>
+    <div id="collectionProgress" style="text-align:center;font-size:0.85rem;margin-bottom:12px"></div>
     <div id="collectionGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:6px;max-height:60vh;overflow-y:auto;padding:4px"></div>
     <button class="shop-close" onclick="closeCollection()">とじる</button>
   </div>
@@ -651,6 +945,13 @@
 <div class="shop-overlay" id="fishDetailOverlay" style="z-index:10001">
   <div class="shop-panel" id="fishDetailPanel" style="max-width:420px">
   </div>
+</div>
+
+<!-- ランダムイベント -->
+<div class="event-overlay shark-overlay" id="sharkOverlay"></div>
+<div class="event-flash" id="eventFlash"></div>
+<div class="event-notification" id="eventNotification" style="display:none">
+  <div class="event-notification-text" id="eventNotificationText"></div>
 </div>
 
 <!-- 扉 -->
@@ -704,7 +1005,7 @@ const ctx = canvas.getContext('2d');
 const tankWrapper = document.getElementById('tankWrapper');
 function resize() {
   const w = Math.min(window.innerWidth - 40, 800);
-  const h = Math.min(window.innerHeight - 220, 480);
+  const h = Math.min(window.innerHeight - 200, 480);
   canvas.width = w; canvas.height = h;
 }
 resize();

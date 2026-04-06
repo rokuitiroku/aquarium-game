@@ -4,3 +4,4 @@ ios/
 www/
 .DS_Store
 *.log
+fontscope-config.js

@@ -33,7 +33,7 @@ function getFoodUpgradeCost(id) {
 }
 function getAutoFeederUpgradeCost() {
   if (autoFeederLevel >= 10) return Infinity;
-  return Math.floor(300 * Math.pow(2.5, autoFeederLevel));
+  return Math.floor(1000000 * Math.pow(3, autoFeederLevel));
 }
 function getAutoFeederInterval() {
   if (autoFeederLevel <= 0) return Infinity;
@@ -64,10 +64,10 @@ const FISH_TYPES = [
       {body:'#6bcb77',fin:'#4caf50',belly:'#a5d6a7'},
       {body:'#4dabf7',fin:'#339af0',belly:'#a5d8ff'},
     ],
-    desc:'元気いっぱいの普通の魚',
+    desc:'世界には3万種以上の魚がいるが、最も適応力が高い仲間のひとつ',
     greeting:'ノーマルだよ！元気いっぱい泳いでるよ～' },
 
-  { id:'medaka', area:'freshwater', name:'メダカ', icon:'💛', shopPrice:2000, unlocked:false, passiveIncome:2,
+  { id:'medaka', area:'freshwater', name:'メダカ', icon:'💛', shopPrice:2000, unlocked:false, passiveIncome:1,
     sizeRange:[8,11], speedRange:[0.6,1.3], shape:'standard', bodyW:0.6, bodyH:0.38,
     tailStyle:'tri', dorsalStyle:'normal', patternType:'none',
     palettes:[
@@ -75,17 +75,17 @@ const FISH_TYPES = [
       {body:'#f5f5f5',fin:'#ddd',belly:'#fff'},
       {body:'#ffeb3b',fin:'#fdd835',belly:'#fff9c4'},
     ],
-    desc:'小さくてかわいいメダカ',
+    desc:'宇宙に行った最初の魚。1994年にスペースシャトルで産卵に成功した',
     greeting:'メダカだよ～小さいけど頑張ってるよ！' },
 
-  { id:'neon', area:'freshwater', name:'ネオンテトラ', icon:'✨', shopPrice:5000, unlocked:false, passiveIncome:3,
+  { id:'neon', area:'freshwater', name:'ネオンテトラ', icon:'✨', shopPrice:5000, unlocked:false, passiveIncome:1,
     sizeRange:[9,13], speedRange:[0.8,1.5], shape:'standard', bodyW:0.65, bodyH:0.35,
     tailStyle:'fork', dorsalStyle:'normal', patternType:'neon', glowColor:'#00d4ff',
     palettes:[{body:'#00d4ff',fin:'#0099cc',belly:'#80eaff',stripe:'#ff3366'}],
-    desc:'光る体が美しい。収入3倍',
+    desc:'青い光は鱗の下のグアニン結晶が光を反射しているだけで、自ら発光はしない',
     greeting:'ネオンテトラだよ！キラキラでしょ✨' },
 
-  { id:'guppy', area:'freshwater', name:'グッピー', icon:'🌈', shopPrice:10000, unlocked:false, passiveIncome:5,
+  { id:'guppy', area:'freshwater', name:'グッピー', icon:'🌈', shopPrice:10000, unlocked:false, passiveIncome:2,
     sizeRange:[10,14], speedRange:[0.6,1.2], shape:'standard', bodyW:0.58, bodyH:0.4,
     tailStyle:'fan', dorsalStyle:'normal', patternType:'none',
     palettes:[
@@ -93,10 +93,10 @@ const FISH_TYPES = [
       {body:'#66bb6a',fin:'#ff7043',belly:'#c8e6c9'},
       {body:'#ffa726',fin:'#ab47bc',belly:'#ffe0b2'},
     ],
-    desc:'カラフルな尻尾が自慢！',
+    desc:'1匹のメスから約30匹の子が生まれる驚異の繁殖力。名前の由来は発見者グッピー氏',
     greeting:'グッピーだよ！しっぽが自慢なの♪' },
 
-  { id:'platy', area:'freshwater', name:'プラティ', icon:'🍑', shopPrice:18000, unlocked:false, passiveIncome:7,
+  { id:'platy', area:'freshwater', name:'プラティ', icon:'🍑', shopPrice:18000, unlocked:false, passiveIncome:3,
     sizeRange:[10,14], speedRange:[0.5,1.1], shape:'standard', bodyW:0.6, bodyH:0.42,
     tailStyle:'tri', dorsalStyle:'normal', patternType:'none',
     palettes:[
@@ -104,30 +104,30 @@ const FISH_TYPES = [
       {body:'#ffeb3b',fin:'#f9a825',belly:'#fff9c4'},
       {body:'#29b6f6',fin:'#0288d1',belly:'#b3e5fc'},
     ],
-    desc:'丈夫で人懐っこい！',
+    desc:'メキシコ原産の卵胎生の魚。お腹の中で卵を育て、稚魚の状態で出産する',
     greeting:'プラティだよ！人懐っこいんだ～' },
 
-  { id:'corydoras', area:'freshwater', name:'コリドラス', icon:'🐱', shopPrice:28000, unlocked:false, passiveIncome:9,
+  { id:'corydoras', area:'freshwater', name:'コリドラス', icon:'🐱', shopPrice:28000, unlocked:false, passiveIncome:4,
     sizeRange:[10,14], speedRange:[0.3,0.8], shape:'standard', bodyW:0.55, bodyH:0.46,
     tailStyle:'tri', dorsalStyle:'normal', patternType:'dots', hasWhiskers:true, bottomDweller:true,
     palettes:[
       {body:'#a1887f',fin:'#8d6e63',belly:'#d7ccc8'},
       {body:'#90a4ae',fin:'#78909c',belly:'#cfd8dc'},
     ],
-    desc:'底でもぐもぐ♪ 癒し系',
+    desc:'腸で呼吸できる珍しい魚。水面でパクッと空気を吸うのはそのため',
     greeting:'コリドラスだよ！底でもぐもぐ♪' },
 
-  { id:'angel', area:'freshwater', name:'エンゼルフィッシュ', icon:'👼', shopPrice:55000, unlocked:false, passiveIncome:15,
+  { id:'angel', area:'freshwater', name:'エンゼルフィッシュ', icon:'👼', shopPrice:55000, unlocked:false, passiveIncome:6,
     sizeRange:[18,24], speedRange:[0.3,0.8], shape:'standard', bodyW:0.5, bodyH:0.5,
     tailStyle:'tri', dorsalStyle:'tall', patternType:'vbands', hasVentralFin:true,
     palettes:[
       {body:'#f0f0f0',fin:'#ddd',belly:'#fff',stripe:'#333'},
       {body:'#ffd700',fin:'#e6c200',belly:'#fff3b0',stripe:'#996600'},
     ],
-    desc:'優雅な泳ぎ。収入14倍',
+    desc:'アマゾン川出身の子育て魚。両親が卵のそばに付き添い、ヒレで新鮮な水を送り続ける',
     greeting:'エンゼルフィッシュだよ！優雅でしょ？' },
 
-  { id:'betta', area:'freshwater', name:'ベタ', icon:'🌸', shopPrice:75000, unlocked:false, passiveIncome:18,
+  { id:'betta', area:'freshwater', name:'ベタ', icon:'🌸', shopPrice:75000, unlocked:false, passiveIncome:7,
     sizeRange:[16,22], speedRange:[0.3,0.7], shape:'standard', bodyW:0.55, bodyH:0.42,
     tailStyle:'flowing', dorsalStyle:'flowing', patternType:'none',
     palettes:[
@@ -135,17 +135,17 @@ const FISH_TYPES = [
       {body:'#e53935',fin:'#c62828',belly:'#ff8a80'},
       {body:'#1e88e5',fin:'#1565c0',belly:'#90caf9'},
     ],
-    desc:'ヒラヒラの大きなヒレ',
+    desc:'タイでは「闘魚」として有名。オス同士は激しく戦い、ヒレを広げて威嚇する',
     greeting:'ベタだよ！ヒラヒラ～綺麗でしょ？' },
 
-  { id:'clown', area:'coral', name:'クマノミ', icon:'🐠', shopPrice:1100000, unlocked:false, passiveIncome:60,
+  { id:'clown', area:'coral', name:'クマノミ', icon:'🐠', shopPrice:1100000, unlocked:false, passiveIncome:24,
     sizeRange:[11,15], speedRange:[0.5,1.0], shape:'standard', bodyW:0.55, bodyH:0.44,
     tailStyle:'tri', dorsalStyle:'normal', patternType:'bands',
     palettes:[{body:'#ff6d00',fin:'#e65100',belly:'#ffab40',stripe:'#fff'}],
-    desc:'白い帯がチャームポイント',
+    desc:'イソギンチャクの毒に耐性を持つ数少ない魚。粘液のバリアで身を守っている',
     greeting:'クマノミだよ！イソギンチャク探し中…' },
 
-  { id:'discus', area:'coral', name:'ディスカス', icon:'🔮', shopPrice:2000000, unlocked:false, passiveIncome:100,
+  { id:'discus', area:'coral', name:'ディスカス', icon:'🔮', shopPrice:2000000, unlocked:false, passiveIncome:40,
     sizeRange:[18,24], speedRange:[0.3,0.7], shape:'standard', bodyW:0.48, bodyH:0.52,
     tailStyle:'tri', dorsalStyle:'normal', patternType:'swirl',
     palettes:[
@@ -153,87 +153,87 @@ const FISH_TYPES = [
       {body:'#1e88e5',fin:'#1565c0',belly:'#90caf9',stripe:'#ff6f00'},
       {body:'#43a047',fin:'#2e7d32',belly:'#a5d6a7',stripe:'#fdd835'},
     ],
-    desc:'熱帯魚の王様！円盤型',
+    desc:'体表から分泌される「ディスカスミルク」で稚魚を育てる。魚界の哺乳類的存在',
     greeting:'ディスカスだよ！熱帯魚の王様✨' },
 
-  { id:'arowana', area:'tropical', name:'アロワナ', icon:'🐉', shopPrice:25000000, unlocked:false, passiveIncome:880,
+  { id:'arowana', area:'tropical', name:'アロワナ', icon:'🐉', shopPrice:25000000, unlocked:false, passiveIncome:350,
     sizeRange:[28,36], speedRange:[0.4,0.8], shape:'standard', bodyW:0.85, bodyH:0.33,
     tailStyle:'tri', dorsalStyle:'normal', patternType:'scales', hasWhiskers:true,
     palettes:[{body:'#ffd700',fin:'#daa520',belly:'#fff8dc',stripe:'#b8860b'}],
-    desc:'伝説の龍魚。威厳がすごい',
+    desc:'1億年前から姿が変わらない古代魚。アジアでは風水の幸運シンボルとして超高額で取引される',
     greeting:'アロワナだよ！龍みたいでしょ？' },
 
-  { id:'mandarin', area:'coral', name:'マンダリンフィッシュ', icon:'🎨', shopPrice:2500000, unlocked:false, passiveIncome:120,
+  { id:'mandarin', area:'coral', name:'マンダリンフィッシュ', icon:'🎨', shopPrice:2500000, unlocked:false, passiveIncome:48,
     sizeRange:[10,14], speedRange:[0.3,0.7], shape:'standard', bodyW:0.55, bodyH:0.46,
     tailStyle:'tri', dorsalStyle:'normal', patternType:'swirl', glowColor:'rgba(0,180,255,0.3)',
     palettes:[{body:'#0097a7',fin:'#00838f',belly:'#80deea',stripe:'#ff6f00'}],
-    desc:'世界一おしゃれな魚！',
+    desc:'鱗がなく、体表の苦い粘液で身を守る。この毒のおかげで天敵がほぼいない',
     greeting:'マンダリンだよ！世界一おしゃれ♪' },
 
-  { id:'seahorse', area:'coral', name:'タツノオトシゴ', icon:'🪸', shopPrice:3200000, unlocked:false, passiveIncome:150,
+  { id:'seahorse', area:'coral', name:'タツノオトシゴ', icon:'🪸', shopPrice:3200000, unlocked:false, passiveIncome:60,
     sizeRange:[16,22], speedRange:[0.2,0.5], shape:'seahorse', bodyW:0.3, bodyH:0.8,
     tailStyle:'curl', dorsalStyle:'small', patternType:'none',
     palettes:[
       {body:'#ffb300',fin:'#ff8f00',belly:'#ffe082'},
       {body:'#e91e63',fin:'#c2185b',belly:'#f48fb1'},
     ],
-    desc:'ゆらゆら泳ぐ不思議な姿',
+    desc:'オスが妊娠・出産する唯一の動物。一度に数百匹の赤ちゃんを産むことも',
     greeting:'タツノオトシゴだよ！ゆらゆら～' },
 
-  { id:'puffer', area:'coral', name:'フグ', icon:'🐡', shopPrice:4000000, unlocked:false, passiveIncome:180,
+  { id:'puffer', area:'coral', name:'フグ', icon:'🐡', shopPrice:4000000, unlocked:false, passiveIncome:72,
     sizeRange:[14,20], speedRange:[0.3,0.7], shape:'puffer', bodyW:0.5, bodyH:0.5,
     tailStyle:'tiny', dorsalStyle:'small', patternType:'dots',
     palettes:[
       {body:'#a1887f',fin:'#8d6e63',belly:'#efebe9',stripe:'#5d4037'},
       {body:'#78909c',fin:'#546e7a',belly:'#eceff1',stripe:'#37474f'},
     ],
-    desc:'ぷくぷく膨らむよ？',
+    desc:'フグ毒テトロドトキシンは青酸カリの約1000倍。でも自分では毒を作れず、餌から蓄積する',
     greeting:'フグだよ！ぷくぷく膨らむよ？' },
 
-  { id:'butterfly', area:'coral', name:'チョウチョウウオ', icon:'🦋', shopPrice:6500000, unlocked:false, passiveIncome:270,
+  { id:'butterfly', area:'coral', name:'チョウチョウウオ', icon:'🦋', shopPrice:6500000, unlocked:false, passiveIncome:108,
     sizeRange:[14,18], speedRange:[0.4,0.9], shape:'standard', bodyW:0.45, bodyH:0.5,
     tailStyle:'tri', dorsalStyle:'tall', patternType:'eyespot',
     palettes:[
       {body:'#ffd600',fin:'#ffab00',belly:'#fff9c4',stripe:'#1a1a2e'},
       {body:'#e0e0e0',fin:'#bdbdbd',belly:'#fafafa',stripe:'#ff6f00'},
     ],
-    desc:'蝶のように美しい！',
+    desc:'サンゴのポリプが主食。ペアで一生添い遂げる一途な魚として知られる',
     greeting:'チョウチョウウオだよ！蝶みたいでしょ？' },
 
-  { id:'oarfish', area:'deepsea', name:'リュウグウノツカイ', icon:'🎏', shopPrice:2000000, unlocked:false, passiveIncome:100,
+  { id:'oarfish', area:'deepsea', name:'リュウグウノツカイ', icon:'🎏', shopPrice:2000000, unlocked:false, passiveIncome:40,
     sizeRange:[20,28], speedRange:[0.3,0.6], shape:'serpent', bodyW:1.2, bodyH:0.15,
     tailStyle:'long', dorsalStyle:'crest', patternType:'none',
     palettes:[{body:'#b0bec5',fin:'#e53935',belly:'#eceff1',stripe:'#c62828'}],
-    desc:'深海からやってきた！超レア',
+    desc:'全長11mにもなる世界最長の硬骨魚。地震の前兆に現れるという伝説がある',
     greeting:'リュウグウノツカイだよ！深海から来たよ～' },
 
-  { id:'coelacanth', area:'deepsea', name:'シーラカンス', icon:'🦕', shopPrice:12000000, unlocked:false, passiveIncome:520,
+  { id:'coelacanth', area:'deepsea', name:'シーラカンス', icon:'🦕', shopPrice:12000000, unlocked:false, passiveIncome:208,
     sizeRange:[24,32], speedRange:[0.3,0.6], shape:'standard', bodyW:0.75, bodyH:0.42,
     tailStyle:'lobe', dorsalStyle:'normal', patternType:'scales',
     palettes:[{body:'#37474f',fin:'#263238',belly:'#546e7a',stripe:'#455a64'}],
-    desc:'生きた化石！太古の魚',
+    desc:'6500万年前に絶滅したはずが1938年に南アフリカで再発見！生きた化石の代表格',
     greeting:'シーラカンスだよ！生きた化石なんだ！' },
 
-  { id:'manta', area:'deepsea', name:'マンタ', icon:'🦇', shopPrice:24000000, unlocked:false, passiveIncome:980,
+  { id:'manta', area:'deepsea', name:'マンタ', icon:'🦇', shopPrice:24000000, unlocked:false, passiveIncome:392,
     sizeRange:[30,40], speedRange:[0.3,0.6], shape:'manta', bodyW:1.0, bodyH:0.3,
     tailStyle:'whip', dorsalStyle:'none', patternType:'none',
     palettes:[{body:'#37474f',fin:'#263238',belly:'#eceff1'}],
-    desc:'大きな翼で優雅に泳ぐ',
+    desc:'魚類最大級の脳を持ち、鏡に映った自分を認識できるほど高い知能がある',
     greeting:'マンタだよ！大きい翼でしょ～？' },
 
-  { id:'whaleshark', area:'deepsea', name:'ジンベエザメ', icon:'🐳', shopPrice:45000000, unlocked:false, passiveIncome:1750,
+  { id:'whaleshark', area:'deepsea', name:'ジンベエザメ', icon:'🐳', shopPrice:45000000, unlocked:false, passiveIncome:700,
     sizeRange:[34,44], speedRange:[0.25,0.5], shape:'standard', bodyW:0.85, bodyH:0.4,
     tailStyle:'fork', dorsalStyle:'normal', patternType:'spots',
     palettes:[{body:'#455a64',fin:'#37474f',belly:'#cfd8dc',stripe:'#eceff1'}],
-    desc:'優しい巨人。水槽の主',
+    desc:'全長12m超の世界最大の魚だが、食べるのはプランクトンだけ。模様は人間の指紋のように一匹ごとに違う',
     greeting:'ジンベエザメだよ！優しい巨人だよ✨' },
 
-  { id:'dragongod', area:'mystic', name:'龍神', icon:'🐲', shopPrice:50000000, unlocked:false, passiveIncome:1500,
+  { id:'dragongod', area:'mystic', name:'龍神', icon:'🐲', shopPrice:50000000, unlocked:false, passiveIncome:600,
     sizeRange:[32,42], speedRange:[0.3,0.7], shape:'mythic', bodyW:0.9, bodyH:0.3,
     tailStyle:'flowing', dorsalStyle:'flowing', patternType:'scales',
     glowColor:'rgba(255,215,0,0.5)',
     palettes:[{body:'#ffd700',fin:'#ff6f00',belly:'#fff8e1',stripe:'#e65100'}],
-    desc:'伝説の守り神。最強の魚',
+    desc:'千年に一度、水底の龍穴から現れるとされる。目撃した者には永遠の加護が授けられるという',
     greeting:'龍神だよ…水槽の守り神じゃ' },
 
   // ===== 新魚：淡水 =====
@@ -241,210 +241,226 @@ const FISH_TYPES = [
     sizeRange:[8,11], speedRange:[0.7,1.4], shape:'standard', bodyW:0.58, bodyH:0.35,
     tailStyle:'tri', dorsalStyle:'normal', patternType:'vstripes',
     palettes:[{body:'#e65100',fin:'#bf360c',belly:'#ffcc80',stripe:'#fff3e0'},{body:'#1565c0',fin:'#0d47a1',belly:'#90caf9',stripe:'#bbdefb'}],
-    desc:'小さくてカラフルな熱帯魚',
+    desc:'卵は乾燥に数ヶ月耐え、水たまりが戻ると孵化する驚異の生命力を持つ',
     greeting:'キリフィッシュだよ！ちっちゃいでしょ？' },
-  { id:'loach', area:'freshwater', name:'ドジョウ', icon:'🐍', shopPrice:40000, unlocked:false, passiveIncome:12,
+  { id:'loach', area:'freshwater', name:'ドジョウ', icon:'🐍', shopPrice:40000, unlocked:false, passiveIncome:5,
     sizeRange:[16,22], speedRange:[0.3,0.7], shape:'serpent', bodyW:0.9, bodyH:0.15,
     tailStyle:'long', dorsalStyle:'small', patternType:'dots', hasWhiskers:true, bottomDweller:true,
     palettes:[{body:'#8d6e63',fin:'#6d4c41',belly:'#d7ccc8',stripe:'#a1887f'}],
-    desc:'底でもぞもぞ。ヒゲがチャームポイント',
+    desc:'気圧の変化を感じ取れるため、昔から「生きた天気予報」と呼ばれてきた',
     greeting:'ドジョウだよ～底が落ち着くんだ♪' },
-  { id:'goldfish', area:'freshwater', name:'金魚', icon:'🏮', shopPrice:100000, unlocked:false, passiveIncome:22,
+  { id:'goldfish', area:'freshwater', name:'金魚', icon:'🏮', shopPrice:100000, unlocked:false, passiveIncome:9,
     sizeRange:[14,20], speedRange:[0.4,0.9], shape:'standard', bodyW:0.5, bodyH:0.48,
     tailStyle:'flowing', dorsalStyle:'flowing', patternType:'none',
     palettes:[{body:'#ff3d00',fin:'#dd2c00',belly:'#ffab91'},{body:'#fff176',fin:'#fff9c4',belly:'#ffffff'}],
-    desc:'ひらひら優雅な和の魚',
+    desc:'元はフナの突然変異。中国で1000年以上品種改良され、100以上の品種が存在する',
     greeting:'金魚だよ～ひらひら～♪' },
-  { id:'koi', area:'freshwater', name:'錦鯉', icon:'🎏', shopPrice:140000, unlocked:false, passiveIncome:28,
+  { id:'koi', area:'freshwater', name:'錦鯉', icon:'🎏', shopPrice:140000, unlocked:false, passiveIncome:11,
     sizeRange:[22,30], speedRange:[0.3,0.7], shape:'standard', bodyW:0.75, bodyH:0.38,
     tailStyle:'fan', dorsalStyle:'normal', patternType:'bands',
     palettes:[{body:'#ffffff',fin:'#ffccbc',belly:'#fff',stripe:'#ff3d00'},{body:'#ffd600',fin:'#ff6f00',belly:'#fff8e1',stripe:'#e65100'}],
-    desc:'泳ぐ宝石。和の象徴',
+    desc:'200歳以上生きた記録がある長寿魚。模様には「紅白」「大正三色」等の格付けがある',
     greeting:'錦鯉だよ！泳ぐ宝石って呼ばれてるの✨' },
-  { id:'axolotl', area:'freshwater', name:'ウーパールーパー', icon:'🩷', shopPrice:200000, unlocked:false, passiveIncome:35,
+  { id:'axolotl', area:'freshwater', name:'ウーパールーパー', icon:'🩷', shopPrice:200000, unlocked:false, passiveIncome:14,
     sizeRange:[16,22], speedRange:[0.2,0.5], shape:'puffer', bodyW:0.5, bodyH:0.45,
     tailStyle:'tiny', dorsalStyle:'small', patternType:'dots',
     palettes:[{body:'#ffcdd2',fin:'#ef9a9a',belly:'#fff',stripe:'#e57373'},{body:'#e0e0e0',fin:'#bdbdbd',belly:'#fafafa',stripe:'#9e9e9e'}],
-    desc:'にっこり笑顔の癒し系',
+    desc:'手足や心臓の一部まで再生できる驚異の能力を持つ。再生医療の研究対象でもある',
     greeting:'ウーパールーパーだよ！にこっ☺' },
-  { id:'arapaima', area:'freshwater', name:'ピラルクー', icon:'🐊', shopPrice:300000, unlocked:false, passiveIncome:45,
+  { id:'arapaima', area:'freshwater', name:'ピラルクー', icon:'🐊', shopPrice:300000, unlocked:false, passiveIncome:18,
     sizeRange:[32,42], speedRange:[0.3,0.6], shape:'standard', bodyW:0.9, bodyH:0.35,
     tailStyle:'tri', dorsalStyle:'normal', patternType:'scales',
     palettes:[{body:'#455a64',fin:'#37474f',belly:'#78909c',stripe:'#e53935'}],
-    desc:'世界最大級の淡水魚！',
+    desc:'体長3m超の世界最大級の淡水魚。空気呼吸ができ、約20分ごとに水面で息継ぎする',
     greeting:'ピラルクーだよ！でっかいでしょ？' },
 
   // ===== 新魚：サンゴ礁 =====
-  { id:'surgeonfish', area:'coral', name:'ナンヨウハギ', icon:'💙', shopPrice:500000, unlocked:false, passiveIncome:30,
+  { id:'surgeonfish', area:'coral', name:'ナンヨウハギ', icon:'💙', shopPrice:500000, unlocked:false, passiveIncome:12,
     sizeRange:[12,16], speedRange:[0.5,1.1], shape:'standard', bodyW:0.52, bodyH:0.48,
     tailStyle:'fork', dorsalStyle:'normal', patternType:'bands',
     palettes:[{body:'#1565c0',fin:'#0d47a1',belly:'#42a5f5',stripe:'#ffd600'}],
-    desc:'青と黄色のサンゴの人気者',
+    desc:'尾びれの付け根にメスのような鋭いトゲがある。英名「Surgeonfish（外科医魚）」の由来',
     greeting:'ナンヨウハギだよ！ドリーって呼んで♪' },
-  { id:'lionfish', area:'coral', name:'ミノカサゴ', icon:'🦁', shopPrice:800000, unlocked:false, passiveIncome:45,
+  { id:'lionfish', area:'coral', name:'ミノカサゴ', icon:'🦁', shopPrice:800000, unlocked:false, passiveIncome:18,
     sizeRange:[16,22], speedRange:[0.3,0.7], shape:'standard', bodyW:0.55, bodyH:0.45,
     tailStyle:'flowing', dorsalStyle:'tall', patternType:'vstripes',
     palettes:[{body:'#d32f2f',fin:'#b71c1c',belly:'#ffcdd2',stripe:'#fff'}],
-    desc:'美しくも危険なヒレ持ち',
+    desc:'背ビレに強力な毒針を持つ。カリブ海では侵略的外来種として問題になっている',
     greeting:'ミノカサゴだよ！ヒレに触らないでね！' },
-  { id:'moorishidol', area:'coral', name:'ツノダシ', icon:'🏹', shopPrice:1500000, unlocked:false, passiveIncome:80,
+  { id:'moorishidol', area:'coral', name:'ツノダシ', icon:'🏹', shopPrice:1500000, unlocked:false, passiveIncome:32,
     sizeRange:[14,20], speedRange:[0.4,0.9], shape:'standard', bodyW:0.4, bodyH:0.55,
     tailStyle:'tri', dorsalStyle:'tall', patternType:'vbands',
     palettes:[{body:'#fff176',fin:'#ffd600',belly:'#fff9c4',stripe:'#212121'}],
-    desc:'長いツノがトレードマーク',
+    desc:'背ビレが長く伸びた角のような形が特徴。飼育が非常に難しく、水族館でも苦労する魚',
     greeting:'ツノダシだよ！このツノ、カッコいいでしょ？' },
-  { id:'triggerfish', area:'coral', name:'モンガラカワハギ', icon:'🎯', shopPrice:5000000, unlocked:false, passiveIncome:220,
+  { id:'triggerfish', area:'coral', name:'モンガラカワハギ', icon:'🎯', shopPrice:5000000, unlocked:false, passiveIncome:88,
     sizeRange:[14,20], speedRange:[0.4,0.8], shape:'standard', bodyW:0.55, bodyH:0.5,
     tailStyle:'tri', dorsalStyle:'normal', patternType:'dots',
     palettes:[{body:'#1a237e',fin:'#283593',belly:'#e8eaf6',stripe:'#ffd600'}],
-    desc:'ド派手な水玉模様！',
+    desc:'巣を守る時はダイバーにも突進してくる気性の荒さ。噛む力も強く「海のブルドッグ」とも',
     greeting:'モンガラカワハギだよ！派手でしょ～？' },
-  { id:'napoleonfish', area:'coral', name:'ナポレオンフィッシュ', icon:'🫅', shopPrice:8000000, unlocked:false, passiveIncome:330,
+  { id:'napoleonfish', area:'coral', name:'ナポレオンフィッシュ', icon:'🫅', shopPrice:8000000, unlocked:false, passiveIncome:132,
     sizeRange:[26,34], speedRange:[0.3,0.6], shape:'standard', bodyW:0.7, bodyH:0.45,
     tailStyle:'tri', dorsalStyle:'normal', patternType:'scales',
     palettes:[{body:'#1565c0',fin:'#0d47a1',belly:'#64b5f6',stripe:'#0d47a1'}],
-    desc:'でっかいオデコの王者',
+    desc:'全長2mにもなる巨大魚。成長するとオデコが巨大化し、メスからオスに性転換する',
     greeting:'ナポレオンフィッシュだよ！このオデコが自慢！' },
-  { id:'seaturtle', area:'coral', name:'ウミガメ', icon:'🐢', shopPrice:10000000, unlocked:false, passiveIncome:400,
+  { id:'seaturtle', area:'coral', name:'ウミガメ', icon:'🐢', shopPrice:10000000, unlocked:false, passiveIncome:160,
     sizeRange:[28,36], speedRange:[0.25,0.5], shape:'manta', bodyW:0.8, bodyH:0.35,
     tailStyle:'whip', dorsalStyle:'none', patternType:'scales',
     palettes:[{body:'#2e7d32',fin:'#1b5e20',belly:'#a5d6a7',stripe:'#388e3c'}],
-    desc:'悠々と泳ぐ海の旅人',
+    desc:'産卵時は必ず生まれた砂浜に戻る。地球の磁場を頼りに数千kmを回遊する',
     greeting:'ウミガメだよ～のんびり旅してるの🌊' },
 
   // ===== 新魚：深海 =====
-  { id:'anglerfish', area:'deepsea', name:'チョウチンアンコウ', icon:'🔦', shopPrice:3500000, unlocked:false, passiveIncome:160,
+  { id:'anglerfish', area:'deepsea', name:'チョウチンアンコウ', icon:'🔦', shopPrice:3500000, unlocked:false, passiveIncome:64,
     sizeRange:[14,20], speedRange:[0.2,0.5], shape:'puffer', bodyW:0.55, bodyH:0.5,
     tailStyle:'tiny', dorsalStyle:'small', patternType:'none',
     glowColor:'rgba(100,255,100,0.4)',
     palettes:[{body:'#37474f',fin:'#263238',belly:'#455a64',stripe:'#69f0ae'}],
-    desc:'暗闇で光る不思議な釣り竿',
+    desc:'オスはメスの体に融合し、最終的に栄養供給器官になる。究極の寄生生活',
     greeting:'チョウチンアンコウだよ…光についてきて…' },
-  { id:'viperfish', area:'deepsea', name:'ホウライエソ', icon:'🗡️', shopPrice:5500000, unlocked:false, passiveIncome:250,
+  { id:'viperfish', area:'deepsea', name:'ホウライエソ', icon:'🗡️', shopPrice:5500000, unlocked:false, passiveIncome:100,
     sizeRange:[14,20], speedRange:[0.4,0.9], shape:'standard', bodyW:0.7, bodyH:0.3,
     tailStyle:'fork', dorsalStyle:'normal', patternType:'neon',
     glowColor:'rgba(0,255,136,0.4)',
     palettes:[{body:'#212121',fin:'#111',belly:'#424242',stripe:'#00ff88'}],
-    desc:'鋭い牙と光る体',
+    desc:'自分の体長の半分もある牙を持ち、口を閉じられない。水深1500mの暗闇に棲む',
     greeting:'ホウライエソだよ…この牙、怖い？' },
-  { id:'giantisopod', area:'deepsea', name:'ダイオウグソクムシ', icon:'🪲', shopPrice:8000000, unlocked:false, passiveIncome:360,
+  { id:'giantisopod', area:'deepsea', name:'ダイオウグソクムシ', icon:'🪲', shopPrice:8000000, unlocked:false, passiveIncome:144,
     sizeRange:[16,22], speedRange:[0.15,0.4], shape:'puffer', bodyW:0.55, bodyH:0.5,
     tailStyle:'tiny', dorsalStyle:'small', patternType:'scales', bottomDweller:true,
     palettes:[{body:'#78909c',fin:'#546e7a',belly:'#b0bec5',stripe:'#607d8b'}],
-    desc:'深海のダンゴムシ。大人気！',
+    desc:'5年以上絶食しても生きられる省エネ生物。深海に沈んだクジラの死体を食べる掃除屋',
     greeting:'グソクムシだよ…じっとしてるのが好き…' },
-  { id:'gulpereel', area:'deepsea', name:'フクロウナギ', icon:'👄', shopPrice:17000000, unlocked:false, passiveIncome:720,
+  { id:'gulpereel', area:'deepsea', name:'フクロウナギ', icon:'👄', shopPrice:17000000, unlocked:false, passiveIncome:288,
     sizeRange:[18,26], speedRange:[0.2,0.5], shape:'serpent', bodyW:1.0, bodyH:0.2,
     tailStyle:'long', dorsalStyle:'small', patternType:'none',
     glowColor:'rgba(255,50,100,0.3)',
     palettes:[{body:'#212121',fin:'#d32f2f',belly:'#424242',stripe:'#ff5252'}],
-    desc:'巨大な口が特徴の深海魚',
+    desc:'自分より大きな獲物を丸呑みできる。口が風船のように膨らみ、胃も伸縮自在',
     greeting:'フクロウナギだよ…お口おっきいでしょ？' },
-  { id:'vampiresquid', area:'deepsea', name:'メンダコ', icon:'👻', shopPrice:33000000, unlocked:false, passiveIncome:1300,
+  { id:'vampiresquid', area:'deepsea', name:'メンダコ', icon:'👻', shopPrice:33000000, unlocked:false, passiveIncome:520,
     sizeRange:[16,22], speedRange:[0.2,0.5], shape:'manta', bodyW:0.7, bodyH:0.4,
     tailStyle:'whip', dorsalStyle:'none', patternType:'none',
     glowColor:'rgba(255,51,102,0.4)',
     palettes:[{body:'#c62828',fin:'#b71c1c',belly:'#ef9a9a',stripe:'#ff5252'}],
-    desc:'深海の幽霊。ひらひら漂う',
+    desc:'タコでもイカでもない独自の分類群。腕の間の膜を傘のように広げて深海を漂う',
     greeting:'メンダコだよ…ふわふわ～👻' },
-  { id:'barreleye', area:'deepsea', name:'デメニギス', icon:'🔮', shopPrice:60000000, unlocked:false, passiveIncome:2300,
+  { id:'barreleye', area:'deepsea', name:'デメニギス', icon:'🔮', shopPrice:60000000, unlocked:false, passiveIncome:920,
     sizeRange:[12,18], speedRange:[0.2,0.5], shape:'standard', bodyW:0.6, bodyH:0.45,
     tailStyle:'tri', dorsalStyle:'normal', patternType:'none',
     glowColor:'rgba(0,255,204,0.5)',
     palettes:[{body:'rgba(100,130,160,0.6)',fin:'rgba(80,110,140,0.5)',belly:'rgba(200,220,240,0.4)',stripe:'#00ffcc'}],
-    desc:'透明な頭の中に緑の目！',
+    desc:'透明な頭は実在する。目は頭蓋の中で上を向き、頭越しに真上のエサを探している',
     greeting:'デメニギスだよ…頭の中、見える？' },
 
   // ===== 新魚：熱帯河川 =====
-  { id:'piranha', area:'tropical', name:'ピラニア', icon:'😈', shopPrice:15000000, unlocked:false, passiveIncome:550,
+  { id:'piranha', area:'tropical', name:'ピラニア', icon:'😈', shopPrice:15000000, unlocked:false, passiveIncome:220,
     sizeRange:[12,16], speedRange:[0.6,1.2], shape:'standard', bodyW:0.5, bodyH:0.48,
     tailStyle:'tri', dorsalStyle:'normal', patternType:'none',
     palettes:[{body:'#546e7a',fin:'#37474f',belly:'#e53935',stripe:'#c62828'}],
-    desc:'小さいけど凶暴！群れが怖い',
+    desc:'実は単独だと臆病で逃げ回る。群れの時だけ凶暴スイッチが入る集団心理の持ち主',
     greeting:'ピラニアだよ！ガブッ！…なんてね😈' },
-  { id:'oscar', area:'tropical', name:'オスカー', icon:'🔥', shopPrice:40000000, unlocked:false, passiveIncome:1400,
+  { id:'oscar', area:'tropical', name:'オスカー', icon:'🔥', shopPrice:40000000, unlocked:false, passiveIncome:560,
     sizeRange:[18,24], speedRange:[0.3,0.7], shape:'standard', bodyW:0.6, bodyH:0.42,
     tailStyle:'tri', dorsalStyle:'normal', patternType:'spots',
     palettes:[{body:'#37474f',fin:'#263238',belly:'#455a64',stripe:'#ff6d00'}],
-    desc:'賢くて人懐っこい大型魚',
+    desc:'飼い主の顔を覚え、手から直接エサを食べるほど懐く。「犬みたいな魚」と呼ばれる',
     greeting:'オスカーだよ！ご飯まだ？🔥' },
-  { id:'stingray', area:'tropical', name:'淡水エイ', icon:'🌀', shopPrice:65000000, unlocked:false, passiveIncome:2200,
+  { id:'stingray', area:'tropical', name:'淡水エイ', icon:'🌀', shopPrice:65000000, unlocked:false, passiveIncome:880,
     sizeRange:[22,30], speedRange:[0.25,0.5], shape:'manta', bodyW:0.9, bodyH:0.3,
     tailStyle:'whip', dorsalStyle:'none', patternType:'dots',
     palettes:[{body:'#5d4037',fin:'#4e342e',belly:'#d7ccc8',stripe:'#fff176'}],
-    desc:'水玉模様の美しいエイ',
+    desc:'尾のトゲには強力な毒がある。微弱な電気を感知する「ロレンチーニ器官」で獲物を見つける',
     greeting:'淡水エイだよ～水玉がチャームポイント♪' },
-  { id:'flowerhorn', area:'tropical', name:'フラワーホーン', icon:'🌺', shopPrice:100000000, unlocked:false, passiveIncome:3300,
+  { id:'flowerhorn', area:'tropical', name:'フラワーホーン', icon:'🌺', shopPrice:100000000, unlocked:false, passiveIncome:1320,
     sizeRange:[20,28], speedRange:[0.3,0.7], shape:'standard', bodyW:0.55, bodyH:0.5,
     tailStyle:'tri', dorsalStyle:'tall', patternType:'swirl',
     palettes:[{body:'#e53935',fin:'#c62828',belly:'#ff8a80',stripe:'#ffd600'}],
-    desc:'立派なコブが福を呼ぶ！',
+    desc:'複数の種の人工交配で生まれた魚。頭のコブは「花羅漢」と呼ばれ、アジアでは縁起物',
     greeting:'フラワーホーンだよ！このコブ、縁起いいの✨' },
-  { id:'redtailcatfish', area:'tropical', name:'レッドテールキャット', icon:'🐱', shopPrice:160000000, unlocked:false, passiveIncome:5100,
+  { id:'redtailcatfish', area:'tropical', name:'レッドテールキャット', icon:'🐱', shopPrice:160000000, unlocked:false, passiveIncome:2040,
     sizeRange:[30,38], speedRange:[0.25,0.5], shape:'standard', bodyW:0.8, bodyH:0.38,
     tailStyle:'tri', dorsalStyle:'normal', patternType:'bands', hasWhiskers:true,
     palettes:[{body:'#37474f',fin:'#263238',belly:'#eceff1',stripe:'#e53935'}],
-    desc:'赤い尻尾の巨大ナマズ',
+    desc:'1m超に成長する大食漢。アマゾンでは「泳ぐゴミ箱」と呼ばれるほど何でも食べる',
     greeting:'レッドテールキャットだよ！大きくなるよ～' },
-  { id:'electriceel', area:'tropical', name:'デンキウナギ', icon:'⚡', shopPrice:250000000, unlocked:false, passiveIncome:7800,
+  { id:'electriceel', area:'tropical', name:'デンキウナギ', icon:'⚡', shopPrice:250000000, unlocked:false, passiveIncome:3120,
     sizeRange:[22,30], speedRange:[0.3,0.6], shape:'serpent', bodyW:1.1, bodyH:0.15,
     tailStyle:'long', dorsalStyle:'small', patternType:'neon',
     glowColor:'rgba(255,255,0,0.4)',
     palettes:[{body:'#37474f',fin:'#263238',belly:'#78909c',stripe:'#ffff00'}],
-    desc:'ビリビリ電気の危険な奴',
+    desc:'最大860Vの電撃を放つ水中最強の発電機。ワニすら感電させて撃退する',
     greeting:'デンキウナギだよ⚡ ビリッとしちゃうぞ！' },
 
   // ===== 新魚：神秘 =====
-  { id:'phoenix', area:'mystic', name:'鳳凰魚', icon:'🔥', shopPrice:90000000, unlocked:false, passiveIncome:2600,
+  { id:'phoenix', area:'mystic', name:'鳳凰魚', icon:'🔥', shopPrice:90000000, unlocked:false, passiveIncome:1040,
     sizeRange:[28,36], speedRange:[0.3,0.7], shape:'mythic', bodyW:0.85, bodyH:0.3,
     tailStyle:'flowing', dorsalStyle:'flowing', patternType:'scales',
     glowColor:'rgba(255,100,0,0.5)',
     palettes:[{body:'#ff6d00',fin:'#dd2c00',belly:'#ffe0b2',stripe:'#ff3d00'}],
-    desc:'炎をまとう不死鳥の魚',
+    desc:'体温は常に42℃で、周囲の水がほのかに温まる。死ぬと灰になり、卵から再び孵るとされる',
     greeting:'鳳凰魚だよ…炎の翼で舞うのじゃ🔥' },
-  { id:'leviathan', area:'mystic', name:'リヴァイアサン', icon:'🌊', shopPrice:150000000, unlocked:false, passiveIncome:4200,
+  { id:'leviathan', area:'mystic', name:'リヴァイアサン', icon:'🌊', shopPrice:150000000, unlocked:false, passiveIncome:1680,
     sizeRange:[34,44], speedRange:[0.2,0.5], shape:'serpent', bodyW:1.3, bodyH:0.18,
     tailStyle:'long', dorsalStyle:'crest', patternType:'scales',
     glowColor:'rgba(0,100,255,0.4)',
     palettes:[{body:'#0d47a1',fin:'#1a237e',belly:'#42a5f5',stripe:'#82b1ff'}],
-    desc:'海の底に潜む伝説の巨獣',
+    desc:'旧約聖書にも記された海の王。その咆哮は海溝を震わせ、津波を引き起こすとされる',
     greeting:'リヴァイアサンだ…深淵より来たり…' },
-  { id:'moonjellyfish', area:'mystic', name:'月光クラゲ', icon:'🌙', shopPrice:250000000, unlocked:false, passiveIncome:6800,
+  { id:'moonjellyfish', area:'mystic', name:'月光クラゲ', icon:'🌙', shopPrice:250000000, unlocked:false, passiveIncome:2720,
     sizeRange:[18,26], speedRange:[0.15,0.4], shape:'seahorse', bodyW:0.4, bodyH:0.6,
     tailStyle:'curl', dorsalStyle:'small', patternType:'none',
     glowColor:'rgba(200,200,255,0.5)',
     palettes:[{body:'rgba(180,180,255,0.7)',fin:'rgba(150,150,230,0.5)',belly:'rgba(220,220,255,0.6)'}],
-    desc:'月の光を宿す幻のクラゲ',
+    desc:'満月の夜だけ浮上し、触手が月光を吸収して発光する。新月には姿が完全に透明になるという',
     greeting:'月光クラゲだよ…月の光をあげる🌙' },
-  { id:'crystaldragon', area:'mystic', name:'水晶龍', icon:'💎', shopPrice:400000000, unlocked:false, passiveIncome:10500,
+  { id:'crystaldragon', area:'mystic', name:'水晶龍', icon:'💎', shopPrice:400000000, unlocked:false, passiveIncome:4200,
     sizeRange:[32,42], speedRange:[0.3,0.6], shape:'mythic', bodyW:0.9, bodyH:0.3,
     tailStyle:'flowing', dorsalStyle:'flowing', patternType:'scales',
     glowColor:'rgba(180,100,255,0.5)',
     palettes:[{body:'rgba(180,140,255,0.8)',fin:'#7c4dff',belly:'rgba(220,200,255,0.6)',stripe:'#b388ff'}],
-    desc:'水晶の鱗を持つ神龍',
+    desc:'鱗の一枚一枚が天然の水晶でできており、光を七色に分光させる。涙は万病を癒すとされる',
     greeting:'水晶龍だよ…この鱗、綺麗でしょ？💎' },
-  { id:'cosmicwhale', area:'mystic', name:'宇宙クジラ', icon:'🌌', shopPrice:650000000, unlocked:false, passiveIncome:16500,
+  { id:'cosmicwhale', area:'mystic', name:'宇宙クジラ', icon:'🌌', shopPrice:650000000, unlocked:false, passiveIncome:6600,
     sizeRange:[36,46], speedRange:[0.2,0.4], shape:'manta', bodyW:1.1, bodyH:0.35,
     tailStyle:'whip', dorsalStyle:'none', patternType:'spots',
     glowColor:'rgba(100,0,200,0.4)',
     palettes:[{body:'#1a0a3a',fin:'#0a0020',belly:'#311b92',stripe:'#e0e0e0'}],
-    desc:'星空を泳ぐ超巨大クジラ',
+    desc:'かつて宇宙空間を泳いでいたとされ、体表に星屑が付着している。鳴き声は電波望遠鏡でも観測された',
     greeting:'宇宙クジラだよ…星の海を旅してきたの🌌' },
-  { id:'worldserpent', area:'mystic', name:'世界蛇', icon:'🐍', shopPrice:1000000000, unlocked:false, passiveIncome:25000,
+  { id:'worldserpent', area:'mystic', name:'世界蛇', icon:'🐍', shopPrice:1000000000, unlocked:false, passiveIncome:10000,
     sizeRange:[36,46], speedRange:[0.25,0.5], shape:'serpent', bodyW:1.4, bodyH:0.2,
     tailStyle:'long', dorsalStyle:'crest', patternType:'scales',
     glowColor:'rgba(0,255,100,0.5)',
     palettes:[{body:'#1b5e20',fin:'#2e7d32',belly:'#a5d6a7',stripe:'#69f0ae'}],
-    desc:'世界を一周する伝説の大蛇',
+    desc:'北欧神話のヨルムンガンドがモデル。自らの尾を咥えて世界を一周する姿は「永遠」の象徴',
     greeting:'世界蛇だ…万物の始まりと終わりを見てきた…' },
 ];
+
+// ============================================================
+// 🐟 水槽サイズ
+// ============================================================
+const TANK_SIZES = [
+  { level:1, capacity:5,   name:'ミニ水槽',     icon:'🏺', price:0 },
+  { level:2, capacity:40,  name:'ノーマル水槽', icon:'🪣', price:50000 },
+  { level:3, capacity:100, name:'大型水槽',     icon:'🛁', price:500000 },
+  { level:4, capacity:170, name:'巨大水槽',     icon:'🏊', price:5000000 },
+  { level:5, capacity:250, name:'超巨大水槽',   icon:'🌊', price:50000000 },
+];
+let tankLevel = 1;
 
 // ============================================================
 // 🔧 設備アップグレード
 // ============================================================
 const UPGRADES = [
-  { id:'treasureGen', name:'お宝バブル装置', icon:'💎', price:800, desc:'お宝バブルが出やすくなる', owned:false },
-  { id:'breedBoost', name:'繁殖サポーター', icon:'💕', price:2000, desc:'魚の繁殖確率2倍！', owned:false },
+  { id:'treasureGen',  name:'お宝バブル装置',   icon:'💎', price:800,    desc:'お宝バブルが出やすくなる',     owned:false },
+  { id:'breedBoost',   name:'繁殖サポーター',   icon:'💕', price:2000,   desc:'魚の繁殖確率2倍！',           owned:false },
+  { id:'waterFilter',  name:'浄水フィルター',   icon:'🧹', price:5000,   desc:'水質の悪化速度を30%軽減',     owned:false },
+  { id:'premiumFilter',name:'高性能フィルター', icon:'🔬', price:50000,  desc:'水質の悪化速度をさらに30%軽減', owned:false },
+  { id:'visitorSign',  name:'来客看板',         icon:'🪧', price:10000,  desc:'来客の上限+3、チップ+20%',    owned:false },
+  { id:'giftShop',     name:'おみやげコーナー', icon:'🎁', price:100000, desc:'来客のチップが2倍に！',       owned:false },
 ];
 
 const FISH_SVGS = {
@@ -553,6 +569,13 @@ function discoverFish(typeId, variantType, hueShift) {
   }
   return isNew;
 }
+function getSpeciesCompletion() {
+  let total = FISH_TYPES.length, discovered = 0;
+  for (const ft of FISH_TYPES) {
+    if (collection[ft.id]?.discovered) discovered++;
+  }
+  return { total, discovered, percent: Math.round(discovered/total*100) };
+}
 function getCollectionCompletion() {
   let total = 0, discovered = 0;
   for (const ft of FISH_TYPES) {
@@ -571,62 +594,132 @@ const GACHA_TIERS = [
 ];
 
 // ============================================================
+// 💧 水質パラメータ
+// ============================================================
+const WATER_QUALITY = {
+  basePollutionPerFishPerFrame: 0.0000077,
+  bubblerReduction: 0.4,
+  nightReduction: 0.2,
+  waterChangeCostBase: 500,
+  waterChangeCostPerFish: 100,
+  incomeMultiplierMin: 0.3,
+  incomeMultiplierMax: 1.0,
+  sluggishThreshold: 30,
+  sluggishSpeedMult: 0.4,
+  greenTintStart: 70,
+  brownTintStart: 40,
+};
+
+// ============================================================
+// 👥 来客システム
+// ============================================================
+const VISITOR_CONFIG = {
+  spawnInterval: 300,
+  baseVisitorCap: 3,
+  capPerUnlockedArea: 2,
+  stayMinFrames: 900,
+  stayMaxFrames: 2700,
+  baseTipAmount: 5,
+  photographerAttractionMin: 80,
+  photographerQualityMin: 80,
+  bustleBonusThreshold: 0.5,
+  bustleBonusMultiplier: 1.2,
+  lowQualityThreshold: 30,
+  lowQualityLeaveSpeedMult: 3,
+  noSpawnThreshold: 15,
+};
+
+const VISITOR_TYPES = [
+  { emoji:'👦', css:'v-boy',      name:'男の子',     weight:20, tipMult:1.0 },
+  { emoji:'👧', css:'v-girl',     name:'女の子',     weight:20, tipMult:1.0 },
+  { emoji:'👨', css:'v-man',      name:'お兄さん',   weight:15, tipMult:1.2 },
+  { emoji:'👩', css:'v-woman',    name:'お姉さん',   weight:15, tipMult:1.2 },
+  { emoji:'👴', css:'v-grandpa',  name:'おじいさん', weight:10, tipMult:1.5 },
+  { emoji:'👵', css:'v-grandma',  name:'おばあさん', weight:10, tipMult:1.5 },
+  { emoji:'👶', css:'v-baby',     name:'赤ちゃん',   weight:5,  tipMult:0.5 },
+  { emoji:'🧑‍🔬', css:'v-scientist', name:'研究者', weight:3,  tipMult:3.0 },
+  { emoji:'👸', css:'v-princess', name:'お姫様',     weight:2,  tipMult:5.0 },
+];
+const PHOTOGRAPHER_TYPE = { emoji:'📸', css:'v-camera', name:'カメラマン', tipMult:5.0 };
+
+// ============================================================
+// 🎲 ランダムイベント
+// ============================================================
+const RANDOM_EVENTS = [
+  // ラッキー系
+  { id:'coinRain',       name:'コインの雨',     icon:'💰', type:'good', weight:25, message:'💰 コインの雨！大量のコインが降ってきた！' },
+  { id:'goldenTime',     name:'ゴールデンタイム', icon:'✨', type:'good', weight:20, duration:1800, multiplier:3, message:'✨ ゴールデンタイム！30秒間、収入3倍！' },
+  { id:'treasureChest',  name:'宝箱発見',       icon:'🎁', type:'good', weight:15, message:'🎁 宝箱を発見！大量のコインを獲得！' },
+  { id:'mysteryVisitor', name:'神秘の来訪者',   icon:'🌟', type:'good', weight:10, message:'🌟 神秘の来訪者！珍しい魚が仲間に！' },
+  { id:'lostFish',       name:'迷子の魚',       icon:'🐠', type:'good', weight:12, message:'🐠 迷子の魚が助けを求めている！' },
+  { id:'loveSeason',     name:'恋の季節',       icon:'💕', type:'good', weight:10, message:'💕 恋の季節が到来！繁殖チャンス大！' },
+  { id:'mermaidVisit',   name:'人魚の訪問',     icon:'🧜', type:'good', weight:3,  message:'🧜 人魚が現れた...！' },
+  { id:'fullMoon',       name:'満月の夜',       icon:'🌕', type:'good', weight:10, message:'🌕 満月の夜…不思議な力が水槽を包む' },
+  // 環境変化系
+  { id:'stormNight',     name:'嵐の夜',         icon:'⛈️', type:'bad',  weight:10, message:'⛈️ 嵐がやってきた！魚たちが怯えている…' },
+  { id:'algaeBloom',     name:'藻の大繁殖',     icon:'🦠', type:'bad',  weight:10, message:'🦠 藻が大繁殖！水質が急激に悪化！' },
+  { id:'typhoon',        name:'台風接近',       icon:'🌀', type:'bad',  weight:8,  message:'🌀 台風が接近中！みんなで耐えろ！' },
+  // 災害系
+  { id:'sharkAttack',    name:'サメ襲来',       icon:'🦈', type:'bad',  weight:7,  message:'🦈 サメ襲来！！！' },
+];
+
+// ============================================================
 // 🗺️ エリア
 // ============================================================
 const AREAS = [
   { id:'freshwater', name:'淡水', icon:'🏞️', price:0, unlocked:true,
     desc:'最初のエリア。淡水の魚たち',
     bg: {
-      day:   ['#0a3d5c','#0c5c7a','#0d3b4f'],
-      night: ['#050d15','#081a28','#060f18'],
-      blue:  ['#0a1a3a','#0c2a5a','#081540']
+      day:   ['#5aabb8','#68c0cc','#4a98a8'],
+      night: ['#1a3540','#203e4a','#182e38'],
+      blue:  ['#3a6888','#4878a0','#2a5878']
     },
-    sandRGB:[194,170,110],
+    sandRGB:[225,210,170],
     plantStyle:'seaweed',
-    plantColors:[{r:40,g:160,b:60},{r:30,g:130,b:80}]
+    plantColors:[{r:80,g:190,b:100},{r:60,g:160,b:100}]
   },
   { id:'coral', name:'サンゴ礁', icon:'🪸', price:2000000, unlocked:false,
     desc:'カラフルなサンゴの海',
     bg: {
-      day:   ['#064a6e','#0878a0','#065a7a'],
-      night: ['#031520','#052030','#041825'],
-      blue:  ['#082050','#0a3878','#061848']
+      day:   ['#48a8cc','#60c0e0','#40a0c8'],
+      night: ['#182838','#1c3040','#162030'],
+      blue:  ['#2868a0','#3880b8','#1c5890']
     },
-    sandRGB:[230,210,170],
+    sandRGB:[245,232,200],
     plantStyle:'coral',
-    plantColors:[{r:220,g:80,b:100},{r:255,g:140,b:60},{r:180,g:60,b:160}]
+    plantColors:[{r:250,g:120,b:140},{r:255,g:170,b:100},{r:220,g:100,b:200}]
   },
   { id:'deepsea', name:'深海', icon:'🌑', price:20000000, unlocked:false,
     desc:'暗い深海。神秘的な生き物たち',
     bg: {
-      day:   ['#020a14','#041828','#030e1c'],
-      night: ['#010408','#020a14','#01060c'],
-      blue:  ['#020818','#041430','#020c20']
+      day:   ['#0c1828','#142840','#0e1c30'],
+      night: ['#060c14','#0a1420','#080e18'],
+      blue:  ['#0a1430','#122848','#0c1838']
     },
-    sandRGB:[80,75,90],
+    sandRGB:[105,100,115],
     plantStyle:'deepsea',
-    plantColors:[{r:20,g:60,b:80},{r:10,g:80,b:60}]
+    plantColors:[{r:50,g:100,b:120},{r:40,g:120,b:100}]
   },
   { id:'tropical', name:'熱帯河川', icon:'🌴', price:80000000, unlocked:false,
     desc:'アマゾンの大河。巨大魚の楽園',
     bg: {
-      day:   ['#1a3a20','#1c5c30','#143a1c'],
-      night: ['#080f08','#0c1a0e','#0a120a'],
-      blue:  ['#0a2a1a','#0c3c2c','#081c14']
+      day:   ['#3a7848','#4a9858','#2e6838'],
+      night: ['#142818','#1c3820','#122018'],
+      blue:  ['#285838','#387848','#1c4830']
     },
-    sandRGB:[160,130,80],
+    sandRGB:[200,175,120],
     plantStyle:'tropical',
-    plantColors:[{r:30,g:180,b:40},{r:20,g:140,b:30},{r:60,g:160,b:50}]
+    plantColors:[{r:70,g:210,b:80},{r:50,g:180,b:60},{r:100,g:200,b:90}]
   },
   { id:'mystic', name:'神秘の泉', icon:'✨', price:300000000, unlocked:false,
     desc:'不思議な光が漂う伝説のエリア',
     bg: {
-      day:   ['#1a0a3a','#2c1a5a','#180840'],
-      night: ['#0a0418','#14082a','#0c0520'],
-      blue:  ['#100830','#1c1050','#0c0628']
+      day:   ['#4a2888','#6840a8','#3a1c78'],
+      night: ['#181028','#241840','#1c1230'],
+      blue:  ['#301c60','#482880','#281850']
     },
-    sandRGB:[140,120,180],
+    sandRGB:[175,155,210],
     plantStyle:'crystal',
-    plantColors:[{r:120,g:60,b:200},{r:80,g:40,b:160},{r:160,g:80,b:220}]
+    plantColors:[{r:160,g:100,b:240},{r:120,g:80,b:200},{r:200,g:120,b:255}]
   },
 ];

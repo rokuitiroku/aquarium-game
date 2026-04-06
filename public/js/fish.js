@@ -6,7 +6,45 @@ let bubblerOn = true, lightMode = 'day', lightIndex = 0;
 const lightModes = ['day','night','blue'];
 let fishes = [], bubbles = [], foods = [], plants = [], sandParticles = [], treasureBubbles = [];
 let autoFeederTimer = 0, breedTimer = 0, treasureTimer = 0;
+let randomEventTimer = 0, sharkCooldown = 0, goldenTimeRemaining = 0, goldenTimeMultiplier = 1, eventAnimating = false;
+let waterQuality = 100, waterChangeCount = 0;
+let visitors = [], visitorTimer = 0, totalTipsEarned = 0;
 let mouseX = -999, mouseY = -999, hoveredFish = null;
+
+// ============================================================
+// 🎨 色ヘルパー
+// ============================================================
+function darkenColor(color, amount) {
+  // rgba(r,g,b,a) or #hex or named color → 暗い版
+  const m = color.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+  if (m) {
+    const r = Math.max(0, parseInt(m[1]) - amount);
+    const g = Math.max(0, parseInt(m[2]) - amount);
+    const b = Math.max(0, parseInt(m[3]) - amount);
+    return `rgba(${r},${g},${b},0.5)`;
+  }
+  if (color.startsWith('#')) {
+    const hex = color.length === 4
+      ? '#' + color[1]+color[1]+color[2]+color[2]+color[3]+color[3]
+      : color;
+    const r = Math.max(0, parseInt(hex.slice(1,3),16) - amount);
+    const g = Math.max(0, parseInt(hex.slice(3,5),16) - amount);
+    const b = Math.max(0, parseInt(hex.slice(5,7),16) - amount);
+    return `rgba(${r},${g},${b},0.5)`;
+  }
+  if (color.startsWith('hsl')) {
+    return color.replace(/\d+%\)/, m => (Math.max(0, parseInt(m)-20)) + '%)');
+  }
+  return 'rgba(80,60,40,0.4)';
+}
+
+// 絵本風アウトライン設定
+function setBookOutline(s, color) {
+  ctx.strokeStyle = darkenColor(color, 60);
+  ctx.lineWidth = Math.max(1, s * 0.06);
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
+}
 
 // ============================================================
 // 🐟 魚クラス
@@ -76,10 +114,15 @@ class Fish {
       }
     }
     const dx = this.targetX - this.x, dy = this.targetY - this.y;
-    this.x += dx * 0.01 * this.speed;
-    this.y += dy * 0.005 * this.speed;
+    // 水質低下時のスロー
+    let spdMod = 1;
+    if (waterQuality < WATER_QUALITY.sluggishThreshold) {
+      spdMod = WATER_QUALITY.sluggishSpeedMult + (1 - WATER_QUALITY.sluggishSpeedMult) * (waterQuality / WATER_QUALITY.sluggishThreshold);
+    }
+    this.x += dx * 0.01 * this.speed * spdMod;
+    this.y += dy * 0.005 * this.speed * spdMod;
     if (Math.abs(dx) > 2) this.direction = dx > 0 ? 1 : -1;
-    this.tailPhase += 0.08 * this.speed;
+    this.tailPhase += 0.08 * this.speed * spdMod;
     // Keep in bounds
     this.x = Math.max(20, Math.min(canvas.width - 20, this.x));
     this.y = Math.max(20, Math.min(canvas.height - 40, this.y));
@@ -148,28 +191,28 @@ class Fish {
     }
   }
 
-  // ---------- 汎用描画 ----------
+  // ---------- 汎用描画（絵本風） ----------
   drawGeneric(s) {
     const bw = this.type.bodyW || 0.7;
     const bh = this.type.bodyH || 0.4;
     const tw = Math.sin(this.tailPhase) * 5;
     const ts = this.type.tailStyle;
-
     // 尾ビレ
     ctx.fillStyle = this.colors.fin;
+    setBookOutline(s, this.colors.fin);
     if (ts === 'flowing') {
       const tw1 = Math.sin(this.tailPhase)*8, tw2 = Math.sin(this.tailPhase+1)*6;
       ctx.beginPath();
       ctx.moveTo(-s*bw*0.5, 0);
       ctx.bezierCurveTo(-s*bw*1.3, -s*0.7+tw1, -s*bw*2+tw2, -s*0.5, -s*bw*1.8+tw1, 0);
       ctx.bezierCurveTo(-s*bw*2+tw2, s*0.5, -s*bw*1.3, s*0.7+tw1, -s*bw*0.5, 0);
-      ctx.globalAlpha = 0.6; ctx.fill(); ctx.globalAlpha = 1;
+      ctx.globalAlpha = 0.6; ctx.fill(); ctx.globalAlpha = 1; ctx.stroke();
     } else if (ts === 'fan') {
       ctx.beginPath();
       ctx.moveTo(-s*bw*0.5, 0);
       ctx.bezierCurveTo(-s*bw*1.2, -s*0.6+tw, -s*bw*1.6, -s*0.3, -s*bw*1.4+tw*0.3, 0);
       ctx.bezierCurveTo(-s*bw*1.6, s*0.3, -s*bw*1.2, s*0.6+tw, -s*bw*0.5, 0);
-      ctx.globalAlpha = 0.7; ctx.fill(); ctx.globalAlpha = 1;
+      ctx.globalAlpha = 0.7; ctx.fill(); ctx.globalAlpha = 1; ctx.stroke();
     } else if (ts === 'fork') {
       ctx.beginPath();
       ctx.moveTo(-s*bw*0.5, 0);
@@ -177,32 +220,30 @@ class Fish {
       ctx.quadraticCurveTo(-s*bw*1.1, -s*bh*0.1, -s*bw*0.9, 0);
       ctx.quadraticCurveTo(-s*bw*1.1, s*bh*0.1, -s*bw*1.5+tw, s*bh*1.2);
       ctx.quadraticCurveTo(-s*bw*1.0, s*bh*0.3, -s*bw*0.5, 0);
-      ctx.closePath(); ctx.fill();
+      ctx.closePath(); ctx.fill(); ctx.stroke();
     } else if (ts === 'lobe') {
-      // シーラカンスのヒレ
       ctx.beginPath();
-      ctx.moveTo(-s*bw*0.5, 0);
       ctx.ellipse(-s*bw*0.85, -s*bh*0.3+tw*0.3, s*0.2, s*bh*0.6, -0.2, 0, Math.PI*2);
-      ctx.fill();
+      ctx.fill(); ctx.stroke();
       ctx.beginPath();
       ctx.ellipse(-s*bw*0.85, s*bh*0.3+tw*0.3, s*0.2, s*bh*0.6, 0.2, 0, Math.PI*2);
-      ctx.fill();
+      ctx.fill(); ctx.stroke();
     } else {
-      // 丸みのある尾ビレ（tri）
       ctx.beginPath();
       ctx.moveTo(-s*bw*0.5, 0);
       ctx.quadraticCurveTo(-s*bw*1.0, -s*bh*0.4, -s*bw*1.4+tw, -s*bh*1.1);
       ctx.quadraticCurveTo(-s*bw*1.5+tw, 0, -s*bw*1.4+tw, s*bh*1.1);
       ctx.quadraticCurveTo(-s*bw*1.0, s*bh*0.4, -s*bw*0.5, 0);
-      ctx.closePath(); ctx.fill();
+      ctx.closePath(); ctx.fill(); ctx.stroke();
     }
 
     // グロー
     if (this.type.glowColor) { ctx.shadowColor = this.type.glowColor; ctx.shadowBlur = 12; }
 
-    // 体
+    // 体（アウトライン付き）
     ctx.fillStyle = this.colors.body;
-    ctx.beginPath(); ctx.ellipse(0, 0, s*bw, s*bh, 0, 0, Math.PI*2); ctx.fill();
+    setBookOutline(s, this.colors.body);
+    ctx.beginPath(); ctx.ellipse(0, 0, s*bw, s*bh, 0, 0, Math.PI*2); ctx.fill(); ctx.stroke();
     ctx.shadowBlur = 0;
 
     // お腹
@@ -212,36 +253,38 @@ class Fish {
     // 模様
     this.drawPattern(s, bw, bh);
 
-    // 背ビレ
+    // 背ビレ（アウトライン付き）
     ctx.fillStyle = this.colors.fin;
+    setBookOutline(s, this.colors.fin);
     const ds = this.type.dorsalStyle;
     if (ds === 'tall') {
       ctx.beginPath(); ctx.moveTo(-s*bw*0.3, -s*bh);
-      ctx.quadraticCurveTo(0, -s*bh*2.8, s*bw*0.3, -s*bh); ctx.closePath(); ctx.fill();
+      ctx.quadraticCurveTo(0, -s*bh*2.8, s*bw*0.3, -s*bh); ctx.closePath(); ctx.fill(); ctx.stroke();
     } else if (ds === 'flowing') {
       const sw = Math.sin(this.tailPhase*0.7)*3;
       ctx.globalAlpha = 0.55;
       ctx.beginPath(); ctx.moveTo(-s*bw*0.5, -s*bh);
       ctx.quadraticCurveTo(0, -s*bh*2.2+sw, s*bw*0.5, -s*bh); ctx.closePath(); ctx.fill();
-      ctx.globalAlpha = 1;
+      ctx.globalAlpha = 1; ctx.stroke();
     } else {
       ctx.globalAlpha = 0.7;
       ctx.beginPath(); ctx.moveTo(-s*bw*0.25, -s*bh*0.85);
       ctx.bezierCurveTo(-s*bw*0.1, -s*bh*1.8, s*bw*0.3, -s*bh*1.8, s*bw*0.45, -s*bh*0.85);
       ctx.closePath(); ctx.fill();
-      ctx.globalAlpha = 1;
+      ctx.globalAlpha = 1; ctx.stroke();
     }
 
     // 腹ビレ（エンゼル）
     if (this.type.hasVentralFin) {
       ctx.fillStyle = this.colors.fin;
+      setBookOutline(s, this.colors.fin);
       ctx.beginPath(); ctx.moveTo(-s*bw*0.1, s*bh);
-      ctx.quadraticCurveTo(0, s*bh*2.5, s*bw*0.15, s*bh); ctx.closePath(); ctx.fill();
+      ctx.quadraticCurveTo(0, s*bh*2.5, s*bw*0.15, s*bh); ctx.closePath(); ctx.fill(); ctx.stroke();
     }
 
     // ヒゲ
     if (this.type.hasWhiskers) {
-      ctx.strokeStyle = this.colors.fin; ctx.lineWidth = 1.5; ctx.lineCap = 'round';
+      ctx.strokeStyle = darkenColor(this.colors.fin, 40); ctx.lineWidth = Math.max(1.5, s*0.04); ctx.lineCap = 'round';
       const hx = s*bw*0.7;
       ctx.beginPath(); ctx.moveTo(hx, -s*0.02);
       ctx.quadraticCurveTo(hx+s*0.15, -s*0.12, hx+s*0.25, -s*0.2); ctx.stroke();
@@ -255,7 +298,7 @@ class Fish {
     this.drawBlush(s, s*(bw-0.35), s*bh*0.15);
   }
 
-  // ---------- タツノオトシゴ ----------
+  // ---------- タツノオトシゴ（絵本風） ----------
   drawSeahorse(s) {
     const wave = Math.sin(this.tailPhase)*3;
 
@@ -264,14 +307,20 @@ class Fish {
     ctx.beginPath();
     ctx.arc(0, s*0.6, s*0.25, -Math.PI*0.3, Math.PI*0.9);
     ctx.stroke();
+    // しっぽアウトライン
+    ctx.strokeStyle = darkenColor(this.colors.body, 60); ctx.lineWidth = s*0.22;
+    ctx.beginPath(); ctx.arc(0, s*0.6, s*0.25, -Math.PI*0.3, Math.PI*0.9); ctx.stroke();
+    ctx.strokeStyle = this.colors.body; ctx.lineWidth = s*0.15;
+    ctx.beginPath(); ctx.arc(0, s*0.6, s*0.25, -Math.PI*0.3, Math.PI*0.9); ctx.stroke();
 
     // 体（ぷっくり）
     ctx.fillStyle = this.colors.body;
+    setBookOutline(s, this.colors.body);
     ctx.beginPath();
     ctx.moveTo(s*0.1, -s*0.7);
     ctx.bezierCurveTo(s*0.38, -s*0.4, s*0.35+wave*0.01, s*0.0, s*0.1, s*0.35);
     ctx.bezierCurveTo(-s*0.15, s*0.0, -s*0.2, -s*0.4, s*0.0, -s*0.7);
-    ctx.closePath(); ctx.fill();
+    ctx.closePath(); ctx.fill(); ctx.stroke();
 
     // お腹
     ctx.fillStyle = this.colors.belly;
@@ -279,12 +328,14 @@ class Fish {
 
     // くちばし
     ctx.fillStyle = this.colors.body;
-    ctx.beginPath(); ctx.ellipse(s*0.3, -s*0.65, s*0.18, s*0.05, 0.15, 0, Math.PI*2); ctx.fill();
+    setBookOutline(s, this.colors.body);
+    ctx.beginPath(); ctx.ellipse(s*0.3, -s*0.65, s*0.18, s*0.05, 0.15, 0, Math.PI*2); ctx.fill(); ctx.stroke();
 
     // 背ビレ
     ctx.fillStyle = this.colors.fin; ctx.globalAlpha = 0.5;
+    setBookOutline(s, this.colors.fin);
     ctx.beginPath(); ctx.ellipse(-s*0.08, -s*0.2+wave*0.01, s*0.08, s*0.13, -0.3, 0, Math.PI*2); ctx.fill();
-    ctx.globalAlpha = 1;
+    ctx.globalAlpha = 1; ctx.stroke();
 
     // 目（かわいい版）
     this.drawEye(s, s*0.13, -s*0.58);
@@ -292,18 +343,20 @@ class Fish {
     this.drawBlush(s, s*0.22, -s*0.35);
   }
 
-  // ---------- フグ ----------
+  // ---------- フグ（絵本風） ----------
   drawPuffer(s) {
     const tw = Math.sin(this.tailPhase)*2;
 
     // 小さい尻尾
     ctx.fillStyle = this.colors.fin;
+    setBookOutline(s, this.colors.fin);
     ctx.beginPath(); ctx.moveTo(-s*0.4, 0);
-    ctx.lineTo(-s*0.65+tw, -s*0.12); ctx.lineTo(-s*0.65+tw, s*0.12); ctx.closePath(); ctx.fill();
+    ctx.lineTo(-s*0.65+tw, -s*0.12); ctx.lineTo(-s*0.65+tw, s*0.12); ctx.closePath(); ctx.fill(); ctx.stroke();
 
     // まんまるボディ
     ctx.fillStyle = this.colors.body;
-    ctx.beginPath(); ctx.arc(0, 0, s*0.5, 0, Math.PI*2); ctx.fill();
+    setBookOutline(s, this.colors.body);
+    ctx.beginPath(); ctx.arc(0, 0, s*0.5, 0, Math.PI*2); ctx.fill(); ctx.stroke();
 
     // お腹
     ctx.fillStyle = this.colors.belly;
@@ -319,8 +372,9 @@ class Fish {
 
     // 胸ビレ
     ctx.fillStyle = this.colors.fin; ctx.globalAlpha = 0.5;
+    setBookOutline(s, this.colors.fin);
     ctx.beginPath(); ctx.ellipse(s*0.2, s*0.15, s*0.12, s*0.05, 0.3+tw*0.03, 0, Math.PI*2); ctx.fill();
-    ctx.globalAlpha = 1;
+    ctx.globalAlpha = 1; ctx.stroke();
 
     // でかい目
     this.drawEye(s, s*0.2, -s*0.12);
@@ -328,7 +382,7 @@ class Fish {
     this.drawBlush(s, s*0.1, s*0.08);
   }
 
-  // ---------- リュウグウノツカイ ----------
+  // ---------- リュウグウノツカイ（絵本風） ----------
   drawSerpent(s) {
     const segments = 8, segLen = s*0.35;
     const pts = [];
@@ -339,8 +393,14 @@ class Fish {
       px -= segLen;
     }
 
+    // 体アウトライン（太い線の外側）
+    ctx.strokeStyle = darkenColor(this.colors.body, 60); ctx.lineWidth = s*0.28; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.beginPath(); ctx.moveTo(pts[0].x, pts[0].y);
+    for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
+    ctx.stroke();
+
     // 体（太い線）
-    ctx.strokeStyle = this.colors.body; ctx.lineWidth = s*0.22; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.strokeStyle = this.colors.body; ctx.lineWidth = s*0.22;
     ctx.beginPath(); ctx.moveTo(pts[0].x, pts[0].y);
     for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
     ctx.stroke();
@@ -359,12 +419,13 @@ class Fish {
 
     // 頭の飾りヒレ
     ctx.fillStyle = this.colors.fin; ctx.globalAlpha = 0.7;
+    setBookOutline(s, this.colors.fin);
     ctx.beginPath();
     ctx.moveTo(pts[0].x, pts[0].y - s*0.12);
     ctx.lineTo(pts[0].x + s*0.15, pts[0].y - s*0.45);
     ctx.lineTo(pts[0].x - s*0.1, pts[0].y - s*0.35);
     ctx.closePath(); ctx.fill();
-    ctx.globalAlpha = 1;
+    ctx.globalAlpha = 1; ctx.stroke();
 
     // 目（かわいい版）
     this.drawEye(s, pts[0].x+s*0.02, pts[0].y-s*0.02);
@@ -372,23 +433,27 @@ class Fish {
     this.drawBlush(s, pts[0].x-s*0.05, pts[0].y+s*0.1);
   }
 
-  // ---------- マンタ ----------
+  // ---------- マンタ（絵本風） ----------
   drawManta(s) {
     const flap = Math.sin(this.tailPhase*0.6)*0.15;
 
     // しっぽ
-    ctx.strokeStyle = this.colors.fin; ctx.lineWidth = s*0.05; ctx.lineCap = 'round';
+    ctx.strokeStyle = darkenColor(this.colors.fin, 40); ctx.lineWidth = s*0.07; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(-s*0.5, 0);
+    ctx.lineTo(-s*1.4, Math.sin(this.tailPhase)*s*0.1); ctx.stroke();
+    ctx.strokeStyle = this.colors.fin; ctx.lineWidth = s*0.04;
     ctx.beginPath(); ctx.moveTo(-s*0.5, 0);
     ctx.lineTo(-s*1.4, Math.sin(this.tailPhase)*s*0.1); ctx.stroke();
 
     // 翼（体）
     ctx.fillStyle = this.colors.body;
+    setBookOutline(s, this.colors.body);
     ctx.beginPath();
     ctx.moveTo(s*0.5, 0);
     ctx.quadraticCurveTo(s*0.2, -s*(0.7+flap*s*0.02), -s*0.4, -s*0.08);
     ctx.quadraticCurveTo(-s*0.5, 0, -s*0.4, s*0.08);
     ctx.quadraticCurveTo(s*0.2, s*(0.7+flap*s*0.02), s*0.5, 0);
-    ctx.fill();
+    ctx.fill(); ctx.stroke();
 
     // お腹
     ctx.fillStyle = this.colors.belly;
@@ -400,7 +465,7 @@ class Fish {
     this.drawBlush(s, s*0.2, s*0.06);
   }
 
-  // ---------- 龍神 ----------
+  // ---------- 龍神（絵本風） ----------
   drawMythic(s) {
     const tw = Math.sin(this.tailPhase)*5;
 
@@ -412,18 +477,20 @@ class Fish {
 
     // 流れるヒレ（尾）
     ctx.fillStyle = this.colors.fin;
+    setBookOutline(s, this.colors.fin);
     const tw1 = Math.sin(this.tailPhase)*10, tw2 = Math.sin(this.tailPhase+1)*8;
     ctx.globalAlpha = 0.5;
     ctx.beginPath();
     ctx.moveTo(-s*0.5, 0);
     ctx.bezierCurveTo(-s*1.2, -s*0.6+tw1, -s*1.8+tw2, -s*0.4, -s*1.6+tw1, 0);
     ctx.bezierCurveTo(-s*1.8+tw2, s*0.4, -s*1.2, s*0.6+tw1, -s*0.5, 0);
-    ctx.fill(); ctx.globalAlpha = 1;
+    ctx.fill(); ctx.globalAlpha = 1; ctx.stroke();
 
-    // グロー付き体
+    // グロー付き体（アウトライン付き）
     ctx.shadowColor = 'rgba(255,215,0,0.4)'; ctx.shadowBlur = 15;
     ctx.fillStyle = this.colors.body;
-    ctx.beginPath(); ctx.ellipse(0, 0, s*0.9, s*0.3, 0, 0, Math.PI*2); ctx.fill();
+    setBookOutline(s, this.colors.body);
+    ctx.beginPath(); ctx.ellipse(0, 0, s*0.9, s*0.3, 0, 0, Math.PI*2); ctx.fill(); ctx.stroke();
     ctx.shadowBlur = 0;
 
     // お腹
@@ -440,13 +507,14 @@ class Fish {
 
     // 背ビレ（龍の鬣）
     ctx.fillStyle = this.colors.fin; ctx.globalAlpha = 0.6;
+    setBookOutline(s, this.colors.fin);
     const sw = Math.sin(this.tailPhase*0.7)*4;
     ctx.beginPath(); ctx.moveTo(-s*0.5, -s*0.28);
     ctx.quadraticCurveTo(-s*0.1, -s*0.8+sw, s*0.5, -s*0.28); ctx.closePath(); ctx.fill();
-    ctx.globalAlpha = 1;
+    ctx.globalAlpha = 1; ctx.stroke();
 
     // ヒゲ（龍）
-    ctx.strokeStyle = this.colors.fin; ctx.lineWidth = 1.5; ctx.lineCap = 'round';
+    ctx.strokeStyle = darkenColor(this.colors.fin, 40); ctx.lineWidth = Math.max(1.5, s*0.04); ctx.lineCap = 'round';
     const hx = s*0.7;
     ctx.beginPath(); ctx.moveTo(hx, -s*0.05);
     ctx.quadraticCurveTo(hx+s*0.3, -s*0.25+tw*0.02, hx+s*0.45, -s*0.3); ctx.stroke();
@@ -508,26 +576,33 @@ class Fish {
     }
   }
 
-  // ---------- 目の描画（でかかわいい） ----------
+  // ---------- 目の描画（絵本風・キラキラ） ----------
   drawEye(s, ex, ey) {
     // 白目（大きめ）
     ctx.fillStyle = '#fff';
-    ctx.beginPath(); ctx.arc(ex, ey, s*0.16, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(ex, ey, s*0.22, 0, Math.PI*2); ctx.fill();
+    // 白目アウトライン
+    ctx.strokeStyle = 'rgba(60,40,30,0.35)';
+    ctx.lineWidth = Math.max(0.8, s*0.03);
+    ctx.stroke();
     // 黒目
     ctx.fillStyle = '#1a1a2e';
-    ctx.beginPath(); ctx.arc(ex+s*0.03, ey+s*0.01, s*0.095, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(ex+s*0.03, ey+s*0.01, s*0.13, 0, Math.PI*2); ctx.fill();
     // ハイライト大
     ctx.fillStyle = '#fff';
-    ctx.beginPath(); ctx.arc(ex+s*0.06, ey-s*0.05, s*0.045, 0, Math.PI*2); ctx.fill();
-    // ハイライト小
+    ctx.beginPath(); ctx.arc(ex+s*0.07, ey-s*0.06, s*0.06, 0, Math.PI*2); ctx.fill();
+    // ハイライト中
     ctx.fillStyle = '#fff';
-    ctx.beginPath(); ctx.arc(ex-s*0.01, ey+s*0.03, s*0.025, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(ex-s*0.02, ey+s*0.04, s*0.035, 0, Math.PI*2); ctx.fill();
+    // ハイライト小（キラッ）
+    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+    ctx.beginPath(); ctx.arc(ex+s*0.1, ey-s*0.02, s*0.02, 0, Math.PI*2); ctx.fill();
   }
 
-  // ---------- ほっぺ描画 ----------
+  // ---------- ほっぺ描画（絵本風・ふんわり） ----------
   drawBlush(s, bx, by) {
-    ctx.fillStyle = 'rgba(255,130,150,0.35)';
-    ctx.beginPath(); ctx.ellipse(bx, by, s*0.09, s*0.06, 0, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = 'rgba(255,130,150,0.4)';
+    ctx.beginPath(); ctx.ellipse(bx, by, s*0.13, s*0.08, 0, 0, Math.PI*2); ctx.fill();
   }
 }
 
@@ -799,5 +874,85 @@ class Plant {
     ctx.fillStyle = `rgba(${Math.min(r+80,255)},${Math.min(g+80,255)},${Math.min(b+80,255)},${0.2+sp*0.2})`;
     ctx.beginPath(); ctx.arc(bx+sp*3, by-h*0.7+Math.cos(time*0.002+this.phase)*3, 2, 0, Math.PI*2); ctx.fill();
     ctx.restore();
+  }
+}
+
+// ============================================================
+// 👥 来客クラス
+// ============================================================
+class Visitor {
+  constructor(visitorType, isPhotographer) {
+    this.type = visitorType;
+    this.isPhotographer = isPhotographer || false;
+    this.emoji = isPhotographer ? PHOTOGRAPHER_TYPE.emoji : visitorType.emoji;
+    this.css = isPhotographer ? PHOTOGRAPHER_TYPE.css : (visitorType.css || '');
+    this.tipMult = isPhotographer ? PHOTOGRAPHER_TYPE.tipMult : visitorType.tipMult;
+    this.name = isPhotographer ? PHOTOGRAPHER_TYPE.name : visitorType.name;
+    this.direction = Math.random() > 0.5 ? 1 : -1;
+    this.x = this.direction === 1 ? -30 : canvas.width + 30;
+    this.targetX = 30 + Math.random() * (canvas.width - 60);
+    this.speed = 0.3 + Math.random() * 0.3;
+    this.state = 'entering';
+    this.stayTimer = VISITOR_CONFIG.stayMinFrames + Math.random() * (VISITOR_CONFIG.stayMaxFrames - VISITOR_CONFIG.stayMinFrames);
+    this.reactTimer = 0;
+    this.reactEmoji = '';
+    this.bobPhase = Math.random() * Math.PI * 2;
+    this.tipped = false;
+    this.flashTimer = 0;
+    this.flashInterval = 300 + Math.random() * 300;
+    this._domElement = null;
+  }
+
+  update() {
+    this.bobPhase += 0.04;
+    switch (this.state) {
+      case 'entering': {
+        const dx = this.targetX - this.x;
+        if (Math.abs(dx) > 2) {
+          this.x += Math.sign(dx) * this.speed;
+          this.direction = dx > 0 ? 1 : -1;
+        } else {
+          this.state = 'viewing';
+        }
+        break;
+      }
+      case 'viewing':
+        this.stayTimer--;
+        if (waterQuality < VISITOR_CONFIG.lowQualityThreshold) {
+          this.stayTimer -= (VISITOR_CONFIG.lowQualityLeaveSpeedMult - 1);
+        }
+        if (this.isPhotographer) {
+          this.flashTimer++;
+          if (this.flashTimer >= this.flashInterval) {
+            this.flashTimer = 0;
+            this.reactEmoji = '📸✨';
+            this.reactTimer = 60;
+          }
+        }
+        if (this.reactTimer > 0) this.reactTimer--;
+        if (this.stayTimer <= 0) {
+          this.state = 'leaving';
+          if (!this.tipped) {
+            this.tipped = true;
+            const tip = calculateVisitorTip(this);
+            addCoins(tip, this.x, canvas.height - 10);
+            totalTipsEarned += tip;
+            this.reactEmoji = '+' + tip + '🪙';
+            this.reactTimer = 90;
+          }
+        }
+        break;
+      case 'leaving': {
+        const exitX = this.direction === 1 ? canvas.width + 40 : -40;
+        this.x += Math.sign(exitX - this.x) * this.speed * 1.5;
+        if (this.reactTimer > 0) this.reactTimer--;
+        if (this.x < -50 || this.x > canvas.width + 50) {
+          if (this._domElement) this._domElement.remove();
+          return false;
+        }
+        break;
+      }
+    }
+    return true;
   }
 }
