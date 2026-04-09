@@ -1406,14 +1406,6 @@ canvas.addEventListener('click', e => {
   dropFood(e.clientX-rect.left, e.clientY-rect.top);
 });
 
-document.addEventListener('keydown', e => {
-  if (e.key === 'd' || e.key === 'f') {
-    const x = canvas.width * (0.3 + Math.random() * 0.4);
-    const y = 10 + Math.random() * 20;
-    dropFood(x, y);
-  }
-});
-
 function toggleBubbler() { bubblerOn = !bubblerOn; updateBubblerBtn(); }
 function updateBubblerBtn() {
   const btn = document.getElementById('bubbleBtn');
