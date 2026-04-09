@@ -211,7 +211,7 @@ function getTankCapacity() {
 function updateBreeding() {
   breedTimer++;
   const hasBoost = UPGRADES.find(u => u.id === 'breedBoost')?.owned;
-  const interval = 1800; // 30秒
+  const interval = 108000; // 30分
   if (breedTimer >= interval) {
     breedTimer = 0;
     if (fishes.length >= getTankCapacity()) return; // 上限
@@ -222,7 +222,7 @@ function updateBreeding() {
 
     for (const [typeId, count] of Object.entries(counts)) {
       if (count >= 2) {
-        let chance = hasBoost ? 0.12 : 0.06;
+        let chance = hasBoost ? 0.04 : 0.02;
           if (loveSeasonRemaining > 0) chance *= 5;
         if (Math.random() < chance) {
           const parent = fishes.find(f => f.typeId === typeId);
