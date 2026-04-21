@@ -1584,6 +1584,45 @@ function loadGame() {
       const elapsedFrames = Math.floor((Date.now() - data.lastSave) / 1000 * 60);
       goldenTimeRemaining = Math.max(0, goldenTimeRemaining - elapsedFrames);
       sharkCooldown = Math.max(0, sharkCooldown - elapsedFrames);
+
+      // 不在中のイベントシミュレーション
+      const elapsedSec = (Date.now() - data.lastSave) / 1000;
+      if (elapsedSec > 120) { // 2分以上離れていた場合
+        const eventIntervalSec = 432000 / 60; // 2時間
+        const chances = Math.floor(elapsedSec / eventIntervalSec);
+        const offlineEvents = [];
+        for (let i = 0; i < chances; i++) {
+          if (Math.random() < 0.15) {
+            let pool = RANDOM_EVENTS.filter(e => e.id !== 'sharkAttack' && e.id !== 'typhoon');
+            if (pool.length === 0) continue;
+            const totalW = pool.reduce((s, e) => s + e.weight, 0);
+            let roll = Math.random() * totalW, picked = pool[0];
+            for (const ev of pool) { roll -= ev.weight; if (roll <= 0) { picked = ev; break; } }
+            offlineEvents.push(picked);
+          }
+        }
+        if (offlineEvents.length > 0) {
+          // 不在中イベントの効果を適用（コイン系のみ）
+          let offlineEventCoins = 0;
+          for (const ev of offlineEvents) {
+            if (ev.id === 'coinRain') offlineEventCoins += Math.floor(500 + Math.random() * 1500);
+            if (ev.id === 'treasureChest') offlineEventCoins += Math.floor(1000 + Math.random() * 3000);
+            if (ev.id === 'mermaidVisit') offlineEventCoins += Math.floor(2000 + Math.random() * 5000);
+          }
+          coins += offlineEventCoins;
+          // ログに表示
+          setTimeout(() => {
+            addEventLog('📋 ── 留守中のできごと ──');
+            for (const ev of offlineEvents) {
+              addEventLog(ev.icon + ' ' + ev.name + 'が発生！');
+            }
+            if (offlineEventCoins > 0) {
+              addEventLog('💰 イベント報酬: ' + offlineEventCoins.toLocaleString() + ' コイン');
+            }
+            addEventLog('📋 ── ここから現在 ──');
+          }, 1200);
+        }
+      }
     }
     if (goldenTimeRemaining > 0) {
       goldenTimeMultiplier = 3;
